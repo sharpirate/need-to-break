@@ -71,12 +71,10 @@ module.exports = {
       '64': ['64px', { lineHeight: '72px' }]
     },
     fontWeight: {
-      regular: '400',
-      medium: '500',
-      semibold: '600',
-      bold: '700',
-      extrabold: '800',
-      black: '900'
+      reg: '400',
+      med: '500',
+      sbold: '600',
+      bold: '700'
     },
     borderRadius: {
       '0': '0px',

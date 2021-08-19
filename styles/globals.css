@@ -1,16 +1,13 @@
-html,
-body {
-  padding: 0;
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
-}
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-a {
-  color: inherit;
-  text-decoration: none;
-}
-
-* {
-  box-sizing: border-box;
+@layer base {
+  @font-face {
+    font-family: 'IntroDemo';
+    src: url('/fonts/Intro/IntroDemo-BlackCAPS.eot'), /* IE9 Compat Modes */
+         url('/fonts/Intro/IntroDemo-BlackCAPS.woff2') format('woff2'), /* Super Modern Browsers */
+         url('/fonts/Intro/IntroDemo-BlackCAPS.woff') format('woff'), /* Pretty Modern Browsers */
+         url('/fonts/Intro/IntroDemo-BlackCAPS.ttf')  format('truetype'); /* Safari, Android, iOS */
+  }
 }

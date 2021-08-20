@@ -80,6 +80,9 @@ module.exports = {
       sbold: '600',
       bold: '700'
     },
+    letterSpacing: {
+      '2': '0.02em'
+    },
     borderRadius: {
       '0': '0px',
       '4': '4px',
@@ -87,7 +90,13 @@ module.exports = {
     },
   },
   variants: {
-    extend: {},
+    extend: {
+      backgroundColor: ['disabled'],
+      transform: ['active'],
+      scale: ['active'],
+      ringColor: ['hover', 'disabled'],
+      textColor: ['disabled']
+    }
   },
   plugins: [],
 }

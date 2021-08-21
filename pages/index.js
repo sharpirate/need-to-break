@@ -5,6 +5,7 @@ import Button from '../components/atoms/Button';
 import Tab from '../components/atoms/Tab';
 import MainNav from '../components/molecules/MainNav';
 import AuthNav from '../components/molecules/AuthNav';
+import ActionButton from '../components/atoms/ActionButton';
 
 export default function Home() {
   return (
@@ -16,6 +17,8 @@ export default function Home() {
       <header className="732:p-32 w-full max-w-7xl">
         <MainNav />
       </header>
+      <ActionButton type="add" />
+      <ActionButton type="remove" />
     </div>
   )
 }

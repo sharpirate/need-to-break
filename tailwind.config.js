@@ -3,6 +3,7 @@ module.exports = {
   darkMode: false, // or 'media' or 'class'
   theme: {
     colors: {
+      transparent: 'transparent',
       white: '#fff',
       primary: {
         '300': '#E8F0F2',
@@ -43,6 +44,7 @@ module.exports = {
     },
     spacing: {
       '0': '0px',
+      '1': '1px',
       '4': '4px',
       '6': '6px',
       '8': '8px',
@@ -87,6 +89,7 @@ module.exports = {
       '0': '0px',
       '4': '4px',
       '8': '8px',
+      '20': '20px'
     },
   },
   variants: {

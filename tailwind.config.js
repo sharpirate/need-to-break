@@ -43,6 +43,7 @@ module.exports = {
       '1196': '1196px'
     },
     spacing: {
+      'sch': '2.4px', // "semi column half" - aligning the hours prefectly to the timeline
       '0': '0px',
       '1': '1px',
       '4': '4px',
@@ -59,6 +60,7 @@ module.exports = {
       '52': '52px',
       '56': '56px',
       '64': '64px',
+      '1472': '1472px'
     },
     fontFamily: {
       base: ['Inter', 'sans-serif'],

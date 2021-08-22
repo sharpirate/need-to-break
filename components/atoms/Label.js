@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types';
 
 export const types = {
-  smallTop: 'small-top',
-  smallBottom: 'small-bottom',
+  small: 'small',
+  status: 'status',
   big: 'big',
   large: 'large',
   xlarge: 'xlarge',
@@ -13,11 +13,14 @@ export const types = {
   h4: 'h4',
   h5: 'h5',
   h6: 'h6',
-  label: 'label'
+  label: 'label',
+
+  success: 'success',
+  error: 'error'
 };
 
-function Label({ size, as, children, fieldId }) {
-  const style = getStyle(size);
+function Label({ size, as, children, fieldId, type }) {
+  const style = getStyle(size, type);
   
   switch (as) {
     case types.h1:
@@ -42,18 +45,34 @@ function Label({ size, as, children, fieldId }) {
 Label.propTypes = {
   size: PropTypes.string,
   as: PropTypes.string,
-  fieldId: PropTypes.string
+  fieldId: PropTypes.string,
+  type: PropTypes.string
 };
 
-function getStyle(size) {
-  const baseStyle = 'tracking-2 text-gray-600 font-base';
+function getStyle(size, type) {
+  const baseStyle = 'tracking-2 font-base';
+
+  let colorStyle = '';
+
+  switch (type) {
+    case types.success:
+      colorStyle = 'text-support-success';
+      break;
+    case types.error:
+      colorStyle = 'text-support-error';
+      break;
+    default:
+      colorStyle = 'text-gray-600';
+      break;
+  }
+
   let sizeStyle = '';
 
   switch (size) {
-    case types.smallBottom:
+    case types.status:
       sizeStyle = 'font-med text-10 mt-4 420:text-13';
       break;
-    case types.smallTop:
+    case types.small:
       sizeStyle = 'font-med text-10 mb-4 420:text-13';
       break;
     case types.big:
@@ -69,7 +88,7 @@ function getStyle(size) {
       break;
   }
 
-  return `${baseStyle} ${sizeStyle}`;
+  return `${baseStyle} ${sizeStyle} ${colorStyle}`;
 }
 
 export default Label;

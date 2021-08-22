@@ -60,6 +60,7 @@ module.exports = {
       '52': '52px',
       '56': '56px',
       '64': '64px',
+      '220': '220px',
       '1472': '1472px'
     },
     fontFamily: {
@@ -100,7 +101,8 @@ module.exports = {
       transform: ['active'],
       scale: ['active'],
       ringColor: ['hover', 'disabled'],
-      textColor: ['disabled']
+      textColor: ['disabled'],
+      placeholderColor: ['disabled']
     }
   },
   plugins: [],

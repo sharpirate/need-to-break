@@ -1,15 +1,37 @@
+import PropTypes from 'prop-types';
+
+export const types = {
+  down: 'down',
+  left: 'left',
+  right: 'right',
+  up: 'up',
+
+  small: '50',
+  reg: '100',
+
+  active: 'active',
+  default: 'default',
+  disabled: 'disabled'
+};
+
 function Arrow({ type, size, state }) {
   return resolveArrow(type, size, state);
 }
+
+Arrow.propTypes = {
+  type: PropTypes.string,
+  size: PropTypes.string,
+  state: PropTypes.string,
+};
 
 function resolveArrow(type, size, state) {
   let sizeStyle = '';
 
   switch (size) {
-    case '50':
+    case types.small:
       sizeStyle = 'w-13 h-13 360:w-16 360:h-16';
       break
-      case '100':
+      case types.reg:
       sizeStyle = 'w-16 h-16 360:w-24 360:h-24';
       break;
     default:
@@ -19,15 +41,15 @@ function resolveArrow(type, size, state) {
   let typeStyle = '';
 
   switch (type) {
-    case 'down':
+    case types.down:
       break;
-    case 'left':
+    case types.left:
       typeStyle = 'transform rotate-90'
       break;
-    case 'right':
+    case types.right:
       typeStyle = 'transform -rotate-90'
       break;
-    case 'up':
+    case types.up:
       typeStyle = 'transform rotate-180'
       break;
     default:
@@ -37,13 +59,13 @@ function resolveArrow(type, size, state) {
   let colorStyle = '';
 
   switch (state) {
-    case 'active':
+    case types.active:
       colorStyle = 'fill-current text-primary-500'
       break;
-    case 'default':
+    case types.default:
       colorStyle = 'fill-current text-gray-400'
       break;
-    case 'disabled':
+    case types.disabled:
       colorStyle = 'fill-current text-gray-300'
       return null;
   }

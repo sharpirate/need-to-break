@@ -1,8 +1,21 @@
 import PropTypes from 'prop-types';
 
+export const types = {
+  work: 'work',
+  break: 'break',
+  blocked: 'blocked',
+  floating: 'floating'
+};
+
 function Interval({ type, first, last }) {
   return <li className={getStyle(type, first, last)} />
 }
+
+Interval.propTypes = {
+  type: PropTypes.string,
+  first: PropTypes.bool,
+  last: PropTypes.bool
+};
 
 function getStyle(type, first, last) {
   let baseStyle = 'block h-full w-32 420:w-40 900:w-full 900:h-32 1172:h-40';
@@ -10,16 +23,16 @@ function getStyle(type, first, last) {
   let colorStyle = '';
 
   switch (type) {
-    case 'work':
+    case types.work:
       colorStyle = 'bg-primary-500';
       break;
-    case 'break':
+    case types.break:
       colorStyle = 'bg-primary-400';
       break;
-    case 'blocked':
+    case types.blocked:
       colorStyle = 'bg-blocked-500';
       break;
-    case 'floating':
+    case types.floating:
       colorStyle = 'bg-blocked-400';
       break;
     default:
@@ -36,11 +49,5 @@ function getStyle(type, first, last) {
 
   return `${baseStyle} ${colorStyle} ${borderStyle}`;
 }
-
-Interval.propTypes = {
-  type: PropTypes.string,
-  first: PropTypes.bool,
-  last: PropTypes.bool
-};
 
 export default Interval;

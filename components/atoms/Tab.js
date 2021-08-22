@@ -1,6 +1,11 @@
 import PropTypes from 'prop-types';
 import Link from 'next/link';
 
+export const types = {
+  auth: 'auth',
+  main: 'main'
+};
+
 function Tab({ children, type, selected, first, last }) {
   return (
     <li>
@@ -11,11 +16,18 @@ function Tab({ children, type, selected, first, last }) {
   );
 }
 
+Tab.propTypes = {
+  type: PropTypes.string,
+  selected: PropTypes.bool,
+  first: PropTypes.bool,
+  last: PropTypes.bool
+};
+
 function getStyle(type, selected, first, last) {
   switch (type) {
-    case 'auth':
+    case types.auth:
       return getAuthStyle(selected, first, last);
-    case 'main':
+    case types.main:
       return getMainStyle(selected, first, last);
     default:
       return '';
@@ -65,12 +77,5 @@ function getMainStyle(selected, first, last) {
 
   return `${baseStyle} ${selectedStyle} ${borderStyle}`;
 }
-
-Tab.propTypes = {
-  type: PropTypes.string,
-  selected: PropTypes.bool,
-  first: PropTypes.bool,
-  last: PropTypes.bool
-};
 
 export default Tab;

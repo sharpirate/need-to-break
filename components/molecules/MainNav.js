@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import Tab from '../atoms/Tab';
 
 const tabs = ['Active', 'Full Time', 'Flexible', 'Presets'];
@@ -19,14 +20,19 @@ function MainNav() {
   );
 }
 
+const types = {
+  desktop: 'desktop',
+  mobile: 'mobile'
+};
+
 function SettingsButton({ invisible, type }) {
   let styleType = '';
 
   switch (type) {
-    case 'desktop':
+    case types.desktop:
       styleType = 'hidden 732:block';
       break;
-      case 'mobile':
+      case types.mobile:
         styleType = 'block 732:hidden';
         break;
     default:
@@ -44,5 +50,10 @@ function SettingsButton({ invisible, type }) {
     </button>
   );
 }
+
+SettingsButton.propTypes = {
+  type: PropTypes.string,
+  invisible: PropTypes.bool
+};
 
 export default MainNav;

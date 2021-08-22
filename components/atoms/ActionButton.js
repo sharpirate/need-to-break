@@ -1,18 +1,27 @@
 import PropTypes from 'prop-types';
 
+export const types = {
+  add: 'add',
+  remove: 'remove'
+};
+
 function ActionButton({ type }) {
   return getStyledButton(type);
 }
+
+ActionButton.propTypes = {
+  type: PropTypes.string
+};
 
 function getStyledButton(type) {
   let colorStyle = '';
   let baseStyle = 'w-20 h-20 420:w-24 420:h-24';
 
   switch (type) {
-    case 'add':
+    case types.add:
       colorStyle = "fill-current text-primary-500";
       break;
-      case 'remove':
+      case types.remove:
       colorStyle = "fill-current text-support-error";
       baseStyle += " transform rotate-45";
       break;
@@ -27,9 +36,5 @@ function getStyledButton(type) {
     </svg>
   );
 }
-
-ActionButton.propTypes = {
-  type: PropTypes.string
-};
 
 export default ActionButton;

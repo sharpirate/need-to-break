@@ -1,13 +1,18 @@
 import PropTypes from 'prop-types';
 
+export const types = {
+  primary: 'primary',
+  outline: 'outline',
+};
+
 function Button({ type, children, disabled }) {
   let style;
 
   switch (type) {
-    case 'primary':
+    case types.primary:
       style = 'text-white bg-primary-500 hover:bg-primary-600 disabled:bg-gray-300';
       break;
-      case 'outline':
+      case types.outline:
       style = 'text-primary-500 bg-white ring ring-primary-500 hover:text-primary-600 hover:ring-primary-600 disabled:ring-gray-300 disabled:text-gray-300';
       break;
     default:

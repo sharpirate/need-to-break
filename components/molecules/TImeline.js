@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import Interval from '../atoms/Interval';
+import Interval, { types } from '../atoms/Interval';
 
 function Timeline({ intervals, hours, showArrow }) {
   return (
@@ -25,8 +25,9 @@ function Timeline({ intervals, hours, showArrow }) {
 
 Timeline.propTypes = {
   intervals: PropTypes.array,
+  hours: PropTypes.array,
+  showArrow: PropTypes.bool
 };
-
 
 function Hour({ children, invisible }) {
   let baseStyle = 'tracking-2 font-base font-med text-gray-400 text-13 420:text-16';
@@ -43,16 +44,15 @@ Hour.propTypes = {
 };
 
 function Arrow({ type }) {
-  
   let colorStyle = '';
 
   switch (type) {
-    case 'work':
-    case 'break':
+    case types.work:
+    case types.break:
       colorStyle = 'fill-current text-primary-500';
       break;
-    case 'blocked':
-    case 'floating':
+    case types.blocked:
+    case types.floating:
     colorStyle = 'fill-current text-blocked-500';
       break;
     default:

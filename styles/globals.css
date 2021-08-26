@@ -11,3 +11,9 @@
          url('/fonts/Intro/IntroDemo-BlackCAPS.ttf')  format('truetype'); /* Safari, Android, iOS */
   }
 }
+
+@layer utilities {
+  .hide-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+}

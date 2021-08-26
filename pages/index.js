@@ -49,6 +49,34 @@ const intervals = [
 
 const hours = ['12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00']
 
+const options = [
+  { name: '00', value: 0 },
+  { name: '01', value: 1 },
+  { name: '02', value: 2 },
+  { name: '03', value: 3 },
+  { name: '04', value: 4 },
+  { name: '05', value: 5 },
+  { name: '06', value: 6 },
+  { name: '07', value: 7 },
+  { name: '08', value: 8 },
+  { name: '09', value: 9 },
+  { name: '10', value: 10 },
+  { name: '11', value: 11 },
+  { name: '12', value: 12 },
+  { name: '13', value: 13 },
+  { name: '14', value: 14 },
+  { name: '15', value: 15 },
+  { name: '16', value: 16 },
+  { name: '17', value: 17 },
+  { name: '18', value: 18 },
+  { name: '19', value: 19 },
+  { name: '20', value: 20 },
+  { name: '21', value: 21 },
+  { name: '22', value: 22 },
+  { name: '23', value: 23 },
+
+];
+
 export default function Home() {
   return (
     // <div>
@@ -75,8 +103,20 @@ export default function Home() {
     //   <MainNav />
     // </div>
     <div className="m-24 flex flex-row gap-48">
-      <SelectInput />
-      <SelectInput />
+      <SelectInput
+        options={options}
+        bigLabel="Big Label"
+        smallLabel="Small Label"
+        name="Select Hours"
+        />
+      
+      <SelectInput
+        options={options}
+        bigLabel="Big Label"
+        smallLabel="Small Label"
+        name="Select Hours"
+      />
+      
     </div>
   )
 }

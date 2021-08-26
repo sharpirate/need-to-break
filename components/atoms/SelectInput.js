@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import SelectItem from './SelectItem';
+import Label, { types as labelTypes } from './Label';
 
 function Icon({ active }) {
   const wrapperStyle = active ? 'transform rotate-180' : '';
@@ -19,42 +20,7 @@ Icon.propTypes = {
   active: PropTypes.bool
 };
 
-// const options = [
-//   { name: '30 min', value: 30 },
-//   { name: '35 min', value: 35 },
-//   { name: '40 min', value: 40 },
-//   { name: '45 min', value: 45 },
-//   { name: '50 min', value: 50 },
-// ];
-const options = [
-  { name: '00', value: 0 },
-  { name: '01', value: 1 },
-  { name: '02', value: 2 },
-  { name: '03', value: 3 },
-  { name: '04', value: 4 },
-  { name: '05', value: 5 },
-  { name: '06', value: 6 },
-  { name: '07', value: 7 },
-  { name: '08', value: 8 },
-  { name: '09', value: 9 },
-  { name: '10', value: 10 },
-  { name: '11', value: 11 },
-  { name: '12', value: 12 },
-  { name: '13', value: 13 },
-  { name: '14', value: 14 },
-  { name: '15', value: 15 },
-  { name: '16', value: 16 },
-  { name: '17', value: 17 },
-  { name: '18', value: 18 },
-  { name: '19', value: 19 },
-  { name: '20', value: 20 },
-  { name: '21', value: 21 },
-  { name: '22', value: 22 },
-  { name: '23', value: 23 },
-
-];
-
-function SelectInput() {
+function SelectInput({ name, options, bigLabel, smallLabel }) {
   const [active, setActive] = useState(false);
   // manage the focused item by index
   const [focused, setFocused] = useState(0);
@@ -126,41 +92,52 @@ function SelectInput() {
     return `${baseStyle} ${activeStyle}`;
   }
 
-  return (
-    <ul onClick={e => e.stopPropagation()} className="select-none cursor-default w-96 font-base font-reg text-13 420:text-16 text-gray-600">
-      <li
-        tabIndex="0"
-        ref={ref}
-        onClick={() => active ? exitMenu(true) : setActive(true)}
-        onKeyDown={handleMenuKeyPress}
-        className={getRootItemStyle(active)}
-      >
-        {selected.name}
-        <Icon active={active} />
-      </li>
+  const renderBigLabel = bigLabel ? <Label as={labelTypes.label} size={labelTypes.big} fieldId={name}>{bigLabel}</Label> : null;
 
-      {active ? 
-        (<li className="relative">
-          <ul className="absolute w-full border-primary-500">
-            {options.filter(option => option.value !== selected.value).map((option, index) => (
-              <SelectItem
-                key={option.value}
-                value={option.value}
-                focused={index === focused}
-                handleKeyDown={handleItemKeyDown}
-                handleClick={handleItemClick}
-              >
-                {option.name}
-              </SelectItem>
-            ))}
-          </ul>
-        </li>) : null}
-    </ul>
+  const renderSmallLabel = smallLabel ? <Label as={labelTypes.label} size={labelTypes.small} fieldId={name}>{smallLabel}</Label> : null;
+
+  return (
+    <div className="flex flex-col">
+      {renderBigLabel}
+      {renderSmallLabel}
+      <ul id={name} onClick={e => e.stopPropagation()} className="select-none cursor-default w-96 font-base font-reg text-13 420:text-16 text-gray-600">
+        <li
+          tabIndex="0"
+          ref={ref}
+          onClick={() => active ? exitMenu(true) : setActive(true)}
+          onKeyDown={handleMenuKeyPress}
+          className={getRootItemStyle(active)}
+        >
+          {selected.name}
+          <Icon active={active} />
+        </li>
+
+        {active ? 
+          (<li className="relative">
+            <ul className="absolute w-full max-h-200 overflow-y-auto border-2 border-t-0 rounded-b-4 border-primary-500 hide-scrollbar">
+              {options.filter(option => option.value !== selected.value).map((option, index) => (
+                <SelectItem
+                  key={option.value}
+                  value={option.value}
+                  focused={index === focused}
+                  handleKeyDown={handleItemKeyDown}
+                  handleClick={handleItemClick}
+                >
+                  {option.name}
+                </SelectItem>
+              ))}
+            </ul>
+          </li>) : null}
+      </ul>
+    </div>
   );
 }
 
 SelectInput.propTypes = {
-  options: PropTypes.array
+  options: PropTypes.array,
+  bigLabel: PropTypes.string,
+  smallLabel: PropTypes.string,
+  name: PropTypes.string
 };
 
 export default SelectInput;

@@ -60,6 +60,9 @@ module.exports = {
       '52': '52px',
       '56': '56px',
       '64': '64px',
+      '96': '96px',
+      '128': '128px',
+      '200': '200px',
       '220': '220px',
       '1472': '1472px'
     },
@@ -97,12 +100,15 @@ module.exports = {
   },
   variants: {
     extend: {
-      backgroundColor: ['disabled'],
+      backgroundColor: ['disabled', 'focus-visible'],
       transform: ['active'],
       scale: ['active'],
-      ringColor: ['hover', 'disabled'],
-      textColor: ['disabled'],
-      placeholderColor: ['disabled']
+      ringColor: ['hover', 'disabled', 'focus-visible'],
+      textColor: ['disabled', 'group-focus', 'focus-visible'],
+      placeholderColor: ['disabled'],
+      borderRadius: ['last'],
+      borderWidth: ['last'],
+      borderColor: ['hover', 'focus-visible']
     }
   },
   plugins: [],

@@ -20,7 +20,7 @@ function Button({ type, children, disabled }) {
   }
 
   return (
-    <button disabled={disabled} className={'px-24 360:px-32 py-8 font-base font-sbold text-13 360:text-16 rounded-4 tracking-2 focus:outline-none focus:ring focus:ring-primary-600 ring-inset active:transform active:scale-90' + ' ' + style}>
+    <button disabled={disabled} className={'px-24 420:px-32 py-8 font-base font-sbold text-13 420:text-16 rounded-4 tracking-2 focus:outline-none focus-visible:ring focus-visible:ring-primary-600 ring-inset active:transform active:scale-90' + ' ' + style}>
       {children}
     </button>
   );

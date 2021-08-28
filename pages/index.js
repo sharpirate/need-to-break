@@ -11,6 +11,7 @@ import Arrow, { types as arrowTypes } from '../components/atoms/Arrow';
 import Label, {types as labelTypes, types } from '../components/atoms/Label';
 import TextInput from '../components/atoms/TextInput';
 import SelectInput from '../components/atoms/SelectInput';
+import NumberInput from '../components/atoms/NumberInput';
 
 const intervals = [
   { type: 'work' },
@@ -103,7 +104,7 @@ export default function Home() {
     //   <MainNav />
     // </div>
     <div className="m-24 flex flex-row gap-48">
-      <SelectInput
+      {/* <SelectInput
         options={options}
         bigLabel="Big Label"
         smallLabel="Small Label"
@@ -115,7 +116,20 @@ export default function Home() {
         bigLabel="Big Label"
         smallLabel="Small Label"
         name="Select Hours"
+      /> */}
+
+      <NumberInput
+        name="hour"
+        initial={40}
+        step={5}
+        min={0}
+        max={90}
+        caption="min"
+        widthStyle="w-64 420:w-78"
+        bigLabel="Intervals"
+        smallLabel="Hour"
       />
+
       
     </div>
   )

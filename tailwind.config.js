@@ -2,6 +2,11 @@ module.exports = {
   purge: ['./pages/**/*.{js,ts,jsx,tsx}', './components/**/*.{js,ts,jsx,tsx}'],
   darkMode: false, // or 'media' or 'class'
   theme: {
+    extend: {
+      borderWidth: {
+        '3': '3px'
+      }
+    },
     colors: {
       transparent: 'transparent',
       white: '#fff',
@@ -60,6 +65,7 @@ module.exports = {
       '52': '52px',
       '56': '56px',
       '64': '64px',
+      '78': '78px',
       '96': '96px',
       '128': '128px',
       '200': '200px',
@@ -103,11 +109,12 @@ module.exports = {
       backgroundColor: ['disabled', 'focus-visible'],
       transform: ['active'],
       scale: ['active'],
+      ringWidth: ['focus-visible'],
       ringColor: ['hover', 'disabled', 'focus-visible'],
       textColor: ['disabled', 'group-focus', 'focus-visible'],
       placeholderColor: ['disabled'],
       borderRadius: ['last'],
-      borderWidth: ['last'],
+      borderWidth: ['last', 'focus-visible'],
       borderColor: ['hover', 'focus-visible']
     }
   },

@@ -1,12 +1,13 @@
 import PropTypes from 'prop-types';
 import Label, { types as labelTypes } from './Label';
 
-export const types = {
+const types = {
   text: 'text',
   password: 'password',
   email: 'email'
 }
 
+export { types as textInputTypes };
 function TextInput({ name, type, bigLabel, smallLabel, successLabel, errorLabel, children, value, disabled }) {
   const renderBigLabel = bigLabel ? <Label as={labelTypes.label} size={labelTypes.big} fieldId={name}>{bigLabel}</Label> : null;
 

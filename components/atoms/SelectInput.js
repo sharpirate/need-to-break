@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import SelectItem from './SelectItem';
-import Label, { types as labelTypes } from './Label';
+import Label, { labelTypes } from './Label';
 
 function Icon({ active }) {
   const wrapperStyle = active ? 'transform rotate-180' : '';

@@ -3,10 +3,13 @@ import PropTypes from 'prop-types';
 import Label, { types as labelTypes } from './Label';
 
 
-export const types = {
+const types = {
   minus: 'minus',
   plus: 'plus'
 };
+
+export { types as numberInputTypes };
+
 
 const valueToString = value => {
   return value.caption ? `${value.number} ${value.caption}` : `${value.number}`;

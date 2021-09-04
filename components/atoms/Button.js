@@ -1,9 +1,11 @@
 import PropTypes from 'prop-types';
 
-export const types = {
+const types = {
   primary: 'primary',
   outline: 'outline',
 };
+
+export { types as buttonTypes };
 
 function Button({ type, children, disabled }) {
   let style;

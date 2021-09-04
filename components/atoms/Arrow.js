@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 
-export const types = {
+const types = {
   down: 'down',
   left: 'left',
   right: 'right',
@@ -13,6 +13,8 @@ export const types = {
   default: 'default',
   disabled: 'disabled'
 };
+
+export { types as arrowTypes };
 
 function Arrow({ type, size, state }) {
   return resolveArrow(type, size, state);

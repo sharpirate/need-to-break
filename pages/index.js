@@ -1,17 +1,19 @@
 import Head from 'next/head'
 import Icon from '../components/atoms/Icon';
-import Button, { types as buttonTypes } from '../components/atoms/Button';
+import Button, { buttonTypes } from '../components/atoms/Button';
 import Tab from '../components/atoms/Tab';
 import MainNav from '../components/molecules/MainNav';
 import AuthNav from '../components/molecules/AuthNav';
 import ActionButton from '../components/atoms/ActionButton';
-import Interval from '../components/atoms/Interval';
+import Interval, { intervalTypes } from '../components/atoms/Interval';
 import Timeline from '../components/molecules/TImeline';
-import Arrow, { types as arrowTypes } from '../components/atoms/Arrow';
-import Label, {types as labelTypes, types } from '../components/atoms/Label';
+import Arrow, { arrowTypes } from '../components/atoms/Arrow';
+import Label, { labelTypes, types } from '../components/atoms/Label';
 import TextInput from '../components/atoms/TextInput';
 import SelectInput from '../components/atoms/SelectInput';
 import NumberInput from '../components/atoms/NumberInput';
+import Timer from '../components/atoms/Timer';
+import DropButton from '../components/atoms/ViewMore';
 
 const intervals = [
   { type: 'work' },
@@ -103,7 +105,7 @@ export default function Home() {
     // <div className="m-32">
     //   <MainNav />
     // </div>
-    <div className="m-24 flex flex-row gap-48">
+    <div className="m-24 inline-flex flex-col gap-48">
       {/* <SelectInput
         options={options}
         bigLabel="Big Label"
@@ -118,7 +120,7 @@ export default function Home() {
         name="Select Hours"
       /> */}
 
-      <NumberInput
+      {/* <NumberInput
         name="hour"
         initial={40}
         step={5}
@@ -128,9 +130,19 @@ export default function Home() {
         widthStyle="w-64 420:w-78"
         bigLabel="Intervals"
         smallLabel="Hour"
-      />
+      /> */}
 
-      
+      {/* <Timer type={intervalTypes.work} />
+      <Timer type={intervalTypes.break} />
+      <Timer type={intervalTypes.blocked} />
+      <Timer type={intervalTypes.floating} /> */}
+      <DropButton
+        activeText="Hide Timeline"
+        inactiveText="Show Timeline"
+      >
+        <Timer type={intervalTypes.floating} />
+      </DropButton>
+
     </div>
   )
 }

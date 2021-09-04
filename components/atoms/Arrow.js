@@ -31,10 +31,10 @@ function resolveArrow(type, size, state) {
 
   switch (size) {
     case types.small:
-      sizeStyle = 'w-13 h-13 360:w-16 360:h-16';
+      sizeStyle = 'w-13 h-13 420:w-16 420:h-16';
       break
       case types.reg:
-      sizeStyle = 'w-16 h-16 360:w-24 360:h-24';
+      sizeStyle = 'w-16 h-16 420:w-24 420:h-24';
       break;
     default:
       return null;

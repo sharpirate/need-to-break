@@ -14,6 +14,7 @@ import SelectInput from '../components/atoms/SelectInput';
 import NumberInput from '../components/atoms/NumberInput';
 import Timer from '../components/atoms/Timer';
 import DropButton from '../components/atoms/ViewMore';
+import Toggle from '../components/atoms/Toggle';
 
 const intervals = [
   { type: 'work' },
@@ -136,12 +137,13 @@ export default function Home() {
       <Timer type={intervalTypes.break} />
       <Timer type={intervalTypes.blocked} />
       <Timer type={intervalTypes.floating} /> */}
-      <DropButton
+      {/* <DropButton
         activeText="Hide Timeline"
         inactiveText="Show Timeline"
       >
         <Timer type={intervalTypes.floating} />
-      </DropButton>
+      </DropButton> */}
+      <Toggle />
 
     </div>
   )

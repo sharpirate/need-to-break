@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 
-export const types = {
+const types = {
   sandclock: 'sandclock',
   coffee: 'coffee',
   timeline: 'timeline',
@@ -13,6 +13,8 @@ export const types = {
   delete: 'delete',
   user: 'user'
 };
+
+export { types as iconTypes };
 
 function Icon({ type }) {
   return resolveIcon(type);

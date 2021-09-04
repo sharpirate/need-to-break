@@ -1,11 +1,13 @@
 import PropTypes from 'prop-types';
 
-export const types = {
+const types = {
   work: 'work',
   break: 'break',
   blocked: 'blocked',
   floating: 'floating'
 };
+
+export { types as intervalTypes };
 
 function Interval({ type, first, last }) {
   return <li className={getStyle(type, first, last)} />

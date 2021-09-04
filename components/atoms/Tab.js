@@ -1,11 +1,12 @@
 import PropTypes from 'prop-types';
 import Link from 'next/link';
 
-export const types = {
+const types = {
   auth: 'auth',
   main: 'main'
 };
 
+export { types as tabTypes };
 function Tab({ children, type, selected, first, last }) {
   return (
     <li>

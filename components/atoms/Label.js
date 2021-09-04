@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 
-export const types = {
+const types = {
   small: 'small',
   status: 'status',
   big: 'big',
@@ -18,6 +18,9 @@ export const types = {
   success: 'success',
   error: 'error'
 };
+
+export { types as labelTypes };
+
 
 function Label({ size, as, children, fieldId, type }) {
   const style = getStyle(size, type);

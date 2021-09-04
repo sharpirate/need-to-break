@@ -117,7 +117,7 @@ module.exports = {
   },
   variants: {
     extend: {
-      backgroundColor: ['disabled', 'focus-visible'],
+      backgroundColor: ['disabled', 'focus-visible', 'checked'],
       transform: ['active'],
       scale: ['active'],
       ringWidth: ['focus-visible'],

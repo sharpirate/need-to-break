@@ -1,4 +1,5 @@
 module.exports = {
+  mode: 'jit',
   purge: ['./pages/**/*.{js,ts,jsx,tsx}', './components/**/*.{js,ts,jsx,tsx}'],
   darkMode: false, // or 'media' or 'class'
   theme: {
@@ -114,20 +115,6 @@ module.exports = {
       '8': '8px',
       '20': '20px'
     },
-  },
-  variants: {
-    extend: {
-      backgroundColor: ['disabled', 'focus-visible', 'checked'],
-      transform: ['active'],
-      scale: ['active'],
-      ringWidth: ['focus-visible'],
-      ringColor: ['hover', 'disabled', 'focus-visible'],
-      textColor: ['disabled', 'group-focus', 'focus-visible'],
-      placeholderColor: ['disabled'],
-      borderRadius: ['last'],
-      borderWidth: ['last', 'focus-visible'],
-      borderColor: ['hover', 'focus-visible']
-    }
   },
   plugins: [],
 }

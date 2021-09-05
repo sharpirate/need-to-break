@@ -15,6 +15,7 @@ import NumberInput from '../components/atoms/NumberInput';
 import Timer from '../components/atoms/Timer';
 import DropButton from '../components/atoms/ViewMore';
 import Toggle from '../components/atoms/Toggle';
+import RadioButton from '../components/atoms/RadioButton';
 
 const intervals = [
   { type: 'work' },
@@ -143,7 +144,17 @@ export default function Home() {
       >
         <Timer type={intervalTypes.floating} />
       </DropButton> */}
-      <Toggle />
+      {/* <Toggle /> */}
+      <RadioButton
+        id="break"
+        name="selectInterval"
+        label="Work"
+      />
+      <RadioButton
+        id="break"
+        name="selectInterval"
+        label="Break"
+      />
 
     </div>
   )

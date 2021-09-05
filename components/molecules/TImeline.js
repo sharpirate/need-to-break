@@ -3,8 +3,8 @@ import Interval, { intervalTypes } from '../atoms/Interval';
 
 function Timeline({ intervals, hours, showArrow }) {
   return (
-    <div className='flex flex-row-reverse 900:flex-col'>
-      {showArrow ? <Arrow type='blocked' /> : null}
+    <div className='relative inline-flex 900:flex flex-row-reverse justify-center 900:flex-col'>
+      {showArrow ? <Arrow type={intervalTypes.work} /> : null}
 
       <ul className='inline-flex flex-col py-8 420:py-12 h-1472 900:p-0 900:px-sch 900:flex 900:flex-row 900:h-auto 900:w-full'>
         <Hour invisible>12</Hour>
@@ -14,7 +14,7 @@ function Timeline({ intervals, hours, showArrow }) {
         <Hour invisible>00</Hour>
       </ul>
 
-      <ul className='flex flex-col mr-24 justify-between 900:m-0 900:mt-24 900:flex 900:flex-row'>
+      <ul className='absolute top-0 h-full -left-24 transform -translate-x-full 900:relative 900:left-0 900:transform-none  flex flex-col justify-between 900:m-0 900:mt-24 900:flex 900:flex-row'>
         {hours.map((hour, index) => (
           <Hour key={index}>{hour}</Hour>
         ))}

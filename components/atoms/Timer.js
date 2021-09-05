@@ -34,7 +34,7 @@ function Timer({ type }) {
   }
 
   return (
-    <div className="relative">
+    <div className="relative inline-block">
       <svg className="w-130 h-130 420:w-160 420:h-160" viewBox="0 0 160 160" fill="none" xmlns="http://www.w3.org/2000/svg">
         <circle className={`stroke-current ${ringColor}`} fill="none" cx="80" cy="80" r="70" strokeWidth="20"/>
         <circle style={{ strokeDasharray: `${arc}, 439.6` }} className={`stroke-current ${primaryColor} origin-center transform -scale-y-1 rotate-90`} fill="none" cx="80" cy="80" r="70" strokeWidth="20"/>

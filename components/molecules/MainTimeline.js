@@ -109,7 +109,7 @@ function MainTimeline() {
         <Timer type={intervalTypes.work} />
       </div>
 
-      <ViewMoreLess viewMoreText="View Timeline" viewLessText="Hide Timeline" showAfter="900" >
+      <ViewMoreLess viewMoreText="View Timeline" viewLessText="Hide Timeline" isTimeline={true} >
         <div className="mt-32 420:mt-48 900:mt-0 w-full">
           <Timeline intervals={otherIntervals} hours={hours} showArrow={true} />
         </div>

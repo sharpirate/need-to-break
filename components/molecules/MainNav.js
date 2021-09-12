@@ -3,27 +3,27 @@ import Tab from '../atoms/Tab';
 
 const tabs = ['Active', 'Full Time', 'Flexible', 'Presets'];
 
+const types = {
+  desktop: 'desktop',
+  mobile: 'mobile'
+};
+
 function MainNav() {
   return (
     <nav className="flex w-full justify-between">
-      <SettingsButton type="desktop" invisible />
+      <SettingsButton type={types.desktop} invisible />
       <ul className={`p-12 420:px-24 bg-primary-600 flex justify-between w-full 732:w-auto 732:p-0 732:bg-transparent 732:inline-grid 732:grid-cols-${tabs.length}`}>
         {tabs.map((tab, index) => (
           <Tab key={tab} selected={index === 0} type='main' first={index === 0} last={index === tabs.length - 1}>
             {tab}
           </Tab>
         ))}
-        <SettingsButton type="mobile" />
+        <SettingsButton type={types.mobile} />
       </ul>
-      <SettingsButton type="desktop" />
+      <SettingsButton type={types.desktop} />
     </nav>
   );
 }
-
-const types = {
-  desktop: 'desktop',
-  mobile: 'mobile'
-};
 
 function SettingsButton({ invisible, type }) {
   let styleType = '';

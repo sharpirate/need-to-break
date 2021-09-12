@@ -2,11 +2,11 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
 import Arrow, { arrowTypes } from './Arrow';
-function ViewMoreLess({ viewMoreText, viewLessText, children, showAfter }) {
+function ViewMoreLess({ viewMoreText, viewLessText, children, isTimeline }) {
   const [active, setActive] = useState(false);
 
-  const contentStyle = `${active ? 'block' : 'hidden'} w-full ${showAfter ? showAfter + ':block' : ''}`;
-  const buttonStyle = `${showAfter ? showAfter + ':hidden' : ''}`;
+  const contentStyle = `${active ? 'block' : 'hidden'} w-full ${isTimeline ? '900:block' : ''}`;
+  const buttonStyle = `${isTimeline ? '900:hidden' : ''}`;
 
   return (
     <>
@@ -30,7 +30,7 @@ function ViewMoreLess({ viewMoreText, viewLessText, children, showAfter }) {
 ViewMoreLess.propTypes = {
   viewMoreText: PropTypes.string,
   viewLessText: PropTypes.string,
-  showAfter: PropTypes.string
+  isTimeline: PropTypes.bool
 };
 
 export default ViewMoreLess;

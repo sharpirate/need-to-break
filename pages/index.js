@@ -17,6 +17,7 @@ import DropButton from '../components/atoms/ViewMoreLess';
 import Toggle from '../components/atoms/Toggle';
 import RadioButton from '../components/atoms/RadioButton';
 import MainTimeline from '../components/molecules/MainTimeline';
+import TimelinePreview from '../components/molecules/TimelinePreview';
 
 const intervals = [
   { type: 'work' },
@@ -160,8 +161,9 @@ export default function Home() {
   //   </div>
   // )
   return (
-    <div className="m-16 420:m-32 flex justify-center">
-      <MainTimeline />
+    <div className="m-16 420:m-32 flex flex-col gap-64 justify-center">
+      {/* <MainTimeline /> */}
+      <TimelinePreview hasFloating={true} />
     </div>
   )
 }

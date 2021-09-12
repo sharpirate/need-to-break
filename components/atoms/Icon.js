@@ -66,7 +66,7 @@ function resolveIcon(type) {
   }
 
   return (
-    <svg className="w-52 h-52 360:w-64 360:h-64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg className="w-52 h-52 420:w-64 420:h-64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
     <circle className="fill-current text-primary-300" cx="32" cy="32" r="32"/>
     <path className="fill-current text-primary-500" fillRule="evenodd" clipRule="evenodd" d={icon}/>
     </svg>

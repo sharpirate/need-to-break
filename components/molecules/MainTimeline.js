@@ -80,13 +80,13 @@ const hours = ['12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '1
 
 function MainTimeline() {
   return (
-    <main className="w-full max-w-[1536px] flex flex-col justify-center items-center text-center bg-white rounded-8 py-16 px-32 420:py-24 420:px-48 732:px-32 732:py-32">
+    <main className="w-full max-w-[1536px] flex flex-col justify-center items-center text-center bg-white rounded-8 py-16 px-32 420:py-24 420:px-48 900:px-32 900:py-32">
 
-      {/* Calibrate Block */}
+      {/* Restart Block */}
       <div className="flex flex-col justify-center items-center mb-32 420:mb-48">
-        <ViewMoreLess viewMoreText="Calibrate Timeline" viewLessText="Calibrate Timeline">
+        <ViewMoreLess viewMoreText="Restart Interval" viewLessText="Restart Interval">
           <div className="mt-16 420:mt-24">
-            <Label size={labelTypes.large} as={labelTypes.h1} >Calibrate</Label>
+            <Label size={labelTypes.large} as={labelTypes.h1} >Restart</Label>
             <p className="mb-16 font-base font-med text-gray-500 text-13 420:text-16 tracking-2">
               Align the timeline to the current moment
               <br />
@@ -96,7 +96,7 @@ function MainTimeline() {
               <RadioButton name="calibrateType" id="work" label="Work" />
               <RadioButton name="calibrateType" id="break" label="Break" />
             </div>
-            <Button type={buttonTypes.primary} >Calibrate</Button>
+            <Button type={buttonTypes.primary} >Restart</Button>
           </div>
         </ViewMoreLess>
       </div>
@@ -111,8 +111,7 @@ function MainTimeline() {
         <Timer type={intervalTypes.work} />
       </div>
 
-      {/* Timeline Block */}
-      <ViewMoreLess viewMoreText="View Timeline" viewLessText="Hide Timeline" showAfter="900" >
+      <ViewMoreLess viewMoreText="View Timeline" viewLessText="Hide Timeline" isTimeline={true} >
         <div className="mt-32 420:mt-48 900:mt-0 w-full">
           <Timeline intervals={otherIntervals} hours={hours} showArrow={true} />
         </div>

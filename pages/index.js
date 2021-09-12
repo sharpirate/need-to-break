@@ -161,9 +161,8 @@ export default function Home() {
   //   </div>
   // )
   return (
-    <div className="m-16 flex justify-center">
+    <div className="m-16 420:m-32 flex justify-center">
       <MainTimeline />
-      {/* <TimelinePreview hasFloating={true} /> */}
     </div>
   )
 }

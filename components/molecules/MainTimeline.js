@@ -84,9 +84,9 @@ function MainTimeline() {
 
       {/* Calibrate Block */}
       <div className="flex flex-col justify-center items-center mb-32 420:mb-48">
-        <ViewMoreLess viewMoreText="Calibrate Timeline" viewLessText="Calibrate Timeline">
+        <ViewMoreLess viewMoreText="Restart Interval" viewLessText="Restart Interval">
           <div className="mt-16 420:mt-24">
-            <Label size={labelTypes.large} as={labelTypes.h1} >Calibrate</Label>
+            <Label size={labelTypes.large} as={labelTypes.h1} >Restart</Label>
             <p className="mb-16 font-base font-med text-gray-500 text-13 420:text-16 tracking-2">
               Align the timeline to the current moment
               <br />
@@ -96,7 +96,7 @@ function MainTimeline() {
               <RadioButton name="calibrateType" id="work" label="Work" />
               <RadioButton name="calibrateType" id="break" label="Break" />
             </div>
-            <Button type={buttonTypes.primary} >Calibrate</Button>
+            <Button type={buttonTypes.primary} >Restart</Button>
           </div>
         </ViewMoreLess>
       </div>

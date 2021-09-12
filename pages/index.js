@@ -160,8 +160,8 @@ export default function Home() {
   //   </div>
   // )
   return (
-    <div className="m-32 flex justify-center">
-    <MainTimeline />
+    <div className="m-16 420:m-32 flex justify-center">
+      <MainTimeline />
     </div>
   )
 }

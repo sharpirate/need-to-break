@@ -60,9 +60,11 @@ function Arrow({ type }) {
   }
 
   return (
-    <svg className="relative top-64 900:top-0 900:left-64 w-16 h-16 ml-8 900:m-0 900:mb-8 420:w-20 420:h-20 900:transform 900:-rotate-90" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path className={colorStyle} d="M17.5 1.66666L2.5 9.99999L17.5 18.3333L17.5 1.66666Z"/>
-    </svg>
+    <div className="absolute h-full right-0 transform translate-x-full 900:relative 900:translate-x-0">
+      <svg className="relative top-64 900:top-0 900:left-64 w-16 h-16 ml-8 900:m-0 900:mb-8 420:w-20 420:h-20 900:transform 900:-rotate-90" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path className={colorStyle} d="M17.5 1.66666L2.5 9.99999L17.5 18.3333L17.5 1.66666Z"/>
+      </svg>
+    </div>
   )
 }
 

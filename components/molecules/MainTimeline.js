@@ -82,7 +82,7 @@ function MainTimeline() {
   return (
     <main className="w-full max-w-[1536px] flex flex-col justify-center items-center text-center bg-white rounded-8 py-16 px-32 420:py-24 420:px-48 732:px-32 732:py-32">
 
-      {/* Calibrate Block */}
+      {/* Restart Block */}
       <div className="flex flex-col justify-center items-center mb-32 420:mb-48">
         <ViewMoreLess viewMoreText="Restart Interval" viewLessText="Restart Interval">
           <div className="mt-16 420:mt-24">

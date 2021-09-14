@@ -18,6 +18,7 @@ import Toggle from '../components/atoms/Toggle';
 import RadioButton from '../components/atoms/RadioButton';
 import MainTimeline from '../components/molecules/MainTimeline';
 import TimelinePreview from '../components/molecules/TimelinePreview';
+import Preset from '../components/molecules/Preset';
 
 const intervals = [
   { type: 'work' },
@@ -161,9 +162,12 @@ export default function Home() {
   //   </div>
   // )
   return (
-    <div className="m-16 420:m-32 flex flex-col gap-64 justify-center">
-      {/* <MainTimeline /> */}
+    <div className="m-16 360:m-24 flex flex-col gap-16 360:gap-24 justify-center items-center">
+      <MainTimeline />
       <TimelinePreview hasFloating={true} />
+      <Preset name="Monday's Schedule" />
+      <Preset name="Friday's Schedule" />
+      <Preset name="WFH Schedule" />
     </div>
   )
 }

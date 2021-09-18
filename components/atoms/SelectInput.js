@@ -20,7 +20,7 @@ Icon.propTypes = {
   active: PropTypes.bool
 };
 
-function SelectInput({ name, options, bigLabel, smallLabel, centerBig, centerSmall, widthStyle }) {
+function SelectInput({ name, options, bigLabel, smallLabel, centerBig, centerSmall, widthStyle, disableFocus }) {
   const [active, setActive] = useState(false);
   // manage the focused item by index
   const [focused, setFocused] = useState(0);
@@ -102,7 +102,7 @@ function SelectInput({ name, options, bigLabel, smallLabel, centerBig, centerSma
       {renderSmallLabel}
       <ul id={name} onClick={e => e.stopPropagation()} className={`text-left select-none cursor-default ${widthStyle} font-base font-reg text-13 420:text-16 text-gray-600`}>
         <li
-          tabIndex="0"
+          tabIndex={disableFocus ? "-1" : "0"}
           ref={ref}
           onClick={() => active ? exitMenu(true) : setActive(true)}
           onKeyDown={handleMenuKeyPress}
@@ -140,7 +140,8 @@ SelectInput.propTypes = {
   name: PropTypes.string,
   centerBig: PropTypes.bool,
   centerSmall: PropTypes.bool,
-  widthStyle: PropTypes.string
+  widthStyle: PropTypes.string,
+  disableFocus: PropTypes.bool
 };
 
 export default SelectInput;

@@ -21,10 +21,10 @@ function getStyledButton(type, handleClick) {
 
   switch (type) {
     case types.add:
-      colorStyle = "fill-current text-primary-500";
+      colorStyle = "fill-current text-primary-500 group-focus-visible:text-primary-600";
       break;
       case types.remove:
-      colorStyle = "fill-current text-support-error";
+      colorStyle = "fill-current text-support-error group-focus-visible:text-blocked-600";
       baseStyle += " transform rotate-45";
       break;
     default:
@@ -32,7 +32,7 @@ function getStyledButton(type, handleClick) {
   }
 
   return (
-    <button onClick={() => handleClick(type)} className="appearance-none">
+    <button onClick={() => handleClick(type)} className="appearance-none outline-none group">
       <svg className={baseStyle} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
       <circle className={colorStyle} cx="12" cy="12" r="12"/>
       <path className="fill-current text-white" fillRule="evenodd" clipRule="evenodd" d="M13.6252 10.375V5.5L10.3752 5.5L10.3752 10.375H5.50024V13.625H10.3752L10.3752 18.5H13.6252V13.625H18.5002V10.375H13.6252Z"/>

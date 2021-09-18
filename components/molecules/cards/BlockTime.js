@@ -24,10 +24,10 @@ function BlockTime() {
         />
         <div className={"flex flex-col justify-start items-center gap-16 420:gap-24" + (!checked ? " invisible" : "")}>
           <Carousel
-            initialPages={3}
+            initialPages={1}
             pageLimit={15}
-            infinite
-            renderItem={() => <TimeInput paddingStyle="px-32 420:px-48" />}
+            // infinite
+            renderItem={(disableFocus) => <TimeInput disableFocus={disableFocus} paddingStyle="px-32 420:px-48" />}
           />
         </div>
       </div>

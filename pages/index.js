@@ -188,7 +188,10 @@ export default function Home() {
       <SignUp />
     <Login /> */}
 
-    <BlockTime />
+    {/* <BlockTime /> */}
+      <BlockTime />
+    {/* <MainTimeline />  
+    <TimelinePreview hasFloating /> */}
     {/* <TimelineDuration /> */}
       {/* <Carousel
         initialPages={3}

@@ -14,6 +14,12 @@
 }
 
 @layer utilities {
+
+  .carousel {
+    overflow-y: visible;
+    overflow-x: clip;
+  }
+
   .select-active-root {
     @apply rounded-t-4 border-blocked-500;
     border-bottom-color: transparent;

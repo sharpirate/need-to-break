@@ -4,7 +4,7 @@ import Button, { buttonTypes } from '../components/atoms/Button';
 import Tab from '../components/atoms/Tab';
 import MainNav from '../components/molecules/MainNav';
 import AuthNav from '../components/molecules/AuthNav';
-import ActionButton from '../components/atoms/ActionButton';
+import ActionButton, { actionButtonTypes } from '../components/atoms/ActionButton';
 import Interval, { intervalTypes } from '../components/atoms/Interval';
 import Timeline from '../components/molecules/TImeline';
 import Arrow, { arrowTypes } from '../components/atoms/Arrow';
@@ -29,6 +29,8 @@ import SignUp from '../components/molecules/cards/SignUp';
 import Login from '../components/molecules/cards/Login';
 import TimelineDuration from '../components/molecules/cards/TimelineDuration';
 import BlockTime from '../components/molecules/cards/BlockTime';
+import Carousel from '../components/molecules/cards/Carousel';
+import TimeInput from '../components/molecules/cards/TimeInput';
 
 const intervals = [
   { type: 'work' },
@@ -177,16 +179,22 @@ export default function Home() {
       <Preset name="Monday's Schedule" />
     <Preset name="WFH Schedule" /> */}
       {/* <Preset name="Friday's Schedule" /> */}
-      <SavePreset />
+      {/* <SavePreset />
       <NumberOfSprints />
       <IntervalSize />
       <LongBreaks />
       <DeleteModal />
-      <TimelineDuration />
       <Settings />
-      <BlockTime />
       <SignUp />
-      <Login />
+    <Login /> */}
+
+    <BlockTime />
+    {/* <TimelineDuration /> */}
+      {/* <Carousel
+        initialPages={3}
+        infinite
+        renderItem={() => <TimeInput paddingStyle="px-48" />}
+      /> */}
     </div>
   )
 }

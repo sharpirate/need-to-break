@@ -14,6 +14,11 @@
 }
 
 @layer utilities {
+  .select-active-root {
+    @apply rounded-t-4 border-blocked-500;
+    border-bottom-color: transparent;
+  }
+
   /* Hide scrollbar for Chrome, Safari and Opera */
   .hide-scrollbar::-webkit-scrollbar {
     display: none;
@@ -27,5 +32,29 @@
 
   .debug > * {
     outline: 1px solid red;
+  }
+
+  .term {
+    @apply text-gray-600;
+  }
+
+  .term::after {
+    content: ":\00a0";
+  }
+
+  .body-reg {
+    @apply font-base font-reg text-13 420:text-16 tracking-2;
+  }
+
+  .body-med {
+    @apply font-base font-med text-13 420:text-16 tracking-2;
+  }
+
+  .body-bold {
+    @apply font-base font-bold text-13 420:text-16 tracking-2;
+  }
+
+  .body-sbold {
+    @apply font-base font-sbold text-13 420:text-16 tracking-2;
   }
 }

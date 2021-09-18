@@ -1,12 +1,14 @@
 import PropTypes from 'prop-types';
 
 const types = {
+  // size
   small: 'small',
   status: 'status',
   big: 'big',
   large: 'large',
   xlarge: 'xlarge',
 
+  // as
   h1: 'h1',
   h2: 'h2',
   h3: 'h3',
@@ -15,6 +17,7 @@ const types = {
   h6: 'h6',
   label: 'label',
 
+  // type
   success: 'success',
   error: 'error'
 };
@@ -22,8 +25,8 @@ const types = {
 export { types as labelTypes };
 
 
-function Label({ size, as, children, fieldId, type }) {
-  const style = getStyle(size, type);
+function Label({ size, as, children, fieldId, type, center }) {
+  const style = getStyle(size, type, center);
   
   switch (as) {
     case types.h1:
@@ -49,10 +52,11 @@ Label.propTypes = {
   size: PropTypes.string,
   as: PropTypes.string,
   fieldId: PropTypes.string,
-  type: PropTypes.string
+  type: PropTypes.string,
+  center: PropTypes.bool
 };
 
-function getStyle(size, type) {
+function getStyle(size, type, center) {
   const baseStyle = 'tracking-2 font-base';
 
   let colorStyle = '';
@@ -91,7 +95,13 @@ function getStyle(size, type) {
       break;
   }
 
-  return `${baseStyle} ${sizeStyle} ${colorStyle}`;
+  let centerStyle = '';
+
+  if (center) {
+    centerStyle = 'text-center';
+  }
+
+  return `${baseStyle} ${centerStyle} ${sizeStyle} ${colorStyle}`;
 }
 
 export default Label;

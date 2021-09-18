@@ -8,7 +8,7 @@ function RadioButton({ name, id, label }) {
         <input className="peer appearance-none block w-20 h-20 420:w-24 420:h-24 rounded-20 bg-white ring-[2.5px] 420:ring-[3px] ring-inset ring-gray-400 checked:ring-primary-500" type="radio" name={name} id={id} />
         <span className="pointer-events-none peer-checked:block hidden absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[7.5px] h-[7.5px] 420:w-[9px] 420:h-[9px] rounded-20 bg-primary-500"/>
       </div>
-      <label className="font-base font-med text-13 420:text-16 tracking-2 text-gray-500" htmlFor={id}>{label}</label>
+      <label className="body-med text-gray-500" htmlFor={id}>{label}</label>
     </div>
   );
 }

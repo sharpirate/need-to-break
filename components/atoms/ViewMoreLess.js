@@ -11,7 +11,7 @@ function ViewMoreLess({ viewMoreText, viewLessText, children, isTimeline }) {
   return (
     <>
       <button 
-        className={`flex justify-center items-center gap-6 420:gap-8 font-base text-13 420:text-16 font-sbold tracking-2 text-primary-500 outline-none ${buttonStyle}`}
+        className={`flex justify-center items-center gap-6 420:gap-8 body-sbold text-primary-500 outline-none ${buttonStyle}`}
         onClick={() => setActive(!active)}
         >
         {active ? viewLessText : viewMoreText}

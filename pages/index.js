@@ -4,7 +4,7 @@ import Button, { buttonTypes } from '../components/atoms/Button';
 import Tab from '../components/atoms/Tab';
 import MainNav from '../components/molecules/MainNav';
 import AuthNav from '../components/molecules/AuthNav';
-import ActionButton from '../components/atoms/ActionButton';
+import ActionButton, { actionButtonTypes } from '../components/atoms/ActionButton';
 import Interval, { intervalTypes } from '../components/atoms/Interval';
 import Timeline from '../components/molecules/TImeline';
 import Arrow, { arrowTypes } from '../components/atoms/Arrow';
@@ -19,6 +19,18 @@ import RadioButton from '../components/atoms/RadioButton';
 import MainTimeline from '../components/molecules/MainTimeline';
 import TimelinePreview from '../components/molecules/TimelinePreview';
 import Preset from '../components/molecules/Preset';
+import NumberOfSprints from '../components/molecules/cards/NumberOfSprints';
+import IntervalSize from '../components/molecules/cards/IntervalSize';
+import LongBreaks from '../components/molecules/cards/LongBreaks';
+import DeleteModal from '../components/molecules/cards/DeleteModal';
+import SavePreset from '../components/molecules/cards/SavePreset';
+import Settings from '../components/molecules/cards/Settings';
+import SignUp from '../components/molecules/cards/SignUp';
+import Login from '../components/molecules/cards/Login';
+import TimelineDuration from '../components/molecules/cards/TimelineDuration';
+import BlockTime from '../components/molecules/cards/BlockTime';
+import Carousel from '../components/molecules/cards/Carousel';
+import TimeInput from '../components/molecules/cards/TimeInput';
 
 const intervals = [
   { type: 'work' },
@@ -82,7 +94,6 @@ const options = [
   { name: '21', value: 21 },
   { name: '22', value: 22 },
   { name: '23', value: 23 },
-
 ];
 
 export default function Home() {
@@ -163,11 +174,27 @@ export default function Home() {
   // )
   return (
     <div className="m-16 360:m-24 flex flex-col gap-16 360:gap-24 justify-center items-center">
-      <MainTimeline />
-      <TimelinePreview hasFloating={true} />
+      {/* <MainTimeline /> */}
+      {/* <TimelinePreview hasFloating={true} />
       <Preset name="Monday's Schedule" />
-      <Preset name="Friday's Schedule" />
-      <Preset name="WFH Schedule" />
+    <Preset name="WFH Schedule" /> */}
+      {/* <Preset name="Friday's Schedule" /> */}
+      {/* <SavePreset />
+      <NumberOfSprints />
+      <IntervalSize />
+      <LongBreaks />
+      <DeleteModal />
+      <Settings />
+      <SignUp />
+    <Login /> */}
+
+    <BlockTime />
+    {/* <TimelineDuration /> */}
+      {/* <Carousel
+        initialPages={3}
+        infinite
+        renderItem={() => <TimeInput paddingStyle="px-48" />}
+      /> */}
     </div>
   )
 }

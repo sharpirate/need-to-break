@@ -30,7 +30,7 @@ Timeline.propTypes = {
 };
 
 function Hour({ children, invisible }) {
-  let baseStyle = 'tracking-2 font-base font-med text-gray-400 text-13 420:text-16';
+  let baseStyle = 'body-med text-gray-400';
 
   const invisibleStyle = invisible ? 'hidden 900:block 900:invisible' : '';
 

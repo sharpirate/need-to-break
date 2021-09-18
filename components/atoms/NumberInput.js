@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import Label, { types as labelTypes } from './Label';
+import Label, { labelTypes } from './Label';
 
 
 const types = {
@@ -12,15 +12,15 @@ export { types as numberInputTypes };
 
 
 const valueToString = value => {
-  return value.caption ? `${value.number} ${value.caption}` : `${value.number}`;
+  return value.unit ? `${value.number} ${value.unit}` : `${value.number}`;
 }
-function NumberInput({ name, initial, step, min, max, caption, widthStyle, bigLabel, smallLabel }) {
-  const [value, setValue] = useState({ number: initial, caption: caption });
+function NumberInput({ name, initial, step, min, max, unit, widthStyle, bigLabel, smallLabel, centerBig, centerSmall }) {
+  const [value, setValue] = useState({ number: initial, unit: unit });
   const [stringValue, setStringValue] = useState(valueToString(value));
 
   useEffect(() => {
     setStringValue(valueToString(value));
-  }, [value.number, value.caption])
+  }, [value.number, value.unit])
 
   const handleClick = (type, step, min, max) => {
     if (type === types.plus) {
@@ -34,22 +34,32 @@ function NumberInput({ name, initial, step, min, max, caption, widthStyle, bigLa
     }
   }
 
-  const handleInput = (e, min, max) => {
-    const newValue = e.target.value;
+  const handleInput = e => {
+    const newValue = Number(e.target.value);
 
     if (!isNaN(newValue)) {
-      if (newValue >= min && newValue <= max) {
-        setValue({ caption: null, number: Number(newValue) });
-      }
+      setValue({ unit: null, number: Number(newValue) });
     }
   }
 
-  const renderBigLabel = bigLabel ? <Label as={labelTypes.label} size={labelTypes.big} fieldId={name}>{bigLabel}</Label> : null;
+  const handleBlur = (min, max) => {
+    let normalizedValue = value.number;
 
-  const renderSmallLabel = smallLabel ? <Label as={labelTypes.label} size={labelTypes.small} fieldId={name}>{smallLabel}</Label> : null;
+    if (value.number < min) {
+      normalizedValue = min;
+    } else if (value.number > max) {
+      normalizedValue = max;
+    }
+
+    setValue({ number: normalizedValue, unit: unit })
+  }
+
+  const renderBigLabel = bigLabel ? <Label center={centerBig} as={labelTypes.label} size={labelTypes.big} fieldId={name}>{bigLabel}</Label> : null;
+
+  const renderSmallLabel = smallLabel ? <Label center={centerSmall} as={labelTypes.label} size={labelTypes.small} fieldId={name}>{smallLabel}</Label> : null;
 
   return (
-    <div className="flex flex-col">
+    <div className="inline-flex flex-col">
       {renderBigLabel}
       {renderSmallLabel}
       <div className="flex">
@@ -60,8 +70,8 @@ function NumberInput({ name, initial, step, min, max, caption, widthStyle, bigLa
           name={name}
           id={name}
           value={stringValue}
-          onChange={e => handleInput(e, min, max)}
-          onBlur={() => setValue({ ...value, caption: caption })}
+          onChange={e => handleInput(e)}
+          onBlur={() => handleBlur(min, max)}
         />
         <Button handleClick={() => handleClick(types.plus, step, min, max)} type={types.plus} />
       </div>
@@ -75,10 +85,12 @@ NumberInput.propTypes = {
   step: PropTypes.number,
   min: PropTypes.number,
   max: PropTypes.number,
-  caption: PropTypes.string,
+  unit: PropTypes.string,
   widthStyle: PropTypes.string,
   smallLabel: PropTypes.string,
-  bigLabel: PropTypes.string
+  bigLabel: PropTypes.string,
+  centerBig: PropTypes.bool,
+  centerSmall: PropTypes.bool,
 };
 
 function Button({ type, handleClick }) {

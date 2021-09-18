@@ -87,7 +87,7 @@ function MainTimeline() {
         <ViewMoreLess viewMoreText="Restart Interval" viewLessText="Restart Interval">
           <div className="mt-16 420:mt-24">
             <Label size={labelTypes.large} as={labelTypes.h1} >Restart</Label>
-            <p className="mb-16 font-base font-med text-gray-500 text-13 420:text-16 tracking-2">
+            <p className="mb-16 body-med text-gray-500">
               Align the timeline to the current moment
               <br />
               Select an interval type:
@@ -104,7 +104,7 @@ function MainTimeline() {
       {/* Timer Block */}
       <div className="mb-16 420:mb-24">
         <Label size={labelTypes.large} as={labelTypes.h1} >Work</Label>
-        <p className="font-base font-med text-gray-500 text-13 420:text-16 tracking-2">12:00 - 12:30</p>
+        <p className="body-med text-gray-500">12:00 - 12:30</p>
       </div>
 
       <div className="mb-32 420:mb-48">

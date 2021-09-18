@@ -20,7 +20,7 @@ Icon.propTypes = {
   active: PropTypes.bool
 };
 
-function SelectInput({ name, options, bigLabel, smallLabel }) {
+function SelectInput({ name, options, bigLabel, smallLabel, centerBig, centerSmall, widthStyle }) {
   const [active, setActive] = useState(false);
   // manage the focused item by index
   const [focused, setFocused] = useState(0);
@@ -87,20 +87,20 @@ function SelectInput({ name, options, bigLabel, smallLabel }) {
 
   function getRootItemStyle(active) {
     const baseStyle = 'group relative p-8 border-2 focus:outline-none focus:border-primary-500 hover:border-primary-500';
-    const activeStyle = active ? 'rounded-t-4 border-primary-500 border-b-0' : 'border-gray-400 rounded-4';
+    const activeStyle = active ? 'rounded-t-4 border-primary-500' : 'border-gray-400 rounded-4';
 
     return `${baseStyle} ${activeStyle}`;
   }
 
-  const renderBigLabel = bigLabel ? <Label as={labelTypes.label} size={labelTypes.big} fieldId={name}>{bigLabel}</Label> : null;
+  const renderBigLabel = bigLabel ? <Label center={centerBig} as={labelTypes.label} size={labelTypes.big} fieldId={name}>{bigLabel}</Label> : null;
 
-  const renderSmallLabel = smallLabel ? <Label as={labelTypes.label} size={labelTypes.small} fieldId={name}>{smallLabel}</Label> : null;
+  const renderSmallLabel = smallLabel ? <Label center={centerSmall} as={labelTypes.label} size={labelTypes.small} fieldId={name}>{smallLabel}</Label> : null;
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col justify-center items-center">
       {renderBigLabel}
       {renderSmallLabel}
-      <ul id={name} onClick={e => e.stopPropagation()} className="select-none cursor-default w-96 font-base font-reg text-13 420:text-16 text-gray-600">
+      <ul id={name} onClick={e => e.stopPropagation()} className={`text-left select-none cursor-default ${widthStyle} font-base font-reg text-13 420:text-16 text-gray-600`}>
         <li
           tabIndex="0"
           ref={ref}
@@ -113,7 +113,7 @@ function SelectInput({ name, options, bigLabel, smallLabel }) {
         </li>
 
         {active ? 
-          (<li className="relative">
+          (<li className="relative z-10">
             <ul className="absolute w-full max-h-200 overflow-y-auto border-2 border-t-0 rounded-b-4 border-primary-500 hide-scrollbar">
               {options.filter(option => option.value !== selected.value).map((option, index) => (
                 <SelectItem
@@ -137,7 +137,10 @@ SelectInput.propTypes = {
   options: PropTypes.array,
   bigLabel: PropTypes.string,
   smallLabel: PropTypes.string,
-  name: PropTypes.string
+  name: PropTypes.string,
+  centerBig: PropTypes.bool,
+  centerSmall: PropTypes.bool,
+  widthStyle: PropTypes.string
 };
 
 export default SelectInput;

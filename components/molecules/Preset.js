@@ -92,21 +92,21 @@ function Preset({ name }) {
       {/* <ul className="w-full flex flex-col 900:flex-row justify-center items-center 900:justify-around 900:items-start gap-24 420:gap-32 mb-32 420:mb-48"> */}
         <li>
           <Label size={labelTypes.big} as={labelTypes.h3}>Type</Label>
-          <p className="font-base font-sbold text-gray-500 text-13 420:text-16 tracking-2">
+          <p className="body-sbold text-gray-500">
             Full Time
           </p>
         </li>
         
         <li>
           <Label size={labelTypes.big} as={labelTypes.h3}>Timeline</Label>
-          <p className="font-base font-sbold text-gray-500 text-13 420:text-16 tracking-2">
+          <p className="body-sbold text-gray-500">
             12:00 to 20:00
           </p>
         </li>
         
         <li>
           <Label size={labelTypes.big} as={labelTypes.h3}>Intervals</Label>
-          <p className="font-base font-sbold text-gray-500 text-13 420:text-16 tracking-2">
+          <p className="body-sbold text-gray-500">
             Work: 30 min
             <br />
             Break: 15 min
@@ -115,7 +115,7 @@ function Preset({ name }) {
         
         <li>
           <Label size={labelTypes.big} as={labelTypes.h3}>Blocked</Label>
-          <p className="font-base font-sbold text-gray-500 text-13 420:text-16 tracking-2">
+          <p className="body-sbold text-gray-500">
             12:00 to 12:30
             <br />
             17:00 to 17:15

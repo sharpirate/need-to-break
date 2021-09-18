@@ -36,7 +36,7 @@ function getStyle(type, selected, first, last) {
 }
 
 function getAuthStyle(selected, first, last) {
-  let baseStyle = 'block text-center text-13 360:text-16 font-base font-sbold tracking-2 py-8 px-24 360:px-32 border-t-2 border-b-2 border-r-2 border-primary-500';
+  let baseStyle = 'block text-center body-sbold py-8 px-24 360:px-32 border-t-2 border-b-2 border-r-2 border-primary-500';
 
   let selectedStyle = '';
   
@@ -58,7 +58,7 @@ function getAuthStyle(selected, first, last) {
 }
 
 function getMainStyle(selected, first, last) {
-  let baseStyle = 'block text-center text-13 text-white font-base font-med tracking-2 p-6 border-b border-white 420:p-8 420:text-16 732:font-sbold 732:py-8 732:px-32 732:border-t-2 732:border-b-2 732:border-r-2 732:border-primary-500';
+  let baseStyle = 'block text-center text-white body-med p-6 border-b border-white 420:p-8 420:text-16 732:font-sbold 732:py-8 732:px-32 732:border-t-2 732:border-b-2 732:border-r-2 732:border-primary-500';
 
   let selectedStyle = '';
   

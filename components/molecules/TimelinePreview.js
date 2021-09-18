@@ -92,7 +92,7 @@ function TimelinePreview({ hasFloating }) {
           </div>
           <div>
             <Label size={labelTypes.large} as={labelTypes.h2} >Timeline Preview</Label>
-            <p className="font-base font-med text-gray-500 text-13 420:text-16 tracking-2">
+            <p className="body-med text-gray-500">
               A visual representation of your timeline. You can either generate it now or save it as a preset for later.
             </p>
           </div>
@@ -106,7 +106,7 @@ function TimelinePreview({ hasFloating }) {
             </div>
             <div>
               <Label size={labelTypes.large} as={labelTypes.h2} >Floating Time</Label>
-              <p className="font-base font-med text-gray-500 text-13 420:text-16 tracking-2">
+              <p className="body-med text-gray-500">
                 We have filled the empty blocks around your blocked time with floating time. This is unmanaged time and it’s up to you to decide how you spend it.
               </p>
             </div>

@@ -1,7 +1,13 @@
 import PropTypes from 'prop-types';
 import Tab from '../atoms/Tab';
+import { useRouter } from 'next/dist/client/router';
 
-const tabs = ['Active', 'Full Time', 'Flexible', 'Presets'];
+const tabs = [
+  { name: 'Active', url: '/active' },
+  { name: 'Full Time', url: '/fulltime' },
+  { name: 'Flexible', url: '/flexible' },
+  { name: 'Presets', url: '/presets' }
+];
 
 const types = {
   desktop: 'desktop',
@@ -9,13 +15,22 @@ const types = {
 };
 
 function MainNav() {
+  const router = useRouter();
+
   return (
-    <nav className="flex w-full justify-between">
+    <nav className="flex w-full justify-between 732:p-32 732:pb-0">
       <SettingsButton type={types.desktop} invisible />
-      <ul className={`p-12 420:px-24 bg-primary-600 flex justify-between w-full 732:w-auto 732:p-0 732:bg-transparent 732:inline-grid 732:grid-cols-${tabs.length}`}>
+      <ul className={`p-12 420:px-24 bg-primary-600 flex justify-between w-full 732:w-auto 732:p-0 732:bg-transparent 732:inline-grid 732:grid-cols-4`}>
         {tabs.map((tab, index) => (
-          <Tab key={tab} selected={index === 0} type='main' first={index === 0} last={index === tabs.length - 1}>
-            {tab}
+          <Tab
+            key={tab.name}
+            active={router.pathname === tab.url}
+            type='main'
+            first={index === 0}
+            last={index === tabs.length - 1}
+            url={tab.url}
+          >
+            {tab.name}
           </Tab>
         ))}
         <SettingsButton type={types.mobile} />

@@ -7,11 +7,11 @@ const types = {
 };
 
 export { types as tabTypes };
-function Tab({ children, type, selected, first, last }) {
+function Tab({ children, type, active, first, last, url }) {
   return (
     <li>
-      <Link href="/">
-        <a className={getStyle(type, selected, first, last)}>{children}</a>
+      <Link href={url}>
+        <a className={getStyle(type, active, first, last)}>{children}</a>
       </Link>
     </li>
   );
@@ -19,31 +19,32 @@ function Tab({ children, type, selected, first, last }) {
 
 Tab.propTypes = {
   type: PropTypes.string,
-  selected: PropTypes.bool,
+  active: PropTypes.bool,
   first: PropTypes.bool,
-  last: PropTypes.bool
+  last: PropTypes.bool,
+  url: PropTypes.string
 };
 
-function getStyle(type, selected, first, last) {
+function getStyle(type, active, first, last) {
   switch (type) {
     case types.auth:
-      return getAuthStyle(selected, first, last);
+      return getAuthStyle(active, first, last);
     case types.main:
-      return getMainStyle(selected, first, last);
+      return getMainStyle(active, first, last);
     default:
       return '';
   }
 }
 
-function getAuthStyle(selected, first, last) {
+function getAuthStyle(active, first, last) {
   let baseStyle = 'block text-center body-sbold py-8 px-24 360:px-32 border-t-2 border-b-2 border-r-2 border-primary-500';
 
-  let selectedStyle = '';
+  let activeStyle = '';
   
-  if (selected) {
-    selectedStyle = 'bg-primary-500 text-white';
+  if (active) {
+    activeStyle = 'bg-primary-500 text-white';
   } else {
-    selectedStyle = 'bg-white text-primary-500';
+    activeStyle = 'bg-white text-primary-500';
   }
 
   let borderStyle = '';
@@ -54,18 +55,18 @@ function getAuthStyle(selected, first, last) {
     borderStyle = 'border-2 border-l-0 rounded-r-20';
   }
 
-  return `${baseStyle} ${selectedStyle} ${borderStyle}`;
+  return `${baseStyle} ${activeStyle} ${borderStyle}`;
 }
 
-function getMainStyle(selected, first, last) {
+function getMainStyle(active, first, last) {
   let baseStyle = 'block text-center text-white body-med p-6 border-b border-white 420:p-8 420:text-16 732:font-sbold 732:py-8 732:px-32 732:border-t-2 732:border-b-2 732:border-r-2 732:border-primary-500';
 
-  let selectedStyle = '';
+  let activeStyle = '';
   
-  if (selected) {
-    selectedStyle = 'border-opacity-100 732:bg-primary-500 732:text-white';
+  if (active) {
+    activeStyle = 'border-opacity-100 732:bg-primary-500 732:text-white';
   } else {
-    selectedStyle = 'border-opacity-0 732:border-opacity-100 732:bg-white 732:text-primary-500';
+    activeStyle = 'border-opacity-0 732:border-opacity-100 732:bg-white 732:text-primary-500';
   }
   
   let borderStyle = '';
@@ -76,7 +77,7 @@ function getMainStyle(selected, first, last) {
     borderStyle = '732:border-2 732:border-l-0 732:rounded-r-20';
   }
 
-  return `${baseStyle} ${selectedStyle} ${borderStyle}`;
+  return `${baseStyle} ${activeStyle} ${borderStyle}`;
 }
 
 export default Tab;

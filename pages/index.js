@@ -189,7 +189,7 @@ export default function Home() {
     <Login /> */}
 
     {/* <BlockTime /> */}
-      <BlockTime />
+        {/* <BlockTime /> */}
     {/* <MainTimeline />  
     <TimelinePreview hasFloating /> */}
     {/* <TimelineDuration /> */}

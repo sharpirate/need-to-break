@@ -1,16 +1,31 @@
-import Tab from '../atoms/Tab';
+import Tab, { tabTypes } from '../atoms/Tab';
+import { useRouter } from 'next/dist/client/router';
 
-const tabs = ['Sign Up', 'Login'];
+const tabs = [
+  { name: 'Sign Up', url: '/signup' },
+  { name: 'Login', url: '/login' }
+];
 
 function AuthNav() {
+  const router = useRouter();
+
   return (
-    <ul className={`inline-grid grid-cols-${tabs.length}`}>
-      {tabs.map((tab, index) => (
-        <Tab key={tab} type='auth' first={index === 0} selected={index === 1} last={index === tabs.length - 1}>
-          {tab}
-        </Tab>
-      ))}
-    </ul>
+    <nav className="flex w-full justify-center items-center 732:p-32 732:pb-0">
+      <ul className={`inline-grid grid-cols-2`}>
+        {tabs.map((tab, index) => (
+          <Tab
+            key={tab.url}
+            type={tabTypes.auth}
+            first={index === 0}
+            active={router.pathname === tab.url}
+            last={index === tabs.length - 1}
+            url={tab.url}
+          >
+            {tab.name}
+          </Tab>
+        ))}
+      </ul>
+    </nav>
   );
 }
 

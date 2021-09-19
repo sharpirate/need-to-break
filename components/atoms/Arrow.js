@@ -62,7 +62,7 @@ function resolveArrow(type, size, state) {
 
   switch (state) {
     case types.active:
-      colorStyle = 'fill-current text-primary-500'
+      colorStyle = 'fill-current text-primary-500 group-focus-visible:text-primary-600'
       break;
     case types.default:
       colorStyle = 'fill-current text-gray-400'

@@ -54,6 +54,7 @@ function Carousel({ initialPages, renderItem, infinite, pageLimit }) {
         } else {
           setCurrentPage(currentPage - 1);
         }
+
       }
     }
   }
@@ -63,25 +64,34 @@ function Carousel({ initialPages, renderItem, infinite, pageLimit }) {
   }
 
   return (
-    <div className="overflow-hidden flex flex-col justify-center align-center gap-16 420:gap-24 bg-white">
+    <div className="carousel flex flex-col justify-center align-center gap-16 420:gap-24 bg-white">
 
       {/* Body */}
       <div className="relative z-10">
-        <ArrowButton type={arrowTypes.left} handleClick={handleArrowClick} />
-        <ArrowButton type={arrowTypes.right} handleClick={handleArrowClick} />
+        <Navigation
+          handleClick={handleArrowClick}
+          currentPage={currentPage}
+          totalPages={pages.length}
+          infinite={infinite}
+        />
 
         {/* Placeholder Item */}
         <div className="invisible">
-          {renderItem()}
+          {renderItem(true)}
         </div>
 
         {/* Items */}
         <ul className="absolute left-0 top-0 flex transition-transform duration-500" style={{ transform: `translateX(${-(currentPage * 100 / pages.length)}%)`}}>
-          {pages.map(page => (
-            <li key={page.id}>
-              {renderItem()}
-            </li>
-          ))}
+          {pages.map(page => {
+
+            const disableFocus = pages.findIndex(item => item.id === page.id) !== currentPage;
+
+            return (
+              <li key={page.id}>
+                {renderItem(disableFocus)}
+              </li>
+            );
+          })}
         </ul>
       </div>
 
@@ -116,6 +126,7 @@ function Pagination({ pages, handleClick, currentPage }) {
         return (
           <li key={page.id}>
             <button
+              tabIndex="-1"
               className={baseStyle + " " + bgStyle}
               onClick={() => handleClick(page.id)}
             />
@@ -127,13 +138,32 @@ function Pagination({ pages, handleClick, currentPage }) {
 }
 
 Pagination.propTypes = {
-  pages: PropTypes.number,
+  pages: PropTypes.array,
   handleClick: PropTypes.func,
   currentPage: PropTypes.number
 };
 
+function Navigation({ handleClick, currentPage, totalPages, infinite }) {
+  const hideLeft = (currentPage === 0 && !infinite);
+  const hideRight = (currentPage === totalPages - 1 && !infinite);
+
+  return (
+    <>
+      {!hideLeft ? <ArrowButton type={arrowTypes.left} handleClick={handleClick} /> : null}
+      {!hideRight ? <ArrowButton type={arrowTypes.right} handleClick={handleClick} /> : null}
+    </>
+  );
+}
+
+Navigation.propTypes = {
+  handleClick: PropTypes.func,
+  currentPage: PropTypes.number,
+  totalPages: PropTypes.number,
+  infinite: PropTypes.bool
+};
+
 function ArrowButton({ type, handleClick }) {
-  const baseStyle = "absolute top-1/2 z-10";
+  const baseStyle = "absolute top-1/2 z-10 group outline-none";
 
   let typeStyle = "";
 

@@ -20,11 +20,6 @@
     overflow-x: clip;
   }
 
-  .select-active-root {
-    @apply rounded-t-4 border-blocked-500;
-    border-bottom-color: transparent;
-  }
-
   /* Hide scrollbar for Chrome, Safari and Opera */
   .hide-scrollbar::-webkit-scrollbar {
     display: none;

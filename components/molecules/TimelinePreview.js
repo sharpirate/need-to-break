@@ -81,7 +81,7 @@ function TimelinePreview({ hasFloating }) {
   const floatingStyle = hasFloating ? '900:grid-cols-2' : '';
 
   return (
-    <section className="w-full max-w-[1536px] flex flex-col justify-center items-center text-center bg-white rounded-8 py-16 px-32 420:py-24 420:px-48 900:px-32 900:py-32">
+    <section className="w-full flex flex-col justify-center items-center text-center bg-white rounded-8 py-16 px-32 420:py-24 420:px-48 900:px-32 900:py-32">
 
       <div className={`grid grid-cols-1 ${floatingStyle} max-w-[252px] 420:max-w-[310px] 900:max-w-none gap-32 mb-32 420:gap-48 1172:gap-64 420:mb-48`}>
 

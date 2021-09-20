@@ -94,7 +94,7 @@ NumberInput.propTypes = {
 };
 
 function Button({ type, handleClick }) {
-  const baseStyle = 'flex justify-center items-center align-center w-32 h-32 420:w-40 420:h-40 bg-primary-500 outline-none focus-visible:ring focus-visible:ring-inset focus-visible:ring-primary-600';
+  const baseStyle = 'flex justify-center items-center align-center w-32 h-32 420:w-40 420:h-40 bg-primary-500 outline-none focus-visible:bg-primary-600';
 
   let typeStyle = '';
   switch (type) {

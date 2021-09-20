@@ -88,8 +88,7 @@ function Preset({ name }) {
       </div>
 
       {/* Info List */}
-      <ul className="w-full flex flex-col 900:flex-row justify-center items-center 900:max-w-[1200px] 900:justify-around 900:items-start gap-24 420:gap-32 mb-32 420:mb-48">
-      {/* <ul className="w-full flex flex-col 900:flex-row justify-center items-center 900:justify-around 900:items-start gap-24 420:gap-32 mb-32 420:mb-48"> */}
+      <ul className="w-full flex flex-col 900:flex-row justify-center items-center 900:justify-evenly 900:items-start gap-24 420:gap-32 900:gap-0 mb-32 420:mb-48">
         <li>
           <Label size={labelTypes.big} as={labelTypes.h3}>Type</Label>
           <p className="body-sbold text-gray-500">

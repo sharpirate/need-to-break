@@ -8,7 +8,7 @@ const types = {
 
 export { types as buttonTypes };
 
-function Button({ type, children, disabled }) {
+function Button({ type, children, disabled, handleClick }) {
   let style;
 
   switch (type) {
@@ -26,7 +26,7 @@ function Button({ type, children, disabled }) {
   }
 
   return (
-    <button disabled={disabled} className={'select-none px-24 420:px-32 py-8 body-sbold rounded-4 outline-none active:transform active:scale-90' + ' ' + style}>
+    <button onClick={handleClick} disabled={disabled} className={'select-none px-24 420:px-32 py-8 body-sbold rounded-4 outline-none active:transform active:scale-90' + ' ' + style}>
       {children}
     </button>
   );
@@ -34,7 +34,8 @@ function Button({ type, children, disabled }) {
 
 Button.propTypes = {
   type: PropTypes.string,
-  disabled: PropTypes.bool
+  disabled: PropTypes.bool,
+  handleClick: PropTypes.func
 };
 
 export default Button;

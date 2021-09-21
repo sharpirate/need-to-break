@@ -1,9 +1,11 @@
+import React, { useState } from "react";
 import PropTypes from "prop-types";
 import ViewMoreLess from "../atoms/ViewMoreLess";
 import Timeline from "./TImeline";
 import Label, { labelTypes } from "../atoms/Label";
 import Button, { buttonTypes } from "../atoms/Button";
 import Icon, { iconTypes } from "../atoms/Icon";
+import SavePresetModal from "../molecules/cards/SavePresetModal";
 
 const intervals = [
   { type: 'work' },
@@ -78,12 +80,14 @@ const otherIntervals = [
 const hours = ['12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00'];
 
 function TimelinePreview({ hasFloating }) {
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+
   const floatingStyle = hasFloating ? '900:grid-cols-2' : '';
 
   return (
     <section className="w-full flex flex-col justify-center items-center text-center bg-white rounded-8 py-16 px-32 420:py-24 420:px-48 900:px-32 900:py-32">
 
-      <div className={`grid grid-cols-1 ${floatingStyle} max-w-[252px] 420:max-w-[310px] 900:max-w-none gap-32 mb-32 420:gap-48 1172:gap-64 420:mb-48`}>
+      <div className={`grid grid-cols-1 ${floatingStyle} max-w-[252px] 420:max-w-[310px] 900:max-w-none gap-32 mb-32 420:gap-48 1172:gap-64 1172:text-left 420:mb-48`}>
 
         {/* Timeline Preview Block */}
         <div className="flex flex-col justify-start items-center gap-16 420:gap-24 900:max-w-[408px] 1172:flex-row 1172:items-start">
@@ -119,7 +123,7 @@ function TimelinePreview({ hasFloating }) {
       <div className="w-full flex flex-col 900:flex-col-reverse justify-center items-center gap-32 420:gap-48">
         <div className="grid gap-24 420:gap-32 540:grid-cols-2 540:gap-24">
           <Button type={buttonTypes.primary}>Generate</Button>
-          <Button type={buttonTypes.outline}>Save Preset</Button>
+          <Button handleClick={() => setModalIsOpen(true)} type={buttonTypes.outline}>Save Preset</Button>
         </div>
 
         <ViewMoreLess viewMoreText="View Timeline" viewLessText="Hide Timeline" isTimeline={true} >
@@ -128,6 +132,12 @@ function TimelinePreview({ hasFloating }) {
           </div>
         </ViewMoreLess>
       </div>
+
+      {/* Save Preset Modal */}
+      <SavePresetModal
+        isOpen={modalIsOpen}
+        setIsOpen={setModalIsOpen}
+      />
     </section>
   );
 }

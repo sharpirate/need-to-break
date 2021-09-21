@@ -1,9 +1,11 @@
+import React, { useState } from "react";
 import PropTypes from "prop-types";
 import ViewMoreLess from "../atoms/ViewMoreLess";
 import Timeline from "./TImeline";
 import Label, { labelTypes } from "../atoms/Label";
 import Button, { buttonTypes } from "../atoms/Button";
 import Icon, { iconTypes } from "../atoms/Icon";
+import DeletePresetModal from "./cards/DeletePresetModal";
 
 const intervals = [
   { type: 'work' },
@@ -78,6 +80,8 @@ const otherIntervals = [
 const hours = ['12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00'];
 
 function Preset({ name }) {
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+
   return (
     <section className="w-full flex flex-col justify-center items-center text-center bg-white rounded-8 py-16 px-32 420:py-24 420:px-48 900:px-32 900:py-32">
 
@@ -126,7 +130,7 @@ function Preset({ name }) {
       <div className="w-full flex flex-col 900:flex-col-reverse justify-center items-center gap-32 420:gap-48">
         <div className="grid gap-24 420:gap-32 540:grid-cols-2 540:gap-24">
           <Button type={buttonTypes.primary}>Generate</Button>
-          <Button type={buttonTypes.outline}>Delete</Button>
+          <Button handleClick={() => setModalIsOpen(true)} type={buttonTypes.outline}>Delete</Button>
         </div>
 
         <ViewMoreLess viewMoreText="View Timeline" viewLessText="Hide Timeline" isTimeline={true} >
@@ -135,6 +139,13 @@ function Preset({ name }) {
           </div>
         </ViewMoreLess>
       </div>
+
+      {/* Delete Preset Modal */}
+      <DeletePresetModal
+        isOpen={modalIsOpen}
+        setIsOpen={setModalIsOpen}
+        presetName={name}
+      />
     </section>
   );
 }

@@ -17,7 +17,7 @@ function CardsLayout({ type }) {
 
   return (
     <>
-      <ul className="grid grid-cols-1 808:grid-cols-2 auto-rows-fr gap-32 808:gap-48 mb-32 808:mb-48 1196:w-full 1196:flex 1196:justify-evenly 1196:gap-0">
+      <ul className="grid grid-cols-1 auto-rows-fr gap-24 420:gap-32 808:grid-cols-2 932:gap-48 1260:w-[100vw] 1260:max-w-[1600px] 1260:flex 1260:justify-evenly 1260:gap-0">
         <li>
           {type === types.fullTime ? <TimelineDuration /> : <IntervalSize /> }
         </li>
@@ -26,12 +26,14 @@ function CardsLayout({ type }) {
           {type === types.fullTime ? <IntervalSize /> : <NumberOfSprints /> }
         </li>
 
-        <li className="flex justify-center items-center col-span-1 808:col-span-2 1196:col-span-1">
+        <li className="flex justify-center items-center col-span-1 808:col-span-2 1260:col-span-1">
           {type === types.fullTime ? <BlockTime /> : <LongBreaks /> }
         </li>
       </ul>
-      
-      <TimelinePreview hasFloating />
+
+      <div className="w-full pt-24 420:pt-32 932:pt-48">
+        <TimelinePreview hasFloating />
+      </div>
     </>
   );
 }

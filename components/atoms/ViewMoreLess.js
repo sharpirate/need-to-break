@@ -5,8 +5,8 @@ import Arrow, { arrowTypes } from './Arrow';
 function ViewMoreLess({ viewMoreText, viewLessText, children, isTimeline }) {
   const [active, setActive] = useState(false);
 
-  const contentStyle = `${active ? 'block' : 'hidden'} w-full ${isTimeline ? '900:block' : ''}`;
-  const buttonStyle = `${isTimeline ? '900:hidden' : ''}`;
+  const contentStyle = `${active ? 'block' : 'hidden'} w-full ${isTimeline ? '932:block' : ''}`;
+  const buttonStyle = `${isTimeline ? '932:hidden' : ''}`;
 
   return (
     <>

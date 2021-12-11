@@ -55,9 +55,9 @@ module.exports = {
       '540': '540px',
       '732': '732px',
       '808': '808px',
-      '900': '900px',
+      '932': '932px',
       '1172': '1172px',
-      '1196': '1196px'
+      '1260': '1260px'
     },
     spacing: {
       'sch': '2.4px', // "semi column half" - aligning the hours prefectly to the timeline

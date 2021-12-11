@@ -19,7 +19,7 @@ function MyApp({ Component, pageProps }) {
       
       <div className="flex flex-col justify-start items-center">
         {url === '/login' || url === '/signup' ? <AuthNav /> : <MainNav />}
-        <div className="w-full max-w-[1600px] flex flex-col justify-start items-center p-24 420:p-48">
+        <div className="w-full max-w-[1600px] flex flex-col justify-start items-center p-24 420:p-32 932:p-48">
           <Component {...pageProps} />
         </div>
       </div>

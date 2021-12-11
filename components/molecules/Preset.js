@@ -83,7 +83,7 @@ function Preset({ name }) {
   const [modalIsOpen, setModalIsOpen] = useState(false);
 
   return (
-    <section className="w-full flex flex-col justify-center items-center text-center bg-white rounded-8 py-16 px-32 420:py-24 420:px-48 900:px-32 900:py-32">
+    <section className="w-full flex flex-col justify-center items-center text-center bg-white rounded-8 py-16 px-32 420:py-24 420:px-48 932:px-32 932:py-32">
 
       {/* Icon & Name */}
       <div className="flex flex-col justify-center items-center gap-16 420:gap-24 mb-16 420:mb-24">
@@ -92,7 +92,7 @@ function Preset({ name }) {
       </div>
 
       {/* Info List */}
-      <ul className="w-full flex flex-col 900:flex-row justify-center items-center 900:justify-evenly 900:items-start gap-24 420:gap-32 900:gap-0 mb-32 420:mb-48">
+      <ul className="w-full flex flex-col 932:flex-row justify-center items-center 932:justify-evenly 932:items-start gap-24 420:gap-32 932:gap-0 mb-32 420:mb-48">
         <li>
           <Label size={labelTypes.big} as={labelTypes.h3}>Type</Label>
           <p className="body-sbold text-gray-500">
@@ -127,14 +127,14 @@ function Preset({ name }) {
       </ul>
 
       {/* Timeline & Buttons (Able To Reverse Flex Order) */}
-      <div className="w-full flex flex-col 900:flex-col-reverse justify-center items-center gap-32 420:gap-48">
+      <div className="w-full flex flex-col 932:flex-col-reverse justify-center items-center gap-32 420:gap-48">
         <div className="grid gap-24 420:gap-32 540:grid-cols-2 540:gap-24">
           <Button type={buttonTypes.primary}>Generate</Button>
           <Button handleClick={() => setModalIsOpen(true)} type={buttonTypes.outline}>Delete</Button>
         </div>
 
         <ViewMoreLess viewMoreText="View Timeline" viewLessText="Hide Timeline" isTimeline={true} >
-          <div className=" 900:mt-0 w-full">
+          <div className=" 932:mt-0 w-full">
             <Timeline intervals={otherIntervals} hours={hours} showArrow={false} />
           </div>
         </ViewMoreLess>

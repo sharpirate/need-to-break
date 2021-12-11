@@ -12,7 +12,7 @@ function Login() {
         heading="Login"
       />
 
-      <form className="w-full flex flex-col justify-start items-center gap-24 420:gap-32">
+      <form autoComplete="off" className="w-full flex flex-col justify-start items-center gap-24 420:gap-32">
 
         <TextInput
           name="emai"

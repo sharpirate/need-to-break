@@ -21,7 +21,7 @@ function MainNav() {
   const router = useRouter();
 
   return (
-    <nav className="flex w-full justify-between 732:p-32 732:pb-0">
+    <nav className="flex w-full justify-between 732:p-32 732:pb-0 932:p-48 932:pb-0">
       <SettingsButton type={types.desktop} invisible />
       <ul className={`p-12 420:px-24 bg-primary-600 flex justify-between w-full 732:w-auto 732:p-0 732:bg-transparent 732:inline-grid 732:grid-cols-4`}>
         {tabs.map((tab, index) => (

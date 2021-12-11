@@ -20,7 +20,7 @@ Interval.propTypes = {
 };
 
 function getStyle(type, first, last) {
-  let baseStyle = 'block h-full w-32 420:w-40 900:w-full 900:h-32 1172:h-40';
+  let baseStyle = 'block h-full w-32 420:w-40 932:w-full 932:h-32 1172:h-40';
 
   let colorStyle = '';
 
@@ -44,9 +44,9 @@ function getStyle(type, first, last) {
   let borderStyle = '';
 
   if (first) {
-    borderStyle = 'rounded-t-20 900:rounded-0 900:rounded-l-20';
+    borderStyle = 'rounded-t-20 932:rounded-0 932:rounded-l-20';
   } else if (last) {
-    borderStyle = 'rounded-b-20 900:rounded-0 900:rounded-r-20 ';
+    borderStyle = 'rounded-b-20 932:rounded-0 932:rounded-r-20 ';
   }
 
   return `${baseStyle} ${colorStyle} ${borderStyle}`;

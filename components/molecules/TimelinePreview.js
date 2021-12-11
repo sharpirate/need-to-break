@@ -82,15 +82,15 @@ const hours = ['12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '1
 function TimelinePreview({ hasFloating }) {
   const [modalIsOpen, setModalIsOpen] = useState(false);
 
-  const floatingStyle = hasFloating ? '900:grid-cols-2' : '';
+  const floatingStyle = hasFloating ? '932:grid-cols-2' : '';
 
   return (
-    <section className="w-full flex flex-col justify-center items-center text-center bg-white rounded-8 py-16 px-32 420:py-24 420:px-48 900:px-32 900:py-32">
+    <section className="w-full flex flex-col justify-center items-center text-center bg-white rounded-8 py-16 px-32 420:py-24 420:px-48 932:px-32 932:py-32">
 
-      <div className={`grid grid-cols-1 ${floatingStyle} max-w-[252px] 420:max-w-[310px] 900:max-w-none gap-32 mb-32 420:gap-48 1172:gap-64 1172:text-left 420:mb-48`}>
+      <div className={`grid grid-cols-1 ${floatingStyle} max-w-[252px] 420:max-w-[310px] 932:max-w-none gap-32 mb-32 420:gap-48 1172:gap-64 1172:text-left 420:mb-48`}>
 
         {/* Timeline Preview Block */}
-        <div className="flex flex-col justify-start items-center gap-16 420:gap-24 900:max-w-[408px] 1172:flex-row 1172:items-start">
+        <div className="flex flex-col justify-start items-center gap-16 420:gap-24 932:max-w-[408px] 1172:flex-row 1172:items-start">
           <div>
             <Icon type={iconTypes.timeline} />
           </div>
@@ -104,7 +104,7 @@ function TimelinePreview({ hasFloating }) {
 
         {/* Floating Time Block (If Any)*/}
         {hasFloating ? (
-          <div className="flex flex-col justify-start items-center gap-16 420:gap-24 900:max-w-[408px] 1172:flex-row 1172:items-start">
+          <div className="flex flex-col justify-start items-center gap-16 420:gap-24 932:max-w-[408px] 1172:flex-row 1172:items-start">
             <div>
               <Icon type={iconTypes.warning} />
             </div>
@@ -120,14 +120,14 @@ function TimelinePreview({ hasFloating }) {
       </div>
 
       {/* Timeline & Buttons (Able To Reverse Flex Order) */}
-      <div className="w-full flex flex-col 900:flex-col-reverse justify-center items-center gap-32 420:gap-48">
+      <div className="w-full flex flex-col 932:flex-col-reverse justify-center items-center gap-32 420:gap-48">
         <div className="grid gap-24 420:gap-32 540:grid-cols-2 540:gap-24">
           <Button type={buttonTypes.primary}>Generate</Button>
           <Button handleClick={() => setModalIsOpen(true)} type={buttonTypes.outline}>Save Preset</Button>
         </div>
 
         <ViewMoreLess viewMoreText="View Timeline" viewLessText="Hide Timeline" isTimeline={true} >
-          <div className=" 900:mt-0 w-full">
+          <div className=" 932:mt-0 w-full">
             <Timeline intervals={otherIntervals} hours={hours} showArrow={false} />
           </div>
         </ViewMoreLess>

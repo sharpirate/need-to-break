@@ -80,7 +80,7 @@ const hours = ['12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '1
 
 function MainTimeline() {
   return (
-    <main className="w-full flex flex-col justify-center items-center text-center bg-white rounded-8 py-16 px-32 420:py-24 420:px-48 900:px-32 900:py-32">
+    <div className="w-full flex flex-col justify-center items-center text-center bg-white rounded-8 py-16 px-32 420:py-24 420:px-48 932:px-32 932:py-32">
 
       {/* Restart Block */}
       <div className="flex flex-col justify-center items-center mb-32 420:mb-48">
@@ -112,11 +112,11 @@ function MainTimeline() {
       </div>
 
       <ViewMoreLess viewMoreText="View Timeline" viewLessText="Hide Timeline" isTimeline={true} >
-        <div className="mt-32 420:mt-48 900:mt-0 w-full">
+        <div className="mt-32 420:mt-48 932:mt-0 w-full">
           <Timeline intervals={otherIntervals} hours={hours} showArrow={true} />
         </div>
       </ViewMoreLess>
-    </main>
+    </div>
   );
 }
 

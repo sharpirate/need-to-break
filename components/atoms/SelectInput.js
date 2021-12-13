@@ -4,13 +4,13 @@ import SelectItem from './SelectItem';
 import Label, { labelTypes } from './Label';
 
 function Icon({ active }) {
-  const wrapperStyle = active ? 'transform rotate-180' : '';
-  const iconStyle = active ? 'text-primary-500' : 'text-gray-400';
+  const wrapperStyle = active ? 'rotate-180' : '';
+  const iconStyle = active ? 'fill-primary-500' : 'fill-gray-400';
 
   return (
-    <span className="pt-4 absolute right-8 top-1/2 transform -translate-y-1/2 pointer-events-none">
+    <span className="pt-4 absolute right-8 top-1/2 -translate-y-1/2 pointer-events-none">
       <svg className={`w-13 h-13 420:w-16 420:h-16 ${wrapperStyle}`} viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path className={`fill-current group-hover:text-primary-500 group-focus:text-primary-500 ${iconStyle}`} fillRule="evenodd" clipRule="evenodd" d="M16 3.38117L8 12.6188L0 3.38117H2.87253L8.00009 9.30197L13.1277 3.38117H16Z"/>
+      <path className={`group-hover:fill-primary-500 group-focus:fill-primary-500 ${iconStyle}`} fillRule="evenodd" clipRule="evenodd" d="M16 3.38117L8 12.6188L0 3.38117H2.87253L8.00009 9.30197L13.1277 3.38117H16Z"/>
       </svg>
     </span>
   );

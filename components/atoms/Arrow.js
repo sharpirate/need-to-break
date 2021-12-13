@@ -46,13 +46,13 @@ function resolveArrow(type, size, state) {
     case types.down:
       break;
     case types.left:
-      typeStyle = 'transform rotate-90'
+      typeStyle = 'rotate-90'
       break;
     case types.right:
-      typeStyle = 'transform -rotate-90'
+      typeStyle = '-rotate-90'
       break;
     case types.up:
-      typeStyle = 'transform rotate-180'
+      typeStyle = 'rotate-180'
       break;
     default:
       return null;
@@ -62,13 +62,13 @@ function resolveArrow(type, size, state) {
 
   switch (state) {
     case types.active:
-      colorStyle = 'fill-current text-primary-500 group-focus-visible:text-primary-600'
+      colorStyle = 'fill-primary-500 group-focus-visible:fill-primary-600'
       break;
     case types.default:
-      colorStyle = 'fill-current text-gray-400'
+      colorStyle = 'fill-gray-400'
       break;
     case types.disabled:
-      colorStyle = 'fill-current text-gray-300'
+      colorStyle = 'fill-gray-300'
       return null;
   }
 

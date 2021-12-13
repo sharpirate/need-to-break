@@ -125,14 +125,14 @@ function Icon({ type }) {
     case types.plus:
       return (
         <svg className="w-13 h-13" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <rect className="fill-current text-white" y="5.25" width="14" height="3.5"/>
-          <rect className="fill-current text-white" x="8.75" width="14" height="3.5" transform="rotate(90 8.75 0)"/>
+          <rect className="fill-white" y="5.25" width="14" height="3.5"/>
+          <rect className="fill-white" x="8.75" width="14" height="3.5" transform="rotate(90 8.75 0)"/>
         </svg>
       );
     case types.minus:
       return (
         <svg className="w-13 h-13" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <rect className="fill-current text-white" width="14" height="3.5" transform="matrix(-1 0 0 1 14 5.25)"/>
+          <rect className="fill-white" width="14" height="3.5" transform="matrix(-1 0 0 1 14 5.25)"/>
         </svg> 
       );
     default:

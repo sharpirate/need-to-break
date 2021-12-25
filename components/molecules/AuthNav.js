@@ -10,7 +10,7 @@ function AuthNav() {
   const router = useRouter();
 
   return (
-    <nav className="flex w-full justify-center items-center 732:p-32 732:pb-0">
+    <nav className="flex w-full justify-center items-center p-24 pb-0 420:p-32 420:pb-0 932:p-48 932:pb-0">
       <ul className={`inline-grid grid-cols-2`}>
         {tabs.map((tab, index) => (
           <Tab

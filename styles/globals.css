@@ -51,6 +51,10 @@
     @apply font-base font-med text-13 420:text-16 tracking-2;
   }
 
+  .mono-med {
+    @apply font-mono font-med text-13 420:text-16 tracking-2;
+  }
+
   .body-bold {
     @apply font-base font-bold text-13 420:text-16 tracking-2;
   }

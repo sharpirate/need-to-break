@@ -91,6 +91,7 @@ module.exports = {
     },
     fontFamily: {
       base: ['Inter', 'sans-serif'],
+      mono: ['Azeret Mono', 'monospace'],
       display: ['IntroDemo']
     },
     fontSize: {

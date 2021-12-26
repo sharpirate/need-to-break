@@ -15,7 +15,7 @@ function AuthNav() {
         {tabs.map((tab, index) => (
           <Tab
             key={tab.url}
-            type={tabTypes.auth}
+            type={tabTypes.authNav}
             first={index === 0}
             active={router.pathname === tab.url}
             last={index === tabs.length - 1}

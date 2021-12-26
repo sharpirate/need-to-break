@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import Interval, { intervalTypes } from '../atoms/Interval';
-
+import Tab, { tabTypes } from '../atoms/Tab';
 function Timeline({ intervals, hours, showArrow }) {
   return (
     <div className='relative inline-flex 932:flex flex-row-reverse justify-center 932:flex-col'>
@@ -19,6 +19,48 @@ function Timeline({ intervals, hours, showArrow }) {
           <Hour key={index}>{hour}</Hour>
         ))}
       </ul>
+
+      {/* Pagination */}
+      <div className="flex flex-col justify-center items-center gap-24 pt-48">
+        {/* use these for mobile and when intervals are more than 5 */}
+        {/* <Pagination pages={[
+          { name: '1', url: '' },
+          { name: '2', url: '' },
+          { name: '3', url: '' },
+          { name: '4', url: '' },
+          { name: '5', url: '' },
+          { name: '6', url: '' },
+        ]} /> */}
+        {/* <Pagination pages={[
+          { name: '12:00 - 14:00', url: '' },
+          { name: '14:00 - 16:00', url: '' },
+          { name: '16:00 - 18:00', url: '' },
+          { name: '18:00 - 20:00', url: '' },
+          { name: '20:00 - 22:00', url: '' },
+          { name: '20:00 - 22:00', url: '' },
+        ]} /> */}
+        <Pagination pages={[
+          { name: '0 - 2 hrs', url: '' },
+          { name: '2 - 4 hrs', url: '' },
+          { name: '4 - 6 hrs', url: '' },
+          { name: '6 - 8 hrs', url: '' },
+          { name: '8 - 10 hrs', url: '' },
+          { name: '10 - 12 hrs', url: '' },
+        ]} />
+        {/* <Pagination pages={[
+          { name: '12 PM - 2 PM', url: '' },
+          { name: '2 PM - 4 PM', url: '' },
+          { name: '4 PM - 6 PM', url: '' },
+          { name: '6 PM - 8 PM', url: '' },
+          { name: '8 PM - 10 PM', url: '' },
+          { name: '10 PM - AM PM', url: '' }
+        ]} /> */}
+        <Pagination pages={[
+          { name: '2 hours', url: '' },
+          { name: '4 hours', url: '' },
+        ]} />
+      </div>
+
     </div>
   );
 }
@@ -71,5 +113,24 @@ function Arrow({ type }) {
 Arrow.propTypes = {
   type: PropTypes.string
 };
+
+function Pagination({ pages }) {
+  return (
+    <ul className='flex'>
+      {pages.map((page, index) => (
+        <Tab
+          key={page.url}
+          type={tabTypes.pagination}
+          first={index === 0}
+          active={index === 0}
+          last={index === pages.length - 1}
+          url={page.url}
+        >
+          {page.name}
+        </Tab>
+      ))}
+    </ul>
+  );
+}
 
 export default Timeline;

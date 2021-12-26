@@ -61,6 +61,7 @@ module.exports = {
       'sch': '2.4px', // "semi column half" - aligning the hours prefectly to the timeline
       '0': '0px',
       '1': '1px',
+      '2': '2px',
       '4': '4px',
       '6': '6px',
       '8': '8px',

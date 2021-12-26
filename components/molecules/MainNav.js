@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
-import Tab from "../atoms/Tab";
+import Tab, { tabTypes } from "../atoms/Tab";
 import { useRouter } from "next/dist/client/router";
 import SettingsModal from "./cards/SettingsModal";
 
@@ -28,7 +28,7 @@ function MainNav() {
           <Tab
             key={tab.name}
             active={router.pathname === tab.url}
-            type='main'
+            type={tabTypes.mainNav}
             first={index === 0}
             last={index === tabs.length - 1}
             url={tab.url}

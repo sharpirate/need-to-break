@@ -97,9 +97,9 @@ function getPaginationStyle(active, first, last) {
   let borderStyle = '';
 
   if (first) {
-    borderStyle = 'border-2 rounded-l-20';
+    borderStyle = 'border-2 rounded-l-4';
   } else if (last) {
-    borderStyle = 'border-2 border-l-0 rounded-r-20';
+    borderStyle = 'border-2 border-l-0 rounded-r-4';
   }
 
   return `${baseStyle} ${activeStyle} ${borderStyle}`;

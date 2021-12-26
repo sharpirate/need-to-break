@@ -6,13 +6,13 @@ function Timeline({ intervals, hours, showArrow }) {
     <div className='relative inline-flex 932:flex flex-row-reverse justify-center 932:flex-col'>
       {showArrow ? <Arrow type={intervalTypes.work} /> : null}
 
-        <ul className='inline-flex flex-col py-8 420:py-12 h-1472 932:p-0 932:px-sch 932:flex 932:flex-row 932:h-auto 932:w-full'>
-          <Hour invisible>12</Hour>
-          {intervals.map((interval, index) => (
-            <Interval key={index} type={interval.type} first={index === 0} last={index === intervals.length - 1} />
-            ))}
-          <Hour invisible>00</Hour>
-        </ul>
+      <ul className='inline-flex flex-col py-8 420:py-12 h-1472 932:p-0 932:px-sch 932:flex 932:flex-row 932:h-auto 932:w-full'>
+        <Hour invisible>12</Hour>
+        {intervals.map((interval, index) => (
+          <Interval key={index} type={interval.type} first={index === 0} last={index === intervals.length - 1} />
+          ))}
+        <Hour invisible>00</Hour>
+      </ul>
 
       <ul className='absolute top-0 h-full -left-24 -translate-x-full 932:relative 932:left-0 932:transform-none flex flex-col justify-between 932:m-0 932:mt-24 932:flex 932:flex-row'>
         {hours.map((hour, index) => (

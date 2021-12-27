@@ -54,6 +54,7 @@ const otherIntervals = [
   { type: 'break' },
   { type: 'work' },
   { type: 'break' },
+  
   { type: 'work' },
   { type: 'break' },
   { type: 'work' },
@@ -66,24 +67,43 @@ const otherIntervals = [
   { type: 'break' },
   { type: 'work' },
   { type: 'break' },
-  { type: 'work' },
-  { type: 'break' },
-  { type: 'work' },
-  { type: 'break' },
-  { type: 'work' },
-  { type: 'break' },
-  { type: 'work' },
-  { type: 'break' },
+
+  // { type: 'work' },
+  // { type: 'break' },
+  // { type: 'work' },
+  // { type: 'break' },
+  // { type: 'work' },
+  // { type: 'break' },
+  // { type: 'work' },
+  // { type: 'break' },
+  // { type: 'work' },
+  // { type: 'break' },
+  // { type: 'work' },
+  // { type: 'break' },
+
+  // { type: 'work' },
+  // { type: 'break' },
+  // { type: 'work' },
+  // { type: 'break' },
+  // { type: 'work' },
+  // { type: 'break' },
+  // { type: 'work' },
+  // { type: 'break' },
+  // { type: 'work' },
+  // { type: 'break' },
+  // { type: 'work' },
+  // { type: 'break' },
+
 ]
 
 const hours = ['12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00'];
 
 function MainTimeline() {
   return (
-    <div className="w-full flex flex-col justify-center items-center text-center bg-white rounded-8 py-16 px-32 420:py-24 420:px-48 932:px-32 932:py-32">
+    <div className="w-full flex flex-col justify-center items-center text-center bg-white rounded-8 py-16 px-32 420:py-24 420:px-48 932:px-0 932:py-32">
 
       {/* Restart Block */}
-      <div className="flex flex-col justify-center items-center mb-32 420:mb-48">
+      <div className="flex flex-col justify-center items-center mb-32 420:mb-48 932:mx-32">
         <ViewMoreLess viewMoreText="Restart Interval" viewLessText="Restart Interval">
           <div className="mt-16 420:mt-24">
             <Label size={labelTypes.large} as={labelTypes.h1} >Restart</Label>
@@ -102,7 +122,7 @@ function MainTimeline() {
       </div>
 
       {/* Timer Block */}
-      <div className="mb-16 420:mb-24">
+      <div className="mb-16 420:mb-24 932:mx-32">
         <Label size={labelTypes.large} as={labelTypes.h1} >Work</Label>
         <p className="body-med text-gray-500">12:00 - 12:30</p>
       </div>

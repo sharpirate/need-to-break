@@ -1,24 +1,68 @@
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import Interval, { intervalTypes } from '../atoms/Interval';
 import Tab, { tabTypes } from '../atoms/Tab';
 function Timeline({ intervals, hours, showArrow }) {
+  const [page, setPage] = useState(0);
   return (
-    <div className='relative inline-flex 932:flex flex-row-reverse justify-center 932:flex-col'>
-      {showArrow ? <Arrow type={intervalTypes.work} /> : null}
+    <div className='relative inline-flex 932:flex flex-row-reverse justify-center 932:flex-col overflow-hidden w-full'>
 
-      <ul className='inline-flex flex-col py-8 420:py-12 h-1472 932:p-0 932:px-sch 932:flex 932:flex-row 932:h-auto 932:w-full'>
-        <Hour invisible>12</Hour>
-        {intervals.map((interval, index) => (
-          <Interval key={index} type={interval.type} first={index === 0} last={index === intervals.length - 1} />
-          ))}
-        <Hour invisible>00</Hour>
-      </ul>
+      {/* {showArrow && <Arrow type={intervalTypes.work} />} */}
+      <div onClick={() => setPage(page === 3 ? 0 : page + 1)} className="ease-[cubic-bezier(0.5,0,0.5,1)] flex transition-all duration-[1000ms] relative" style={{ width: `${4 * 100}%`, left: `${-page * 100}%` }}>
+      {/* <div onClick={() => setPage(page === 3 ? 0 : page + 1)} className="ease-[cubic-bezier(0.5,0,0.5,1)] flex transition-all duration-[1000ms]" style={{ width: `${4 * 100}%`, transform: `translateX(${-page * (100 / 4)}%)` }}> */}
+        <div className="w-full px-32">
+          <ul className='inline-flex flex-col py-8 420:py-12 h-1472 932:p-0 932:px-monopad 932:flex 932:flex-row 932:h-auto 932:w-full'>
+            {intervals.map((interval, index) => (
+              <Interval key={index} type={interval.type} first={index === 0} last={false} />
+              ))}
+          </ul>
 
-      <ul className='absolute top-0 h-full -left-24 -translate-x-full 932:relative 932:left-0 932:transform-none flex flex-col justify-between 932:m-0 932:mt-24 932:flex 932:flex-row'>
-        {hours.map((hour, index) => (
-          <Hour key={index}>{hour}</Hour>
-        ))}
-      </ul>
+          <ul className='absolute top-0 h-full -left-24 -translate-x-full 932:relative 932:left-0 932:transform-none flex flex-col justify-between 932:m-0 932:mt-24 932:flex 932:flex-row'>
+            {hours.map((hour, index) => (
+              <Hour key={index}>{hour}</Hour>
+            ))}
+          </ul>
+        </div>
+        <div className="w-full px-32">
+          <ul className='inline-flex flex-col py-8 420:py-12 h-1472 932:p-0 932:px-monopad 932:flex 932:flex-row 932:h-auto 932:w-full'>
+            {intervals.map((interval, index) => (
+              <Interval key={index} type={interval.type} first={false} last={false} />
+              ))}
+          </ul>
+
+          <ul className='absolute top-0 h-full -left-24 -translate-x-full 932:relative 932:left-0 932:transform-none flex flex-col justify-between 932:m-0 932:mt-24 932:flex 932:flex-row'>
+            {hours.map((hour, index) => (
+              <Hour key={index}>{hour}</Hour>
+            ))}
+          </ul>
+        </div>
+        <div className="w-full px-32">
+          <ul className='inline-flex flex-col py-8 420:py-12 h-1472 932:p-0 932:px-monopad 932:flex 932:flex-row 932:h-auto 932:w-full'>
+            {intervals.map((interval, index) => (
+              <Interval key={index} type={interval.type} first={false} last={false} />
+              ))}
+          </ul>
+
+          <ul className='absolute top-0 h-full -left-24 -translate-x-full 932:relative 932:left-0 932:transform-none flex flex-col justify-between 932:m-0 932:mt-24 932:flex 932:flex-row'>
+            {hours.map((hour, index) => (
+              <Hour key={index}>{hour}</Hour>
+            ))}
+          </ul>
+        </div>
+        <div className="w-full px-32">
+          <ul className='inline-flex flex-col py-8 420:py-12 h-1472 932:p-0 932:px-monopad 932:flex 932:flex-row 932:h-auto 932:w-full'>
+            {intervals.map((interval, index) => (
+              <Interval key={index} type={interval.type} first={false} last={index === intervals.length - 1} />
+              ))}
+          </ul>
+
+          <ul className='absolute top-0 h-full -left-24 -translate-x-full 932:relative 932:left-0 932:transform-none flex flex-col justify-between 932:m-0 932:mt-24 932:flex 932:flex-row'>
+            {hours.map((hour, index) => (
+              <Hour key={index}>{hour}</Hour>
+            ))}
+          </ul>
+        </div>
+      </div>
 
       {/* Pagination */}
       <div className="flex flex-col justify-center items-center gap-24 pt-48">
@@ -36,25 +80,21 @@ function Timeline({ intervals, hours, showArrow }) {
           { name: '14:00 - 16:00', url: '' },
           { name: '16:00 - 18:00', url: '' },
           { name: '18:00 - 20:00', url: '' },
-          { name: '20:00 - 22:00', url: '' },
-          { name: '20:00 - 22:00', url: '' },
         ]} /> */}
-        <Pagination pages={[
+        {/* <Pagination pages={[
           { name: '0 - 2 hrs', url: '' },
           { name: '2 - 4 hrs', url: '' },
           { name: '4 - 6 hrs', url: '' },
           { name: '6 - 8 hrs', url: '' },
           { name: '8 - 10 hrs', url: '' },
           { name: '10 - 12 hrs', url: '' },
-        ]} />
-        {/* <Pagination pages={[
+        ]} /> */}
+        <Pagination pages={[
           { name: '12 PM - 2 PM', url: '' },
           { name: '2 PM - 4 PM', url: '' },
           { name: '4 PM - 6 PM', url: '' },
           { name: '6 PM - 8 PM', url: '' },
-          { name: '8 PM - 10 PM', url: '' },
-          { name: '10 PM - AM PM', url: '' }
-        ]} /> */}
+        ]} />
         <Pagination pages={[
           { name: '2 hours', url: '' },
           { name: '4 hours', url: '' },
@@ -71,20 +111,11 @@ Timeline.propTypes = {
   showArrow: PropTypes.bool
 };
 
-function Hour({ children, invisible }) {
-  let baseStyle = 'body-med text-gray-400';
-
-  const invisibleStyle = invisible ? 'hidden 932:block 932:invisible' : '';
-
+function Hour({ children }) {
   return (
-    <li className={`${baseStyle} ${invisibleStyle}`}>{children}</li>
+    <li className="mono-med text-gray-400">{children}</li>
   );
 }
-
-Hour.propTypes = {
-  invisible: PropTypes.bool
-};
-
 function Arrow({ type }) {
   let colorStyle = '';
 
@@ -100,9 +131,8 @@ function Arrow({ type }) {
     default:
       break;
   }
-
   return (
-    <div className="absolute h-full right-0 translate-x-full 932:relative 932:translate-x-0">
+    <div className="absolute h-full right-0 translate-x-full 932:relative 932:translate-x-0 border-2 w-full">
       <svg className="relative top-64 932:top-0 932:left-64 w-16 h-16 ml-8 932:m-0 932:mb-8 420:w-20 420:h-20 932:-rotate-90" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path className={colorStyle} d="M17.5 1.66666L2.5 9.99999L17.5 18.3333L17.5 1.66666Z"/>
       </svg>
@@ -116,7 +146,7 @@ Arrow.propTypes = {
 
 function Pagination({ pages }) {
   return (
-    <ul className='flex'>
+    <ul className="flex">
       {pages.map((page, index) => (
         <Tab
           key={page.url}

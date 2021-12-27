@@ -52,7 +52,7 @@
   }
 
   .mono-med {
-    @apply font-mono font-med text-13 420:text-16 tracking-2;
+    @apply font-mono font-med text-13 420:text-16;
   }
 
   .body-bold {

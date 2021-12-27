@@ -8,14 +8,26 @@ const types = {
 };
 
 export { types as tabTypes };
-function Tab({ children, type, active, first, last, url }) {
-  return (
-    <li>
-      <Link href={url}>
-        <a className={getStyle(type, active, first, last)}>{children}</a>
-      </Link>
-    </li>
-  );
+function Tab({ children, type, active, first, last, url, handleClick }) {
+  let tab;
+
+  if (type === types.pagination) {
+    tab = (
+      <li>
+        <button className={getStyle(type, active, first, last)} onClick={handleClick}>{children}</button>
+      </li>
+    );
+  } else {
+    tab = (
+      <li>
+        <Link href={url}>
+          <a className={getStyle(type, active, first, last)}>{children}</a>
+        </Link>
+      </li>
+    );
+  }
+
+  return tab;
 }
 
 Tab.propTypes = {
@@ -23,7 +35,8 @@ Tab.propTypes = {
   active: PropTypes.bool,
   first: PropTypes.bool,
   last: PropTypes.bool,
-  url: PropTypes.string
+  url: PropTypes.string,
+  handleClick: PropTypes.func
 };
 
 function getStyle(type, active, first, last) {

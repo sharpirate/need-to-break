@@ -8,8 +8,8 @@ function Timeline({ intervals, hours, showArrow }) {
     <div className='relative inline-flex 932:flex flex-row-reverse justify-center 932:flex-col overflow-hidden w-full'>
       {/* {showArrow && <Arrow type={intervalTypes.work} />} */}
       <div
-        className="flex relative gap-96 transition-all duration-700 ease-[cubic-bezier(0.5,0,0.5,1)]"
-        style={{ width: `calc(${(4 * 100)}% + ${3 * 96}px)`, left: `calc(${-page * 100}% - ${page * 96}px)` }}
+        className="flex relative gap-64 transition-all duration-[750ms] ease-[cubic-bezier(0.5,0,0.5,1)]"
+        style={{ width: `calc(${(4 * 100)}% + ${3 * 64}px)`, left: `calc(${-page * 100}% - ${page * 64}px)` }}
       >
       {/* <div onClick={() => setPage(page === 3 ? 0 : page + 1)} className="ease-[cubic-bezier(0.5,0,0.5,1)] flex transition-all duration-[1000ms]" style={{ width: `${4 * 100}%`, transform: `translateX(${-page * (100 / 4)}%)` }}> */}
         <div className="w-full">
@@ -77,12 +77,12 @@ function Timeline({ intervals, hours, showArrow }) {
           { name: '5', url: '' },
           { name: '6', url: '' },
         ]} /> */}
-        {/* <Pagination pages={[
+        <Pagination pages={[
           { name: '12:00 - 14:00', url: '' },
           { name: '14:00 - 16:00', url: '' },
           { name: '16:00 - 18:00', url: '' },
           { name: '18:00 - 20:00', url: '' },
-        ]} /> */}
+        ]}  currentPage={page} setCurrentPage={index => setPage(index)} />
         {/* <Pagination pages={[
           { name: '0 - 2 hrs', url: '' },
           { name: '2 - 4 hrs', url: '' },
@@ -91,12 +91,12 @@ function Timeline({ intervals, hours, showArrow }) {
           { name: '8 - 10 hrs', url: '' },
           { name: '10 - 12 hrs', url: '' },
         ]} /> */}
-        <Pagination pages={[
+        {/* <Pagination pages={[
           { name: '12 PM - 2 PM', url: '' },
           { name: '2 PM - 4 PM', url: '' },
           { name: '4 PM - 6 PM', url: '' },
           { name: '6 PM - 8 PM', url: '' },
-        ]} currentPage={page} setCurrentPage={index => setPage(index)} />
+        ]} currentPage={page} setCurrentPage={index => setPage(index)} /> */}
         <Pagination pages={[
           { name: '2 hours', url: '' },
           { name: '4 hours', url: '' },

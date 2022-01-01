@@ -2,13 +2,14 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import Interval, { intervalTypes } from '../atoms/Interval';
 import Tab, { tabTypes } from '../atoms/Tab';
-function Timeline({ intervals, hours, showArrow }) {
+function Timeline({ intervals, hours, progress }) {
   const [page, setPage] = useState(0);
 
   const timelineProps = {
     intervals,
     hours,
     page,
+    progress: 100,
     handlePageChange: index => setPage(index)
   };
 
@@ -31,7 +32,7 @@ function Timeline({ intervals, hours, showArrow }) {
   );
 }
 
-function RegularTimeline({ intervals, hours, page, handlePageChange }) {
+function RegularTimeline({ intervals, hours, page, handlePageChange, progress }) {
   return (
     <div className="flex flex-col overflow-hidden">
       <div
@@ -41,8 +42,10 @@ function RegularTimeline({ intervals, hours, page, handlePageChange }) {
         {[1, 2, 3, 4].map((item) => (
           <div className="w-full">
             <Arrow
+              isMobile={false}
               visible={item === 1}
               type={intervalTypes.work}
+              progress={progress}
             />
 
             <ul className='flex flex-row px-monopad'>
@@ -80,7 +83,7 @@ function RegularTimeline({ intervals, hours, page, handlePageChange }) {
   );
 }
 
-function MobileTimeline({ intervals, hours, page, handlePageChange }) {
+function MobileTimeline({ intervals, hours, page, handlePageChange, progress }) {
   return (
     <div>
       <Pagination
@@ -100,19 +103,21 @@ function MobileTimeline({ intervals, hours, page, handlePageChange }) {
         handleScaleChange={() => {}}
       />
       
-      <div className='relative inline-flex flex-row-reverse justify-center'>
+      <div className='border-blocked-500 relative inline-flex flex-row-reverse justify-center'>
         <Arrow
+          isMobile={true}
           visible={true}
           type={intervalTypes.work}
+          progress={progress}
         />
 
-        <ul className='inline-flex flex-col py-8 420:py-12 h-1472'>
+        <ul className='inline-flex flex-col h-1472 py-8 420:py-12'>
           {intervals.map((interval, index) => (
             <Interval key={index} type={interval.type} first={index === 0} last={index === intervals.length - 1} />
             ))}
         </ul>
 
-        <ul className='absolute top-0 h-full -left-24 -translate-x-full flex flex-col justify-between'>
+        <ul className='absolute top-0 h-full -left-16 420:-left-24 -translate-x-full flex flex-col justify-between'>
           {hours.map((hour, index) => (
             <Hour key={index}>{hour}</Hour>
           ))}
@@ -132,7 +137,7 @@ function Hour({ children }) {
     <li className="mono-med text-gray-400">{children}</li>
   );
 }
-function Arrow({ type, visible, progress }) {
+function Arrow({ type, visible, progress, isMobile }) {
   let colorStyle = '';
 
   switch (type) {
@@ -148,15 +153,32 @@ function Arrow({ type, visible, progress }) {
       break;
   }
 
-  let visibilityStyle = visible ? "visible" : "invisible";
+  const visibilityStyle = visible ? "visible" : "invisible";
 
-  return (
-    <div className={`${visibilityStyle} absolute h-full right-0 translate-x-full 932:h-auto 932:relative 932:translate-x-0 932:mx-monopad`}>
-      <svg className="relative top-64 932:top-0 932:left-64 w-16 h-16 ml-8 932:m-0 932:mb-8 420:w-20 420:h-20 932:-rotate-90" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+  return (isMobile ? (
+    <div className={`${visibilityStyle} absolute left-full top-8 420:top-12 bottom-8 420:bottom-12`}>
+      <svg
+        className="relative w-16 h-16 420:w-20 420:h-20 ml-8 -translate-y-1/2"
+        style={{ top: `${progress}%` }}
+        viewBox="0 0 20 20"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg">
       <path className={colorStyle} d="M17.5 1.66666L2.5 9.99999L17.5 18.3333L17.5 1.66666Z"/>
       </svg>
     </div>
-  )
+  ) : (
+    <div className={`${visibilityStyle} mx-monopad`}>
+      <svg
+        className="relative mb-8 w-20 h-20 -rotate-90 -translate-x-1/2"
+        style={{ left: `${progress}%` }}
+        viewBox="0 0 20 20"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+      <path className={colorStyle} d="M17.5 1.66666L2.5 9.99999L17.5 18.3333L17.5 1.66666Z"/>
+      </svg>
+    </div>
+  ));
 }
 
 Arrow.propTypes = {
@@ -187,7 +209,7 @@ function Pages({ pages, currentPage, handlePageChange }) {
 
 function Pagination({ intervals, currentInterval, handleIntervalChange, scales, currentScale, handleScaleChange }) {
   return (
-    <div className="flex flex-col justify-center items-center gap-24 pb-48 932:pb-0 932:pt-48">
+    <div className="flex flex-col justify-center items-center gap-16 420:gap-24 pb-32 420:pb-48 932:pb-0 932:pt-48">
       <Pages
         pages={intervals}
         currentPage={currentInterval}

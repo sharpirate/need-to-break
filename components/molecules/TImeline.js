@@ -2,14 +2,14 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import Interval, { intervalTypes } from '../atoms/Interval';
 import Tab, { tabTypes } from '../atoms/Tab';
-function Timeline({ intervals, hours, progress }) {
+function Timeline({ timeline, hours, progress }) {
   const [page, setPage] = useState(0);
 
   const timelineProps = {
-    intervals,
+    timeline,
     hours,
     page,
-    progress: 100,
+    progress: 50,
     handlePageChange: index => setPage(index)
   };
 
@@ -32,15 +32,15 @@ function Timeline({ intervals, hours, progress }) {
   );
 }
 
-function RegularTimeline({ intervals, hours, page, handlePageChange, progress }) {
+function RegularTimeline({ timeline, hours, page, handlePageChange, progress }) {
   return (
     <div className="flex flex-col overflow-hidden">
       <div
         className="flex relative gap-64 transition-all duration-700 ease-[cubic-bezier(0.5,0,0.5,1)]"
         style={{ width: `calc(${(4 * 100)}% + ${3 * 64}px)`, left: `calc(${-page * 100}% - ${page * 64}px)` }}
       >
-        {[1, 2, 3, 4].map((item) => (
-          <div className="w-full">
+        {[1, 2, 3, 4].map((item, i) => (
+          <div key={i} className="w-full">
             <Arrow
               isMobile={false}
               visible={item === 1}
@@ -49,8 +49,8 @@ function RegularTimeline({ intervals, hours, page, handlePageChange, progress })
             />
 
             <ul className='flex flex-row px-monopad'>
-              {intervals.map((interval, index) => (
-                <Interval key={index} type={interval.type} first={index === 0} last={false} />
+              {timeline.slice(0, 4).map(interval => (
+                <Interval key={interval.id} type={interval.type} blocks={interval.blocks} first={false} last={false} />
                 ))}
             </ul>
 
@@ -83,7 +83,7 @@ function RegularTimeline({ intervals, hours, page, handlePageChange, progress })
   );
 }
 
-function MobileTimeline({ intervals, hours, page, handlePageChange, progress }) {
+function MobileTimeline({ timeline, hours, page, handlePageChange, progress }) {
   return (
     <div>
       <Pagination
@@ -112,8 +112,8 @@ function MobileTimeline({ intervals, hours, page, handlePageChange, progress }) 
         />
 
         <ul className='inline-flex flex-col h-1472 py-8 420:py-12'>
-          {intervals.map((interval, index) => (
-            <Interval key={index} type={interval.type} first={index === 0} last={index === intervals.length - 1} />
+          {timeline.map((interval, index) => (
+            <Interval key={index} type={interval.type} first={false} last={false} />
             ))}
         </ul>
 
@@ -127,7 +127,7 @@ function MobileTimeline({ intervals, hours, page, handlePageChange, progress }) 
   );
 }
   Timeline.propTypes = {
-  intervals: PropTypes.array,
+  timeline: PropTypes.array,
   hours: PropTypes.array,
   showArrow: PropTypes.bool
 };

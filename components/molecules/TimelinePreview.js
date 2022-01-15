@@ -7,75 +7,63 @@ import Button, { buttonTypes } from "../atoms/Button";
 import Icon, { iconTypes } from "../atoms/Icon";
 import SavePresetModal from "../molecules/cards/SavePresetModal";
 
-const intervals = [
-  { type: 'work' },
-  { type: 'break' },
-  { type: 'blocked' },
-  { type: 'blocked' },
-  { type: 'floating' },
-  { type: 'work' },
-  { type: 'break' },
-  { type: 'work' },
-  { type: 'work' },
-  { type: 'break' },
-  { type: 'blocked' },
-  { type: 'blocked' },
-  { type: 'floating' },
-  { type: 'work' },
-  { type: 'break' },
-  { type: 'work' },
-  { type: 'work' },
-  { type: 'break' },
-  { type: 'blocked' },
-  { type: 'blocked' },
-  { type: 'floating' },
-  { type: 'work' },
-  { type: 'break' },
-  { type: 'work' },
-  { type: 'work' },
-  { type: 'break' },
-  { type: 'blocked' },
-  { type: 'blocked' },
-  { type: 'floating' },
-  { type: 'work' },
-  { type: 'break' },
-  { type: 'work' },
+const timeline = [
+  // 12 to 13
+  {
+    type: 'work',
+    blocks: 4,
+    start: '12:00',
+    id: 0
+  },
+  {
+    type: 'break',
+    blocks: 8,
+    start: '12:20',
+    id: 1
+  },
+  
+  // 13 to 14
+  {
+    type: 'work',
+    blocks: 6,
+    start: '13:00',
+    id: 2
+  },
+  {
+    type: 'break',
+    blocks: 6,
+    start: '13:30',
+    id: 3
+  },
+  
+  // 14 to 15
+  {
+    type: 'work',
+    blocks: 8,
+    start: '14:00',
+    id: 4
+  },
+  {
+    type: 'break',
+    blocks: 4,
+    start: '14:40',
+    id: 5
+  },
+  
+  // 15 to 16
+  {
+    type: 'work',
+    blocks: 10,
+    start: '15:00',
+    id: 6
+  },
+  {
+    type: 'break',
+    blocks: 2,
+    start: '15:50',
+    id: 7
+  },
 ];
-
-const otherIntervals = [
-  { type: 'work' },
-  { type: 'break' },
-  { type: 'work' },
-  { type: 'break' },
-  { type: 'work' },
-  { type: 'break' },
-  { type: 'work' },
-  { type: 'break' },
-  { type: 'work' },
-  { type: 'break' },
-  { type: 'work' },
-  { type: 'break' },
-  { type: 'work' },
-  { type: 'break' },
-  { type: 'work' },
-  { type: 'break' },
-  { type: 'work' },
-  { type: 'break' },
-  { type: 'work' },
-  { type: 'break' },
-  { type: 'work' },
-  { type: 'break' },
-  { type: 'work' },
-  { type: 'break' },
-  { type: 'work' },
-  { type: 'break' },
-  { type: 'work' },
-  { type: 'break' },
-  { type: 'work' },
-  { type: 'break' },
-  { type: 'work' },
-  { type: 'break' },
-]
 
 const hours = ['12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00'];
 
@@ -128,7 +116,7 @@ function TimelinePreview({ hasFloating }) {
 
         <ViewMoreLess viewMoreText="View Timeline" viewLessText="Hide Timeline" isTimeline={true} >
           <div className=" 932:mt-0 w-full">
-            <Timeline intervals={otherIntervals} hours={hours} showArrow={false} />
+            <Timeline timeline={timeline} hours={hours} showArrow={false} />
           </div>
         </ViewMoreLess>
       </div>

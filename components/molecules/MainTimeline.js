@@ -6,95 +6,63 @@ import Label, { labelTypes } from "../atoms/Label";
 import RadioButton from "../atoms/RadioButton";
 import Button, { buttonTypes } from "../atoms/Button";
 
-const intervals = [
-  { type: 'work' },
-  { type: 'break' },
-  { type: 'blocked' },
-  { type: 'blocked' },
-  { type: 'floating' },
-  { type: 'work' },
-  { type: 'break' },
-  { type: 'work' },
-  { type: 'work' },
-  { type: 'break' },
-  { type: 'blocked' },
-  { type: 'blocked' },
-  { type: 'floating' },
-  { type: 'work' },
-  { type: 'break' },
-  { type: 'work' },
-  { type: 'work' },
-  { type: 'break' },
-  { type: 'blocked' },
-  { type: 'blocked' },
-  { type: 'floating' },
-  { type: 'work' },
-  { type: 'break' },
-  { type: 'work' },
-  { type: 'work' },
-  { type: 'break' },
-  { type: 'blocked' },
-  { type: 'blocked' },
-  { type: 'floating' },
-  { type: 'work' },
-  { type: 'break' },
-  { type: 'work' },
-];
-
-const otherIntervals = [
-  { type: 'work' },
-  { type: 'break' },
-  { type: 'work' },
-  { type: 'break' },
-  { type: 'work' },
-  { type: 'break' },
-  { type: 'work' },
-  { type: 'break' },
-  { type: 'work' },
-  { type: 'break' },
-  { type: 'work' },
-  { type: 'break' },
+const timeline = [
+  // 12 to 13
+  {
+    type: 'work',
+    blocks: 4,
+    start: '12:00',
+    id: 0
+  },
+  {
+    type: 'break',
+    blocks: 8,
+    start: '12:20',
+    id: 1
+  },
   
-  { type: 'work' },
-  { type: 'break' },
-  { type: 'work' },
-  { type: 'break' },
-  { type: 'work' },
-  { type: 'break' },
-  { type: 'work' },
-  { type: 'break' },
-  { type: 'work' },
-  { type: 'break' },
-  { type: 'work' },
-  { type: 'break' },
-
-  // { type: 'work' },
-  // { type: 'break' },
-  // { type: 'work' },
-  // { type: 'break' },
-  // { type: 'work' },
-  // { type: 'break' },
-  // { type: 'work' },
-  // { type: 'break' },
-  // { type: 'work' },
-  // { type: 'break' },
-  // { type: 'work' },
-  // { type: 'break' },
-
-  // { type: 'work' },
-  // { type: 'break' },
-  // { type: 'work' },
-  // { type: 'break' },
-  // { type: 'work' },
-  // { type: 'break' },
-  // { type: 'work' },
-  // { type: 'break' },
-  // { type: 'work' },
-  // { type: 'break' },
-  // { type: 'work' },
-  // { type: 'break' },
-
-]
+  // 13 to 14
+  {
+    type: 'work',
+    blocks: 6,
+    start: '13:00',
+    id: 2
+  },
+  {
+    type: 'break',
+    blocks: 6,
+    start: '13:30',
+    id: 3
+  },
+  
+  // 14 to 15
+  {
+    type: 'work',
+    blocks: 8,
+    start: '14:00',
+    id: 4
+  },
+  {
+    type: 'break',
+    blocks: 4,
+    start: '14:40',
+    id: 5
+  },
+  
+  // 15 to 16
+  {
+    type: 'work',
+    blocks: 10,
+    start: '15:00',
+    id: 6
+  },
+  {
+    type: 'break',
+    blocks: 2,
+    start: '15:50',
+    id: 7
+  },
+];
 
 const hours = ['12:00', '12:15', '12:30', '12:45', '13:00', '13:15', '13:30', '13:45', '14:00'];
 
@@ -133,7 +101,7 @@ function MainTimeline() {
 
       <ViewMoreLess viewMoreText="View Timeline" viewLessText="Hide Timeline" isTimeline={true} >
         <div className="mt-32 420:mt-48 932:mt-0 w-full">
-          <Timeline intervals={otherIntervals} hours={hours} showArrow={true} />
+          <Timeline timeline={timeline} hours={hours} showArrow={true} />
         </div>
       </ViewMoreLess>
     </div>

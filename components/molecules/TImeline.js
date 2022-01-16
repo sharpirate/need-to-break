@@ -34,23 +34,30 @@ function Timeline({ timeline, hours, progress }) {
 
 function RegularTimeline({ timeline, hours, page, handlePageChange, progress }) {
   return (
-    <div className="flex flex-col overflow-hidden">
+    <div> 
       <div
-        className="flex relative gap-64 transition-all duration-700 ease-[cubic-bezier(0.5,0,0.5,1)]"
-        style={{ width: `calc(${(4 * 100)}% + ${3 * 64}px)`, left: `calc(${-page * 100}% - ${page * 64}px)` }}
+        id="timeline"
+        tabIndex="0"
+        className="flex flex-col overflow-x-auto pb-64 custom-scroll scroll-smooth"
       >
-        {[1, 2, 3, 4].map((item, i) => (
-          <div key={i} className="w-full">
+        <div
+          className="flex relative transition-all duration-500 ease-in-out min-w-full"
+          style={{
+            width: `${(156 * (hours.length - 1))}px`,
+          }}
+          // (label width in px * 3) * (number of labels - 1)
+        >
+          <div className="w-full">
             <Arrow
               isMobile={false}
-              visible={item === 1}
+              visible={true}
               type={intervalTypes.work}
               progress={progress}
             />
 
             <ul className='flex flex-row px-monopad'>
-              {timeline.slice(0, 4).map(interval => (
-                <Interval key={interval.id} type={interval.type} blocks={interval.blocks} first={false} last={false} />
+              {timeline.map((interval, index) => (
+                <Interval key={index} type={interval} first={index === 0} last={index === timeline.length - 1} />
                 ))}
             </ul>
 
@@ -60,25 +67,24 @@ function RegularTimeline({ timeline, hours, page, handlePageChange, progress }) 
               ))}
             </ul>
           </div>
-        ))}
+        </div>
       </div>
 
       <Pagination
         intervals={[
-          { name: '12:00 - 14:00', url: '' },
-          { name: '14:00 - 16:00', url: '' },
-          { name: '16:00 - 18:00', url: '' },
-          { name: '18:00 - 20:00', url: '' },
+          { name: '12:00', url: '' },
         ]}
         currentInterval={page}
         handleIntervalChange={handlePageChange}
         scales={[
-          { name: '2 hours', url: '' },
-          { name: '4 hours', url: '' },
+          { name: '5 min', url: '' },
+          { name: '15 min', url: '' },
+          { name: '30 min', url: '' },
         ]}
         currentScale={0}
         handleScaleChange={() => {}}
       />
+
     </div>
   );
 }
@@ -134,7 +140,7 @@ function MobileTimeline({ timeline, hours, page, handlePageChange, progress }) {
 
 function Hour({ children }) {
   return (
-    <li className="mono-med text-gray-400">{children}</li>
+    <li className="mono-med text-gray-500 select-none">{children}</li>
   );
 }
 function Arrow({ type, visible, progress, isMobile }) {
@@ -210,11 +216,11 @@ function Pages({ pages, currentPage, handlePageChange }) {
 function Pagination({ intervals, currentInterval, handleIntervalChange, scales, currentScale, handleScaleChange }) {
   return (
     <div className="flex flex-col justify-center items-center gap-16 420:gap-24 pb-32 420:pb-48 932:pb-0 932:pt-48">
-      <Pages
+      {/* <Pages
         pages={intervals}
         currentPage={currentInterval}
         handlePageChange={handleIntervalChange}
-      />
+      /> */}
 
       <Pages
         pages={scales}

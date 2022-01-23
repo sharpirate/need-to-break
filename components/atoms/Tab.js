@@ -97,7 +97,7 @@ function getMainNavStyle(active, first, last) {
 }
 
 function getPaginationStyle(active, first, last) {
-  let baseStyle = 'block outline-none text-center body-sbold py-2 420:py-0 px-12 420:px-16 border-t-2 border-b-2 border-r-2 border-primary-500 focus-visible:bg-primary-600 focus-visible:text-white';
+  let baseStyle = 'block outline-none text-center body-sbold py-2 420:py-0 px-8 420:px-8 border-t-2 border-b-2 border-r-2 border-primary-500 focus-visible:bg-primary-600 focus-visible:text-white';
 
   let activeStyle = '';
   

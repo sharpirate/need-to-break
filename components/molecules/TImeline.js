@@ -2,8 +2,8 @@ import React, { useState, useEffect, useLayoutEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import Interval, { intervalTypes } from '../atoms/Interval';
 import Tab, { tabTypes } from '../atoms/Tab';
-import { getIsMobileTimeline } from '../../utils/tailwindUtil';
-import NoSSRWrapper from '../../utils/NoSSRWrapper';
+import { isBelowBreakpoint } from '../../utils/tailwindUtil';
+import useClientWidth from '../../utils/useClientWidth';
 
 const hoursArray = [
   // 5 min
@@ -42,18 +42,6 @@ const hoursArray = [
     '19:00', '19:30',
     '20:00'
   ],
-  // 60 min
-  [
-    '12:00',
-    '13:00',
-    '14:00',
-    '15:00',
-    '16:00',
-    '17:00',
-    '18:00',
-    '19:00',
-    '20:00'
-  ]
 ];
 
 const intervals = [
@@ -100,15 +88,26 @@ function getStepBoundsIndex(x, intevals) {
   return Math.round(x / step);
 }
 
-function Timeline() {
-  const [currentInterval, setCurrentInterval] = useState(0);
-  const [scrollTarget, setScrollTarget] = useState({ value: null, smooth: null });
+function Timeline() {  
+  const clientWidth = useClientWidth();
+  const isMobile = isBelowBreakpoint(clientWidth, '932');
+
+  const timelineProps = {
+    timeline,
+    intervals,
+    progress: 0,
+  };
+
+  return isMobile ? <MobileTimeline {...timelineProps} /> : <RegularTimeline {...timelineProps} />;
+}
+
+const RegularTimeline = ({ timeline, intervals, progress }) => {
+  const timelineRef = useRef();
   const [scale, setScale] = useState(1);
   const [hours, setHours] = useState(hoursArray[1]);
+  const [currentInterval, setCurrentInterval] = useState(0);
   const [scroll, setScroll] = useState(0);
-  const timelineRef = useRef();
-
-  const isMobile = getIsMobileTimeline();
+  const [scrollTarget, setScrollTarget] = useState({ value: null, smooth: null });
 
   // Listen for scroll event
   useLayoutEffect(() => {
@@ -123,7 +122,6 @@ function Timeline() {
 
         if (scrollTarget.value === currentScroll) {
           setScrollTarget({ value: null, smooth: null });
-          console.log('target reached')
         }
 
         setScroll(currentScroll);
@@ -137,7 +135,6 @@ function Timeline() {
 
   // Update the current interval while scrolling
   useEffect(() => {
-    // console.log('scroll: ', scroll)
     const nextInterval = getStepBoundsIndex(scroll, intervals.length);
 
     if (currentInterval !== nextInterval && scrollTarget.value === null) {
@@ -148,7 +145,6 @@ function Timeline() {
   // Programatically scroll to a certain scroll target
   useLayoutEffect(() => {
     if (scrollTarget.value !== null && scrollTarget.smooth !== null) {
-      console.log('new scroll target: ', scrollTarget.value)
       scrollTo(scrollTarget);
     }
   }, [scrollTarget.value, scrollTarget.smooth]);
@@ -167,14 +163,6 @@ function Timeline() {
     }
   }
 
-  const handleIntervalChange = index => {
-    setCurrentInterval(index);
-    setScrollTarget({
-      value: index / (intervals.length - 1),
-      smooth: true
-    });
-  }
-
   const handleScaleChange = index => {
     if (index !== scale) {
       setScrollTarget({
@@ -186,22 +174,14 @@ function Timeline() {
     }
   }
 
-  const timelineProps = {
-    timeline,
-    timelineRef,
-    hours,
-    intervals,
-    currentInterval,
-    handleIntervalChange,
-    scale,
-    handleScaleChange,
-    progress: 50,
-  };
+  const handleIntervalChange = index => {
+    setCurrentInterval(index);
+    setScrollTarget({
+      value: index / (intervals.length - 1),
+      smooth: true
+    });
+  }
 
-  return isMobile ? <MobileTimeline {...timelineProps} /> : <RegularTimeline {...timelineProps} />;
-}
-
-const RegularTimeline = ({ timeline, hours, intervals, currentInterval, scale, handleIntervalChange, handleScaleChange, progress, timelineRef }) => {
   return (
     <div> 
       <div
@@ -214,9 +194,7 @@ const RegularTimeline = ({ timeline, hours, intervals, currentInterval, scale, h
           style={{
             width: `${(156 * (hours.length - 1))}px`,
             // (label width in px * 3) * (number of labels - 1)
-            // minWidth: `${1376 - 52}px`
-            // minWidth: `${timelineRef.current.clientWidth - 52}px`
-            // clientWidth - monopadding
+            // minWidth: clientWidth - monopadding
           }}
         >
           <Arrow
@@ -248,7 +226,6 @@ const RegularTimeline = ({ timeline, hours, intervals, currentInterval, scale, h
           { name: '5 min', url: '' },
           { name: '15 min', url: '' },
           { name: '30 min', url: '' },
-          { name: '60 min', url: '' },
         ]}
         currentScale={scale}
         handleScaleChange={handleScaleChange}
@@ -258,13 +235,22 @@ const RegularTimeline = ({ timeline, hours, intervals, currentInterval, scale, h
   );
 };
 
-function MobileTimeline({ timeline, hours, intervals, currentInterval, scale, handleIntervalChange, handleScaleChange, progress, timelineRef }) {
+function MobileTimeline({ timeline, intervals, progress }) {
+  const [scale, setScale] = useState(1);
+  const [hours, setHours] = useState(hoursArray[1]);
+  // const timelineRef = useRef();
+
+  const handleScaleChange = index => {
+    if (index !== scale) {
+      setScale(index);
+      setHours(hoursArray[index]);
+    }
+  }
+
   return (
     <div>
       <Pagination
         intervals={intervals}
-        currentInterval={currentInterval}
-        handleIntervalChange={handleIntervalChange}
         scales={[
           { name: '5 min', url: '' },
           { name: '15 min', url: '' },
@@ -277,36 +263,28 @@ function MobileTimeline({ timeline, hours, intervals, currentInterval, scale, ha
       />
       
       <div
-        ref={timelineRef}
-        id="timeline"
-        // className="overflow-x-auto pb-64 custom-scroll px-[50%] focus:outline-none"
-        // className='relative inline-flex flex-row-reverse justify-center'
+        // ref={timelineRef}
       >
         <div
-          className="relative"
+          className="relative inline-flex flex-row-reverse justify-center"
           style={{
             height: `${(156 * (hours.length - 1))}px`,
-            // width: `${(156 * (hours.length - 1))}px`,
-            // (label width in px * 3) * (number of labels - 1)
-            // minWidth: `${1376 - 52}px`
-            // clientWidth - monopadding
           }}
         >
-          {/* <Arrow
+          <Arrow
             isMobile={true}
             visible={true}
             type={intervalTypes.work}
             progress={progress}
-          /> */}
+          />
 
-          <ul className='inline-flex flex-col h-full py-8 420:py-12'>
+          <ul className="inline-flex flex-col h-full py-8 420:py-12">
             {timeline.map((interval, index) => (
               <Interval key={index} type={interval} first={index === 0} last={index === timeline.length - 1} />
               ))}
           </ul>
 
-          <ul className='absolute top-0 flex flex-col h-full justify-between'>
-          {/* <ul className='absolute top-0 h-full -left-16 420:-left-24 -translate-x-full flex flex-col justify-between'> */}
+          <ul className="absolute top-0 h-full -left-16 420:-left-24 -translate-x-full flex flex-col justify-between">
             {hours.map((hour, index) => (
               <Hour key={index}>{hour}</Hour>
             ))}
@@ -399,8 +377,7 @@ function Pages({ pages, currentPage, handlePageChange }) {
 
 function Pagination({ intervals, currentInterval, handleIntervalChange, scales, currentScale, handleScaleChange, isMobile }) {
   return isMobile ? (
-    <div className="flex justify-center py-32 420:py-48 sticky top-0 z-10 bg-white">
-    {/* <div className="flex justify-center py-32 420:py-48 sticky top-0 z-10 bg-white"> */}
+    <div className="flex justify-center py-32 420:py-48">
       <Pages
         pages={scales}
         currentPage={currentScale}

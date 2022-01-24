@@ -3,10 +3,7 @@ import tailwindConfig from '../tailwind.config.js';
 
 const config = resolveConfig(tailwindConfig);
 
-export function getIsMobileTimeline() {
-  if (typeof window !== "undefined") {
-    console.log(window.innerWidth <= 1024)
-    return window.innerWidth <= 1024;
-  }
-  return false;
+export function isBelowBreakpoint(clientWidth, breakpoint) {
+  // remove px from the end and convert to a number
+  return clientWidth <= parseInt(config.theme.screens[breakpoint].slice(0, -2));
 }

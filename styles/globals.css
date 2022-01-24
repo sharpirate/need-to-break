@@ -43,6 +43,11 @@
     content: ":\00a0";
   }
 
+  .custom-scroll {
+    scrollbar-color: #39A2DB #E8F0F2;
+    scrollbar-width: thin;
+  }
+
   .custom-scroll::-webkit-scrollbar {
     height: 8px;               /* width of the entire scrollbar */
   }

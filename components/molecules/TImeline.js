@@ -187,12 +187,13 @@ const RegularTimeline = ({ timeline, intervals, progress }) => {
       <div
         tabIndex={0}
         ref={timelineRef}
-        className="overflow-x-auto pb-64 custom-scroll px-[50%] focus:outline-none"
+        className="overflow-x-auto pb-64 custom-scrollbar focus:outline-none"
         onMouseEnter={() => timelineRef.current.focus()}
       >
         <div
+          className='px-[50%]'
           style={{
-            width: `${(156 * (hours.length - 1))}px`,
+            width: `calc(100% + ${(156 * (hours.length - 1))}px)`,
             // (label width in px * 3) * (number of labels - 1)
             // minWidth: clientWidth - monopadding
           }}

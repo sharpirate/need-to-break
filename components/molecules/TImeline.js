@@ -105,7 +105,7 @@ const RegularTimeline = ({ timeline, intervals, progress }) => {
   const timelineRef = useRef();
   const [scale, setScale] = useState(1);
   const [hours, setHours] = useState(hoursArray[1]);
-  const [currentInterval, setCurrentInterval] = useState(0);
+  const [interval, setInterval] = useState(0);
   const [scroll, setScroll] = useState(0);
   const [scrollTarget, setScrollTarget] = useState({ value: null, smooth: null });
 
@@ -137,8 +137,8 @@ const RegularTimeline = ({ timeline, intervals, progress }) => {
   useEffect(() => {
     const nextInterval = getStepBoundsIndex(scroll, intervals.length);
 
-    if (currentInterval !== nextInterval && scrollTarget.value === null) {
-      setCurrentInterval(nextInterval);
+    if (interval !== nextInterval && scrollTarget.value === null) {
+      setInterval(nextInterval);
     }
   }, [scroll]);
 
@@ -175,7 +175,7 @@ const RegularTimeline = ({ timeline, intervals, progress }) => {
   }
 
   const handleIntervalChange = index => {
-    setCurrentInterval(index);
+    setInterval(index);
     setScrollTarget({
       value: index / (intervals.length - 1),
       smooth: true
@@ -221,7 +221,7 @@ const RegularTimeline = ({ timeline, intervals, progress }) => {
 
       <Pagination
         intervals={intervals}
-        currentInterval={currentInterval}
+        interval={interval}
         handleIntervalChange={handleIntervalChange}
         scales={[
           { name: '5 min', url: '' },
@@ -376,7 +376,7 @@ function Pages({ pages, currentPage, handlePageChange }) {
   );
 }
 
-function Pagination({ intervals, currentInterval, handleIntervalChange, scales, currentScale, handleScaleChange, isMobile }) {
+function Pagination({ intervals, interval, handleIntervalChange, scales, currentScale, handleScaleChange, isMobile }) {
   return isMobile ? (
     <div className="flex justify-center py-32 420:py-48">
       <Pages
@@ -389,7 +389,7 @@ function Pagination({ intervals, currentInterval, handleIntervalChange, scales, 
     <div className="flex flex-col justify-center items-center gap-24 pb-0 pt-48">
       <Pages
         pages={intervals}
-        currentPage={currentInterval}
+        currentPage={interval}
         handlePageChange={handleIntervalChange}
       />
       <Pages

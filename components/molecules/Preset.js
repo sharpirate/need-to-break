@@ -11,7 +11,7 @@ function Preset({ name }) {
   const [modalIsOpen, setModalIsOpen] = useState(false);
 
   return (
-    <section className="w-full flex flex-col justify-center items-center text-center bg-white rounded-8 py-16 px-32 420:py-24 420:px-48 932:px-64 932:py-32">
+    <section className="w-full flex flex-col justify-center items-center text-center bg-white rounded-8 py-16 px-32 420:py-24 420:px-48 932:py-32">
 
       {/* Icon & Name */}
       <div className="flex flex-col justify-center items-center gap-16 420:gap-24 mb-16 420:mb-24">

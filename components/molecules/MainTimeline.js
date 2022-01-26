@@ -15,7 +15,7 @@ const TimelineNoSSR = dynamic(
 
 function MainTimeline() {
   return (
-    <div className="w-full flex flex-col justify-center items-center text-center bg-white rounded-8 py-16 px-32 420:py-24 420:px-48 932:px-48 932:py-32">
+    <div className="w-full flex flex-col justify-center items-center text-center bg-white rounded-8 py-16 px-32 420:py-24 420:px-48 932:py-32">
 
       {/* Restart Block */}
       <div className="flex flex-col justify-center items-center mb-32 420:mb-48">
@@ -47,10 +47,9 @@ function MainTimeline() {
       </div>
 
       <ViewMoreLess viewMoreText="View Timeline" viewLessText="Hide Timeline" isTimeline={true} >
-        {/* <div className="mt-32 420:mt-48 932:mt-0 w-full"> */}
-          {/* <Timeline /> */}
+        <div className="mt-32 420:mt-48 932:mt-0 w-full">
           <TimelineNoSSR />
-        {/* </div> */}
+        </div>
       </ViewMoreLess>
     </div>
   );

@@ -43,21 +43,21 @@
     content: ":\00a0";
   }
 
-  .custom-scroll {
+  .custom-scrollbar {
     scrollbar-color: #39A2DB #E8F0F2;
     scrollbar-width: thin;
   }
 
-  .custom-scroll::-webkit-scrollbar {
+  .custom-scrollbar::-webkit-scrollbar {
     height: 8px;               /* width of the entire scrollbar */
   }
 
-  .custom-scroll::-webkit-scrollbar-track {
+  .custom-scrollbar::-webkit-scrollbar-track {
     background: #E8F0F2;        /* color of the tracking area */
     border-radius: 8px;
   }
 
-  .custom-scroll::-webkit-scrollbar-thumb {
+  .custom-scrollbar::-webkit-scrollbar-thumb {
     background-color: #39A2DB;    /* color of the scroll thumb */
     border-radius: 8px;
   }

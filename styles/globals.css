@@ -43,12 +43,35 @@
     content: ":\00a0";
   }
 
+  .custom-scrollbar {
+    scrollbar-color: #39A2DB #E8F0F2;
+    scrollbar-width: thin;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar {
+    height: 8px;               /* width of the entire scrollbar */
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: #E8F0F2;        /* color of the tracking area */
+    border-radius: 8px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background-color: #39A2DB;    /* color of the scroll thumb */
+    border-radius: 8px;
+  }
+  
   .body-reg {
     @apply font-base font-reg text-13 420:text-16 tracking-2;
   }
 
   .body-med {
     @apply font-base font-med text-13 420:text-16 tracking-2;
+  }
+
+  .mono-med {
+    @apply font-mono font-med text-13 420:text-16;
   }
 
   .body-bold {

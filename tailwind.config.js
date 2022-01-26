@@ -58,7 +58,7 @@ module.exports = {
       '1260': '1260px'
     },
     spacing: {
-      'sch': '2.4px', // "semi column half" - aligning the hours prefectly to the timeline
+      'monopad': '26px', // width of 2.5 characters in monospaced font for timeline
       '0': '0px',
       '1': '1px',
       '2': '2px',
@@ -91,6 +91,7 @@ module.exports = {
     },
     fontFamily: {
       base: ['Inter', 'sans-serif'],
+      mono: ['Azeret Mono', 'monospace'],
       display: ['IntroDemo']
     },
     fontSize: {

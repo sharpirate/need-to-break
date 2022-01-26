@@ -7,83 +7,11 @@ import Button, { buttonTypes } from "../atoms/Button";
 import Icon, { iconTypes } from "../atoms/Icon";
 import DeletePresetModal from "./cards/DeletePresetModal";
 
-const intervals = [
-  { type: 'work' },
-  { type: 'break' },
-  { type: 'blocked' },
-  { type: 'blocked' },
-  { type: 'floating' },
-  { type: 'work' },
-  { type: 'break' },
-  { type: 'work' },
-  { type: 'work' },
-  { type: 'break' },
-  { type: 'blocked' },
-  { type: 'blocked' },
-  { type: 'floating' },
-  { type: 'work' },
-  { type: 'break' },
-  { type: 'work' },
-  { type: 'work' },
-  { type: 'break' },
-  { type: 'blocked' },
-  { type: 'blocked' },
-  { type: 'floating' },
-  { type: 'work' },
-  { type: 'break' },
-  { type: 'work' },
-  { type: 'work' },
-  { type: 'break' },
-  { type: 'blocked' },
-  { type: 'blocked' },
-  { type: 'floating' },
-  { type: 'work' },
-  { type: 'break' },
-  { type: 'work' },
-];
-
-const otherIntervals = [
-  { type: 'work' },
-  { type: 'break' },
-  { type: 'work' },
-  { type: 'break' },
-  { type: 'work' },
-  { type: 'break' },
-  { type: 'work' },
-  { type: 'break' },
-  { type: 'work' },
-  { type: 'break' },
-  { type: 'work' },
-  { type: 'break' },
-  { type: 'work' },
-  { type: 'break' },
-  { type: 'work' },
-  { type: 'break' },
-  { type: 'work' },
-  { type: 'break' },
-  { type: 'work' },
-  { type: 'break' },
-  { type: 'work' },
-  { type: 'break' },
-  { type: 'work' },
-  { type: 'break' },
-  { type: 'work' },
-  { type: 'break' },
-  { type: 'work' },
-  { type: 'break' },
-  { type: 'work' },
-  { type: 'break' },
-  { type: 'work' },
-  { type: 'work' },
-]
-
-const hours = ['12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00'];
-
 function Preset({ name }) {
   const [modalIsOpen, setModalIsOpen] = useState(false);
 
   return (
-    <section className="w-full flex flex-col justify-center items-center text-center bg-white rounded-8 py-16 px-32 420:py-24 420:px-48 932:px-32 932:py-32">
+    <section className="w-full flex flex-col justify-center items-center text-center bg-white rounded-8 py-16 px-32 420:py-24 420:px-48 932:py-32">
 
       {/* Icon & Name */}
       <div className="flex flex-col justify-center items-center gap-16 420:gap-24 mb-16 420:mb-24">
@@ -135,7 +63,7 @@ function Preset({ name }) {
 
         <ViewMoreLess viewMoreText="View Timeline" viewLessText="Hide Timeline" isTimeline={true} >
           <div className=" 932:mt-0 w-full">
-            <Timeline intervals={otherIntervals} hours={hours} showArrow={false} />
+            <Timeline />
           </div>
         </ViewMoreLess>
       </div>

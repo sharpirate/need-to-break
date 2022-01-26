@@ -6,81 +6,16 @@ import Label, { labelTypes } from "../atoms/Label";
 import RadioButton from "../atoms/RadioButton";
 import Button, { buttonTypes } from "../atoms/Button";
 
-const intervals = [
-  { type: 'work' },
-  { type: 'break' },
-  { type: 'blocked' },
-  { type: 'blocked' },
-  { type: 'floating' },
-  { type: 'work' },
-  { type: 'break' },
-  { type: 'work' },
-  { type: 'work' },
-  { type: 'break' },
-  { type: 'blocked' },
-  { type: 'blocked' },
-  { type: 'floating' },
-  { type: 'work' },
-  { type: 'break' },
-  { type: 'work' },
-  { type: 'work' },
-  { type: 'break' },
-  { type: 'blocked' },
-  { type: 'blocked' },
-  { type: 'floating' },
-  { type: 'work' },
-  { type: 'break' },
-  { type: 'work' },
-  { type: 'work' },
-  { type: 'break' },
-  { type: 'blocked' },
-  { type: 'blocked' },
-  { type: 'floating' },
-  { type: 'work' },
-  { type: 'break' },
-  { type: 'work' },
-];
+import dynamic from 'next/dynamic'
 
-const otherIntervals = [
-  { type: 'work' },
-  { type: 'break' },
-  { type: 'work' },
-  { type: 'break' },
-  { type: 'work' },
-  { type: 'break' },
-  { type: 'work' },
-  { type: 'break' },
-  { type: 'work' },
-  { type: 'break' },
-  { type: 'work' },
-  { type: 'break' },
-  { type: 'work' },
-  { type: 'break' },
-  { type: 'work' },
-  { type: 'break' },
-  { type: 'work' },
-  { type: 'break' },
-  { type: 'work' },
-  { type: 'break' },
-  { type: 'work' },
-  { type: 'break' },
-  { type: 'work' },
-  { type: 'break' },
-  { type: 'work' },
-  { type: 'break' },
-  { type: 'work' },
-  { type: 'break' },
-  { type: 'work' },
-  { type: 'break' },
-  { type: 'work' },
-  { type: 'break' },
-]
-
-const hours = ['12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00'];
+const TimelineNoSSR = dynamic(
+  () => import("./TImeline"),
+  { ssr: false }
+);
 
 function MainTimeline() {
   return (
-    <div className="w-full flex flex-col justify-center items-center text-center bg-white rounded-8 py-16 px-32 420:py-24 420:px-48 932:px-32 932:py-32">
+    <div className="w-full flex flex-col justify-center items-center text-center bg-white rounded-8 py-16 px-32 420:py-24 420:px-48 932:py-32">
 
       {/* Restart Block */}
       <div className="flex flex-col justify-center items-center mb-32 420:mb-48">
@@ -113,7 +48,7 @@ function MainTimeline() {
 
       <ViewMoreLess viewMoreText="View Timeline" viewLessText="Hide Timeline" isTimeline={true} >
         <div className="mt-32 420:mt-48 932:mt-0 w-full">
-          <Timeline intervals={otherIntervals} hours={hours} showArrow={true} />
+          <TimelineNoSSR />
         </div>
       </ViewMoreLess>
     </div>

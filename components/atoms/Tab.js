@@ -8,14 +8,26 @@ const types = {
 };
 
 export { types as tabTypes };
-function Tab({ children, type, active, first, last, url }) {
-  return (
-    <li>
-      <Link href={url}>
-        <a className={getStyle(type, active, first, last)}>{children}</a>
-      </Link>
-    </li>
-  );
+function Tab({ children, type, active, first, last, url, handleClick }) {
+  let tab;
+
+  if (type === types.pagination) {
+    tab = (
+      <li>
+        <button className={getStyle(type, active, first, last)} onClick={handleClick}>{children}</button>
+      </li>
+    );
+  } else {
+    tab = (
+      <li>
+        <Link href={url}>
+          <a className={getStyle(type, active, first, last)}>{children}</a>
+        </Link>
+      </li>
+    );
+  }
+
+  return tab;
 }
 
 Tab.propTypes = {
@@ -23,7 +35,8 @@ Tab.propTypes = {
   active: PropTypes.bool,
   first: PropTypes.bool,
   last: PropTypes.bool,
-  url: PropTypes.string
+  url: PropTypes.string,
+  handleClick: PropTypes.func
 };
 
 function getStyle(type, active, first, last) {
@@ -84,7 +97,7 @@ function getMainNavStyle(active, first, last) {
 }
 
 function getPaginationStyle(active, first, last) {
-  let baseStyle = 'block outline-none text-center body-sbold py-2 px-16 420:py-0 border-t-2 border-b-2 border-r-2 border-primary-500 focus-visible:bg-primary-600 focus-visible:text-white';
+  let baseStyle = 'block outline-none text-center body-sbold py-2 420:py-0 px-8 border-t-2 border-b-2 border-r-2 border-primary-500 focus-visible:bg-primary-600 focus-visible:text-white';
 
   let activeStyle = '';
   
@@ -97,9 +110,9 @@ function getPaginationStyle(active, first, last) {
   let borderStyle = '';
 
   if (first) {
-    borderStyle = 'border-2 rounded-l-20';
+    borderStyle = 'border-2 rounded-l-4';
   } else if (last) {
-    borderStyle = 'border-2 border-l-0 rounded-r-20';
+    borderStyle = 'border-2 border-l-0 rounded-r-4';
   }
 
   return `${baseStyle} ${activeStyle} ${borderStyle}`;

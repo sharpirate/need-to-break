@@ -43,7 +43,7 @@ function MainTimeline() {
       </div>
 
       <div className="mb-32 420:mb-48">
-        <Timer type={intervalTypes.work} />
+        <Timer type={intervalTypes.work} duration={5 * 60} />
       </div>
 
       <ViewMoreLess viewMoreText="View Timeline" viewLessText="Hide Timeline" isTimeline={true} >

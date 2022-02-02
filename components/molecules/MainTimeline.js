@@ -6,13 +6,6 @@ import Label, { labelTypes } from "../atoms/Label";
 import RadioButton from "../atoms/RadioButton";
 import Button, { buttonTypes } from "../atoms/Button";
 
-import dynamic from 'next/dynamic'
-
-const TimelineNoSSR = dynamic(
-  () => import("./TImeline"),
-  { ssr: false }
-);
-
 function MainTimeline() {
   return (
     <div className="w-full flex flex-col justify-center items-center text-center bg-white rounded-8 py-16 px-32 420:py-24 420:px-48 932:py-32">
@@ -48,7 +41,7 @@ function MainTimeline() {
 
       <ViewMoreLess viewMoreText="View Timeline" viewLessText="Hide Timeline" isTimeline={true} >
         <div className="mt-32 420:mt-48 932:mt-0 w-full">
-          <TimelineNoSSR />
+          <Timeline />
         </div>
       </ViewMoreLess>
     </div>

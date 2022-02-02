@@ -1,6 +1,11 @@
 import { useState, useEffect } from "react";
+import isBrowser from "./isBrowser";
 
 export default function useClientWidth() {
+  if (!isBrowser) {
+    return 0;
+  }
+  
   const [width, setWidth] = useState(window.innerWidth);
 
   const handleResize = () => {

@@ -1,4 +1,5 @@
-import React, { useState, useEffect, useLayoutEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import useIsomorphicLayoutEffect from '../../utils/useIsomorphicLayoutEffect';
 import PropTypes from 'prop-types';
 import Interval, { intervalTypes } from '../atoms/Interval';
 import Tab, { tabTypes } from '../atoms/Tab';
@@ -97,8 +98,26 @@ function Timeline() {
     intervals,
     progress: 0,
   };
+  
+  const regularTimeline = (
+    <div className="hidden 932:block">
+      <RegularTimeline {...timelineProps} />
+    </div>
+  );
 
-  return isMobile ? <MobileTimeline {...timelineProps} /> : <RegularTimeline {...timelineProps} />;
+  const mobileTimeline = (
+    <div className="block 932:hidden">
+      <MobileTimeline {...timelineProps} />
+    </div>
+  );
+
+  return isMobile === null ? (
+    // return both on server side to avoid flickering
+    <>
+      {regularTimeline}
+      {mobileTimeline}
+    </>
+  ) : isMobile === false ? regularTimeline : mobileTimeline;
 }
 
 const RegularTimeline = ({ timeline, intervals, progress }) => {
@@ -110,7 +129,7 @@ const RegularTimeline = ({ timeline, intervals, progress }) => {
   const [scrollTarget, setScrollTarget] = useState({ value: null, smooth: null });
 
   // Listen for scroll event
-  useLayoutEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     const timeline = timelineRef.current;
 
     if (timeline) {
@@ -143,7 +162,7 @@ const RegularTimeline = ({ timeline, intervals, progress }) => {
   }, [scroll]);
 
   // Programatically scroll to a certain scroll target
-  useLayoutEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     if (scrollTarget.value !== null && scrollTarget.smooth !== null) {
       scrollTo(scrollTarget);
     }

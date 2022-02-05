@@ -5,6 +5,7 @@ import Interval, { intervalTypes } from '../atoms/Interval';
 import Tab, { tabTypes } from '../atoms/Tab';
 import { isBelowBreakpoint } from '../../utils/tailwindUtil';
 import useClientWidth from '../../utils/useClientWidth';
+import findClosest from '../../utils/findClosest';
 
 const hoursArray = [
   // 5 min
@@ -45,17 +46,17 @@ const hoursArray = [
   ],
 ];
 
-const intervals = [
-  { name: '12:00', url: '' },
-  { name: '13:00', url: '' },
-  { name: '14:00', url: '' },
-  { name: '15:00', url: '' },
-  { name: '16:00', url: '' },
-  { name: '17:00', url: '' },
-  { name: '18:00', url: '' },
-  { name: '19:00', url: '' },
-  { name: '20:00', url: '' },
-];
+// const intervals = [
+//   { name: '12:00', url: '' },
+//   { name: '13:00', url: '' },
+//   { name: '14:00', url: '' },
+//   { name: '15:00', url: '' },
+//   { name: '16:00', url: '' },
+//   { name: '17:00', url: '' },
+//   { name: '18:00', url: '' },
+//   { name: '19:00', url: '' },
+//   { name: '20:00', url: '' },
+// ];
 
 const pages = [
   { name: '12:00', value: 0 },
@@ -68,6 +69,8 @@ const pages = [
   { name: '19:00', value: 0.875 },
   { name: '20:00', value: 1 }
 ];
+
+const pageValues = pages.map(page => page.value);
 
 const scales = [
   { name: '5 min', value: 5 },
@@ -138,18 +141,13 @@ function genRandomTimeline(length) {
 
 const timeline = genRandomTimeline(12 * 8);
 
-function getStepBoundsIndex(x, intevals) {
-  const step = 1 / (intevals - 1);
-  return Math.round(x / step);
-}
-
 function Timeline() {  
   const clientWidth = useClientWidth();
   const isMobile = isBelowBreakpoint(clientWidth, '932');
 
   const timelineProps = {
     timeline,
-    intervals,
+    pages,
     progress: 0,
   };
   
@@ -174,11 +172,11 @@ function Timeline() {
   ) : isMobile === false ? regularTimeline : mobileTimeline;
 }
 
-const RegularTimeline = ({ timeline, intervals, progress }) => {
+const RegularTimeline = ({ timeline, pages, progress }) => {
   const timelineRef = useRef();
   const [scale, setScale] = useState(1);
   const [hours, setHours] = useState(hoursArray[1]);
-  const [interval, setInterval] = useState(0);
+  const [page, setPage] = useState(0);
   const [scroll, setScroll] = useState(0);
   const [scrollTarget, setScrollTarget] = useState({ value: null, smooth: null });
 
@@ -206,12 +204,12 @@ const RegularTimeline = ({ timeline, intervals, progress }) => {
     return () => timeline.removeEventListener('scroll', handleScroll);
   }, [timelineRef, scrollTarget.value]);
 
-  // Update the current interval while scrolling
+  // Update the current page while scrolling
   useEffect(() => {
-    const nextInterval = getStepBoundsIndex(scroll, intervals.length);
+    const nextPage = findClosest(scroll, pageValues);
 
-    if (interval !== nextInterval && scrollTarget.value === null) {
-      setInterval(nextInterval);
+    if (page !== nextPage && scrollTarget.value === null) {
+      setPage(nextPage);
     }
   }, [scroll]);
 
@@ -247,10 +245,10 @@ const RegularTimeline = ({ timeline, intervals, progress }) => {
     }
   }
 
-  const handleIntervalChange = index => {
-    setInterval(index);
+  const handlePageChange = value => {
+    setPage(value);
     setScrollTarget({
-      value: index / (intervals.length - 1),
+      value,
       smooth: true
     });
   }
@@ -293,9 +291,9 @@ const RegularTimeline = ({ timeline, intervals, progress }) => {
       </div>
 
       <Pagination
-        intervals={intervals}
-        interval={interval}
-        handleIntervalChange={handleIntervalChange}
+        pages={pages}
+        page={page}
+        handlePageChange={handlePageChange}
         scales={[
           { name: '5 min', url: '' },
           { name: '15 min', url: '' },
@@ -309,7 +307,7 @@ const RegularTimeline = ({ timeline, intervals, progress }) => {
   );
 };
 
-function MobileTimeline({ timeline, intervals, progress }) {
+function MobileTimeline({ timeline, pages, progress }) {
   const [scale, setScale] = useState(1);
   const [hours, setHours] = useState(hoursArray[1]);
   // const timelineRef = useRef();
@@ -324,7 +322,7 @@ function MobileTimeline({ timeline, intervals, progress }) {
   return (
     <div>
       <Pagination
-        intervals={intervals}
+        pages={pages}
         scales={[
           { name: '5 min', url: '' },
           { name: '15 min', url: '' },
@@ -434,13 +432,13 @@ function Pages({ pages, currentPage, handlePageChange }) {
     <ul className="flex">
       {pages.map((page, index) => (
         <Tab
-          key={page.url}
+          key={page.value}
           type={tabTypes.pagination}
           first={index === 0}
-          active={index === currentPage}
+          active={page.value === currentPage}
           last={index === pages.length - 1}
-          url={page.url}
-          handleClick={() => handlePageChange(index)}
+          value={page.value}
+          handleClick={() => handlePageChange(page.value)}
         >
           {page.name}
         </Tab>
@@ -449,7 +447,7 @@ function Pages({ pages, currentPage, handlePageChange }) {
   );
 }
 
-function Pagination({ intervals, interval, handleIntervalChange, scales, currentScale, handleScaleChange, isMobile }) {
+function Pagination({ pages, page, handlePageChange, scales, currentScale, handleScaleChange, isMobile }) {
   return isMobile ? (
     <div className="flex justify-center py-32 420:py-48">
       <Pages
@@ -461,9 +459,9 @@ function Pagination({ intervals, interval, handleIntervalChange, scales, current
   ) : (
     <div className="flex flex-col justify-center items-center gap-24 pb-0 pt-48">
       <Pages
-        pages={intervals}
-        currentPage={interval}
-        handlePageChange={handleIntervalChange}
+        pages={pages}
+        currentPage={page}
+        handlePageChange={handlePageChange}
       />
       <Pages
         pages={scales}

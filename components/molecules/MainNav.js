@@ -31,7 +31,7 @@ function MainNav() {
             type={tabTypes.mainNav}
             first={index === 0}
             last={index === tabs.length - 1}
-            url={tab.url}
+            value={tab.url}
           >
             {tab.name}
           </Tab>

@@ -1,12 +1,12 @@
 import { parseTime, getTwoDigitTime } from "./timeUtil";
-import { BLOCK_SIZE, SCALES } from "./constants";
+import { BLOCK_SIZE, SCALES, DIVIDERS } from "./constants";
 import { intervalTypes } from "../components/atoms/Interval";
 
 function parseBlocks(blocks, startTime) {
   // add timestamp and time
   for (let i = 0; i <= blocks.length; i++) {
     const prevBlock = blocks[i - 1];
-    const timestamp = i === 0 ? startTime : prevBlock.timestamp + (BLOCK_SIZE * 1000);
+    const timestamp = i === 0 ? startTime : prevBlock.timestamp + BLOCK_SIZE.ms;
     const date = new Date(timestamp);
     const hours = getTwoDigitTime(date.getHours());
     const minutes = getTwoDigitTime(date.getMinutes());
@@ -36,7 +36,7 @@ function parseBlocks(blocks, startTime) {
     if (i === 0 || blocks[i].type !== blocks[i - 1].type) {
       intervals.unshift({
         ...blocks[i],
-        duration: counter * BLOCK_SIZE
+        duration: counter * BLOCK_SIZE.min
       });
 
       counter = 1;
@@ -50,46 +50,90 @@ function parseBlocks(blocks, startTime) {
 
 function parseStartTime(startTime) {
   const [hours, minutes] = parseTime(startTime);
-  return new Date().setHours(hours, minutes, 00);
+  return new Date().setHours(hours, minutes, 0);
 }
 
-function generateScaleMap(blocks) {
+function generateScales(blocks) {
   const scaleMap = {};
 
-  for (const scale of SCALES) {
+  const intervals = blocks.length - 1;
+  const scales = SCALES.filter(scale => scale.value <= intervals * BLOCK_SIZE.min);
+
+  for (const scale of scales) {
     scaleMap[scale.value] = blocks.map(block => block.time).filter((time, index) => {
       // filter based on scale
-      return index % (scale.value / (BLOCK_SIZE / 60)) === 0;
+      return index % (scale.value / BLOCK_SIZE.min) === 0;
     });
   }
 
-  return scaleMap;
+  return [scales, scaleMap];
 }
 
 function generatePages(blocks) {
+  const intervals = blocks.length - 1;
+  const divider = DIVIDERS.find(divider => intervals % divider === 0 );
+
   const pages = blocks.map(block => block.time).filter((time, index) => {
-    // filter based on scale
-    return index % (60 / (BLOCK_SIZE / 60)) === 0;
-  });
+    return index % divider === 0;
+  })
 
   const valueStep = 1 / (pages.length - 1);
 
-  return pages.map((page, index) => ({
+  const pageMap = pages.map((page, index) => ({
     name: page,
     value: index * valueStep
   }));
+
+  const values = pageMap.map(page => page.value);
+
+  return [pageMap, values];
 }
 
-export default function parseTimeline(timeline) {
+export function generateBlocks(size, w, b) {
+  const blocks = [];
+
+  const workBlocks = w / BLOCK_SIZE.min; // 2
+  const breakBlocks = b / BLOCK_SIZE.min; // 1
+
+  let counter = 0;
+  let type = 'work';
+
+  for (let i = 0; i < size; i++) {
+    if (type === 'work') {
+      if (counter < workBlocks) {
+        blocks.push({ type: 'work' });
+      } else {
+        type = 'break';
+        counter = 0;
+        blocks.push({ type: 'break' });
+      }
+    } else {
+      if (counter < breakBlocks) {
+        blocks.push({ type: 'break' });
+      } else {
+        type = 'work';
+        counter = 0;
+        blocks.push({ type: 'work' });
+      }
+    }
+    counter++;
+  }
+
+  return blocks;
+}
+
+export function parseTimeline(timeline) {
   const startTime = timeline.startTime ? parseStartTime(timeline.startTime) : Date.now();
   const [blocks, intervals] = parseBlocks(timeline.blocks, startTime);
-  const scaleMap = generateScaleMap(blocks);
-  const pages = generatePages(blocks);
+  const [scales, scaleMap] = generateScales(blocks);
+  const [pages, pageValues] = generatePages(blocks);
 
   return {
     blocks,
     intervals,
     scaleMap,
-    pages
+    scales,
+    pages,
+    pageValues
   }
 }

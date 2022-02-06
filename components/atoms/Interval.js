@@ -1,5 +1,4 @@
 import PropTypes from 'prop-types';
-import { BLOCK_SIZE } from '../../utils/constants';
 
 const types = {
   work: 'work',
@@ -13,7 +12,7 @@ const types = {
 export { types as intervalTypes };
 
 function Interval({ type, first, last, duration }) {
-  return <li className={getStyle(type, first, last)} style={{ flexGrow: duration / BLOCK_SIZE }} />
+  return <li className={getStyle(type, first, last)} style={{ flexGrow: duration }} />
 }
 
 Interval.propTypes = {

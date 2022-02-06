@@ -5,97 +5,196 @@ import Interval, { intervalTypes } from '../atoms/Interval';
 import Tab, { tabTypes } from '../atoms/Tab';
 import { isBelowBreakpoint } from '../../utils/tailwindUtil';
 import useClientWidth from '../../utils/useClientWidth';
+import findClosest from '../../utils/findClosest';
+import { SCALES as scales } from '../../utils/constants';
 
-const hoursArray = [
-  // 5 min
-  [
-    '12:00', '12:05', '12:10', '12:15', '12:20', '12:25', '12:30', '12:35', '12:40', '12:45', '12:50', '12:55',
-    '13:00', '13:05', '13:10', '13:15', '13:20', '13:25', '13:30', '13:35', '13:40', '13:45', '13:50', '13:55',
-    '14:00', '14:05', '14:10', '14:15', '14:20', '14:25', '14:30', '14:35', '14:40', '14:45', '14:50', '14:55',
-    '15:00', '15:05', '15:10', '15:15', '15:20', '15:25', '15:30', '15:35', '15:40', '15:45', '15:50', '15:55',
-    '16:00', '16:05', '16:10', '16:15', '16:20', '16:25', '16:30', '16:35', '16:40', '16:45', '16:50', '16:55',
-    '17:00', '17:05', '17:10', '17:15', '17:20', '17:25', '17:30', '17:35', '17:40', '17:45', '17:50', '17:55',
-    '18:00', '18:05', '18:10', '18:15', '18:20', '18:25', '18:30', '18:35', '18:40', '18:45', '18:50', '18:55',
-    '19:00', '19:05', '19:10', '19:15', '19:20', '19:25', '19:30', '19:35', '19:40', '19:45', '19:50', '19:55',
-    '20:00'
+const timeline = {
+  blocks: [
+    { type: 'work', timestamp: 1644113574545, time: '04:12' },
+    { type: 'work', timestamp: 1644113874545, time: '04:17' },
+    { type: 'work', timestamp: 1644114174545, time: '04:22' },
+    { type: 'work', timestamp: 1644114474545, time: '04:27' },
+    { type: 'work', timestamp: 1644114774545, time: '04:32' },
+    { type: 'work', timestamp: 1644115074545, time: '04:37' },
+    { type: 'break', timestamp: 1644115374545, time: '04:42' },
+    { type: 'work', timestamp: 1644115674545, time: '04:47' },
+    { type: 'work', timestamp: 1644115974545, time: '04:52' },
+    { type: 'break', timestamp: 1644116274545, time: '04:57' },
+    { type: 'break', timestamp: 1644116574545, time: '05:02' },
+    { type: 'break', timestamp: 1644116874545, time: '05:07' },
+    { type: 'work', timestamp: 1644117174545, time: '05:12' },
+    { type: 'work', timestamp: 1644117474545, time: '05:17' },
+    { type: 'work', timestamp: 1644117774545, time: '05:22' },
+    { type: 'work', timestamp: 1644118074545, time: '05:27' },
+    { type: 'work', timestamp: 1644118374545, time: '05:32' },
+    { type: 'break', timestamp: 1644118674545, time: '05:37' },
+    { type: 'break', timestamp: 1644118974545, time: '05:42' },
+    { type: 'work', timestamp: 1644119274545, time: '05:47' },
+    { type: 'work', timestamp: 1644119574545, time: '05:52' },
+    { type: 'work', timestamp: 1644119874545, time: '05:57' },
+    { type: 'work', timestamp: 1644120174545, time: '06:02' },
+    { type: 'work', timestamp: 1644120474545, time: '06:07' },
+    { type: 'work', timestamp: 1644120774545, time: '06:12' },
+    { type: 'work', timestamp: 1644121074545, time: '06:17' },
+    { type: 'work', timestamp: 1644121374545, time: '06:22' },
+    { type: 'work', timestamp: 1644121674545, time: '06:27' },
+    { type: 'break', timestamp: 1644121974545, time: '06:32' },
+    { type: 'work', timestamp: 1644122274545, time: '06:37' },
+    { type: 'work', timestamp: 1644122574545, time: '06:42' },
+    { type: 'break', timestamp: 1644122874545, time: '06:47' },
+    { type: 'break', timestamp: 1644123174545, time: '06:52' },
+    { type: 'work', timestamp: 1644123474545, time: '06:57' },
+    { type: 'work', timestamp: 1644123774545, time: '07:02' },
+    { type: 'work', timestamp: 1644124074545, time: '07:07' },
+    { type: 'work', timestamp: 1644124374545, time: '07:12' },
+    { type: 'work', timestamp: 1644124674545, time: '07:17' },
+    { type: 'work', timestamp: 1644124974545, time: '07:22' },
+    { type: 'work', timestamp: 1644125274545, time: '07:27' },
+    { type: 'work', timestamp: 1644125574545, time: '07:32' },
+    { type: 'work', timestamp: 1644125874545, time: '07:37' },
+    { type: 'work', timestamp: 1644126174545, time: '07:42' },
+    { type: 'work', timestamp: 1644126474545, time: '07:47' },
+    { type: 'work', timestamp: 1644126774545, time: '07:52' },
+    { type: 'break', timestamp: 1644127074545, time: '07:57' },
+    { type: 'break', timestamp: 1644127374545, time: '08:02' },
+    { type: 'work', timestamp: 1644127674545, time: '08:07' },
+    { type: 'end', timestamp: 1644127974545, time: '08:12' }
   ],
-  // 15 min
-  [
-    '12:00', '12:15', '12:30', '12:45',
-    '13:00', '13:15', '13:30', '13:45',
-    '14:00', '14:15', '14:30', '14:45',
-    '15:00', '15:15', '15:30', '15:45',
-    '16:00', '16:15', '16:30', '16:45',
-    '17:00', '17:15', '17:30', '17:45',
-    '18:00', '18:15', '18:30', '18:45',
-    '19:00', '19:15', '19:30', '19:45',
-    '20:00'
-  ],
-  // 30 min
-  [
-    '12:00', '12:30',
-    '13:00', '13:30',
-    '14:00', '14:30',
-    '15:00', '15:30',
-    '16:00', '16:30',
-    '17:00', '17:30',
-    '18:00', '18:30',
-    '19:00', '19:30',
-    '20:00'
-  ],
-];
-
-const intervals = [
-  { name: '12:00', url: '' },
-  { name: '13:00', url: '' },
-  { name: '14:00', url: '' },
-  { name: '15:00', url: '' },
-  { name: '16:00', url: '' },
-  { name: '17:00', url: '' },
-  { name: '18:00', url: '' },
-  { name: '19:00', url: '' },
-  { name: '20:00', url: '' },
-];
-
-function genRandomTimeline(length) {
-  const timeline = [];
-
-  for (let i = 0; i < length; i++) {
-    switch (Math.floor(Math.random() * 2)) {
-      case 0:
-        timeline.push("work")
-        break;
-      case 1:
-        timeline.push("break")
-        break;
-      case 2:
-        timeline.push("floating")
-        break;
-      case 3:
-        timeline.push("blocked")
-        break;
-      default:
-        break;
+  intervals: [
+    {
+      type: 'work',
+      timestamp: 1644113574545,
+      time: '04:12',
+      duration: 1800
+    },
+    {
+      type: 'break',
+      timestamp: 1644115374545,
+      time: '04:42',
+      duration: 300
+    },
+    {
+      type: 'work',
+      timestamp: 1644115674545,
+      time: '04:47',
+      duration: 600
+    },
+    {
+      type: 'break',
+      timestamp: 1644116274545,
+      time: '04:57',
+      duration: 900
+    },
+    {
+      type: 'work',
+      timestamp: 1644117174545,
+      time: '05:12',
+      duration: 1500
+    },
+    {
+      type: 'break',
+      timestamp: 1644118674545,
+      time: '05:37',
+      duration: 600
+    },
+    {
+      type: 'work',
+      timestamp: 1644119274545,
+      time: '05:47',
+      duration: 2700
+    },
+    {
+      type: 'break',
+      timestamp: 1644121974545,
+      time: '06:32',
+      duration: 300
+    },
+    {
+      type: 'work',
+      timestamp: 1644122274545,
+      time: '06:37',
+      duration: 600
+    },
+    {
+      type: 'break',
+      timestamp: 1644122874545,
+      time: '06:47',
+      duration: 600
+    },
+    {
+      type: 'work',
+      timestamp: 1644123474545,
+      time: '06:57',
+      duration: 3600
+    },
+    {
+      type: 'break',
+      timestamp: 1644127074545,
+      time: '07:57',
+      duration: 600
+    },
+    {
+      type: 'work',
+      timestamp: 1644127674545,
+      time: '08:07',
+      duration: 300
     }
-  }
-
-  return timeline;
+  ],
+  scaleMap: {
+    '5': [
+      '04:12', '04:17', '04:22', '04:27', '04:32',
+      '04:37', '04:42', '04:47', '04:52', '04:57',
+      '05:02', '05:07', '05:12', '05:17', '05:22',
+      '05:27', '05:32', '05:37', '05:42', '05:47',
+      '05:52', '05:57', '06:02', '06:07', '06:12',
+      '06:17', '06:22', '06:27', '06:32', '06:37',
+      '06:42', '06:47', '06:52', '06:57', '07:02',
+      '07:07', '07:12', '07:17', '07:22', '07:27',
+      '07:32', '07:37', '07:42', '07:47', '07:52',
+      '07:57', '08:02', '08:07', '08:12'
+    ],
+    '15': [
+      '04:12', '04:27', '04:42',
+      '04:57', '05:12', '05:27',
+      '05:42', '05:57', '06:12',
+      '06:27', '06:42', '06:57',
+      '07:12', '07:27', '07:42',
+      '07:57', '08:12'
+    ],
+    '30': [
+      '04:12', '04:42',
+      '05:12', '05:42',
+      '06:12', '06:42',
+      '07:12', '07:42',
+      '08:12'
+    ]
+  },
+  pages: [
+    { name: '04:12', value: 0 },
+    { name: '05:12', value: 0.25 },
+    { name: '06:12', value: 0.5 },
+    { name: '07:12', value: 0.75 },
+    { name: '08:12', value: 1 }
+  ]
 }
 
-const timeline = genRandomTimeline(12 * 8);
+const { pages, scaleMap, intervals } = timeline;
+const pageValues = pages.map(page => page.value);
 
-function getStepBoundsIndex(x, intevals) {
-  const step = 1 / (intevals - 1);
-  return Math.round(x / step);
-}
+function Timeline() {
+  const [scale, setScale] = useState(15);
+  const [hours, setHours] = useState(scaleMap[scale]);
 
-function Timeline() {  
   const clientWidth = useClientWidth();
   const isMobile = isBelowBreakpoint(clientWidth, '932');
 
   const timelineProps = {
-    timeline,
     intervals,
+    pages,
+    hours,
+    setHours,
+    scale,
+    setScale,
     progress: 0,
   };
   
@@ -120,11 +219,9 @@ function Timeline() {
   ) : isMobile === false ? regularTimeline : mobileTimeline;
 }
 
-const RegularTimeline = ({ timeline, intervals, progress }) => {
+const RegularTimeline = ({ intervals, pages, scale, setScale, hours, setHours, progress }) => {
   const timelineRef = useRef();
-  const [scale, setScale] = useState(1);
-  const [hours, setHours] = useState(hoursArray[1]);
-  const [interval, setInterval] = useState(0);
+  const [page, setPage] = useState(0);
   const [scroll, setScroll] = useState(0);
   const [scrollTarget, setScrollTarget] = useState({ value: null, smooth: null });
 
@@ -152,12 +249,12 @@ const RegularTimeline = ({ timeline, intervals, progress }) => {
     return () => timeline.removeEventListener('scroll', handleScroll);
   }, [timelineRef, scrollTarget.value]);
 
-  // Update the current interval while scrolling
+  // Update the current page while scrolling
   useEffect(() => {
-    const nextInterval = getStepBoundsIndex(scroll, intervals.length);
+    const nextPage = findClosest(scroll, pageValues);
 
-    if (interval !== nextInterval && scrollTarget.value === null) {
-      setInterval(nextInterval);
+    if (page !== nextPage && scrollTarget.value === null) {
+      setPage(nextPage);
     }
   }, [scroll]);
 
@@ -182,21 +279,21 @@ const RegularTimeline = ({ timeline, intervals, progress }) => {
     }
   }
 
-  const handleScaleChange = index => {
-    if (index !== scale) {
+  const handleScaleChange = newScale => {
+    if (newScale !== scale) {
       setScrollTarget({
         value: scroll,
         smooth: false
       });
-      setScale(index);
-      setHours(hoursArray[index]);
+      setScale(newScale);
+      setHours(scaleMap[newScale]);
     }
   }
 
-  const handleIntervalChange = index => {
-    setInterval(index);
+  const handlePageChange = newPage => {
+    setPage(newPage);
     setScrollTarget({
-      value: index / (intervals.length - 1),
+      value: newPage,
       smooth: true
     });
   }
@@ -225,28 +322,24 @@ const RegularTimeline = ({ timeline, intervals, progress }) => {
           />
 
           <ul className='flex flex-row'>
-            {timeline.map((interval, index) => (
-              <Interval key={index} type={interval} first={index === 0} last={index === timeline.length - 1} />
+            {intervals.map((interval, index) => (
+              <Interval key={interval.timestamp} type={interval.type} first={index === 0} last={index === intervals.length - 1} duration={interval.duration} />
               ))}
           </ul>
 
           <ul className='flex flex-row justify-between mt-24 -mx-monopad'>
-            {hours.map((hour, index) => (
-              <Hour key={index}>{hour}</Hour>
+            {hours.map(hour => (
+              <Hour key={hour}>{hour}</Hour>
             ))}
           </ul>
         </div>
       </div>
 
       <Pagination
-        intervals={intervals}
-        interval={interval}
-        handleIntervalChange={handleIntervalChange}
-        scales={[
-          { name: '5 min', url: '' },
-          { name: '15 min', url: '' },
-          { name: '30 min', url: '' },
-        ]}
+        pages={pages}
+        page={page}
+        handlePageChange={handlePageChange}
+        scales={scales}
         currentScale={scale}
         handleScaleChange={handleScaleChange}
       />
@@ -255,28 +348,19 @@ const RegularTimeline = ({ timeline, intervals, progress }) => {
   );
 };
 
-function MobileTimeline({ timeline, intervals, progress }) {
-  const [scale, setScale] = useState(1);
-  const [hours, setHours] = useState(hoursArray[1]);
+function MobileTimeline({ intervals, scale, setScale, hours, setHours, progress }) {
   // const timelineRef = useRef();
-
-  const handleScaleChange = index => {
-    if (index !== scale) {
-      setScale(index);
-      setHours(hoursArray[index]);
+  const handleScaleChange = newScale => {
+    if (newScale !== scale) {
+      setScale(newScale);
+      setHours(scaleMap[newScale]);
     }
   }
 
   return (
     <div>
       <Pagination
-        intervals={intervals}
-        scales={[
-          { name: '5 min', url: '' },
-          { name: '15 min', url: '' },
-          { name: '30 min', url: '' },
-          { name: '60 min', url: '' },
-        ]}
+        scales={scales}
         currentScale={scale}
         handleScaleChange={handleScaleChange}
         isMobile={true}
@@ -299,14 +383,14 @@ function MobileTimeline({ timeline, intervals, progress }) {
           />
 
           <ul className="inline-flex flex-col h-full py-8 420:py-12">
-            {timeline.map((interval, index) => (
-              <Interval key={index} type={interval} first={index === 0} last={index === timeline.length - 1} />
+            {intervals.map((interval, index) => (
+              <Interval key={interval.timestamp} type={interval.type} first={index === 0} last={index === intervals.length - 1} duration={interval.duration} />
               ))}
           </ul>
 
           <ul className="absolute top-0 h-full -left-16 420:-left-24 -translate-x-full flex flex-col justify-between">
-            {hours.map((hour, index) => (
-              <Hour key={index}>{hour}</Hour>
+            {hours.map(hour => (
+              <Hour key={hour}>{hour}</Hour>
             ))}
           </ul>
         </div>
@@ -380,13 +464,13 @@ function Pages({ pages, currentPage, handlePageChange }) {
     <ul className="flex">
       {pages.map((page, index) => (
         <Tab
-          key={page.url}
+          key={page.value}
           type={tabTypes.pagination}
           first={index === 0}
-          active={index === currentPage}
+          active={page.value === currentPage}
           last={index === pages.length - 1}
-          url={page.url}
-          handleClick={() => handlePageChange(index)}
+          value={page.value}
+          handleClick={() => handlePageChange(page.value)}
         >
           {page.name}
         </Tab>
@@ -395,7 +479,7 @@ function Pages({ pages, currentPage, handlePageChange }) {
   );
 }
 
-function Pagination({ intervals, interval, handleIntervalChange, scales, currentScale, handleScaleChange, isMobile }) {
+function Pagination({ pages, page, handlePageChange, scales, currentScale, handleScaleChange, isMobile }) {
   return isMobile ? (
     <div className="flex justify-center py-32 420:py-48">
       <Pages
@@ -407,9 +491,9 @@ function Pagination({ intervals, interval, handleIntervalChange, scales, current
   ) : (
     <div className="flex flex-col justify-center items-center gap-24 pb-0 pt-48">
       <Pages
-        pages={intervals}
-        currentPage={interval}
-        handlePageChange={handleIntervalChange}
+        pages={pages}
+        currentPage={page}
+        handlePageChange={handlePageChange}
       />
       <Pages
         pages={scales}

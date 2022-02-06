@@ -47,10 +47,10 @@ function Timer({ type, duration }) {
   useEffect(() => {
     if (timeLeft === 0) {
       clearInterval(intervalRef.current);
-      console.log('End')
+      // console.log('End')
     }
 
-    console.log(`${timeLeft} - ${getTimeDisplay().number}`)
+    // console.log(`${timeLeft} - ${getTimeDisplay().number}`)
     setTimeDisplay(getTimeDisplay());
   }, [timeLeft])
 

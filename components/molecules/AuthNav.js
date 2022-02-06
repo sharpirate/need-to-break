@@ -19,7 +19,7 @@ function AuthNav() {
             first={index === 0}
             active={router.pathname === tab.url}
             last={index === tabs.length - 1}
-            url={tab.url}
+            value={tab.url}
           >
             {tab.name}
           </Tab>

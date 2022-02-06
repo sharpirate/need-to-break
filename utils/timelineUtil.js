@@ -2,7 +2,7 @@ import { parseTime, getTwoDigitTime } from "./timeUtil";
 import { BLOCK_SIZE, SCALES, DIVIDERS } from "./constants";
 import { intervalTypes } from "../components/atoms/Interval";
 
-function parseBlocks(blocks, startTime) {
+function generateIntervals(blocks, startTime) {
   // add timestamp and time
   for (let i = 0; i <= blocks.length; i++) {
     const prevBlock = blocks[i - 1];
@@ -89,7 +89,7 @@ function generatePages(blocks) {
   return [pageMap, values];
 }
 
-export function generateBlocks(size, w, b) {
+function generateBlocks(size, w, b) {
   const blocks = [];
 
   const workBlocks = w / BLOCK_SIZE.min; // 2
@@ -122,12 +122,13 @@ export function generateBlocks(size, w, b) {
   return blocks;
 }
 
-export function parseTimeline(timeline) {
-  const startTime = timeline.startTime ? parseStartTime(timeline.startTime) : Date.now();
-  const [blocks, intervals] = parseBlocks(timeline.blocks, startTime);
+// probably useful when restaring intervals and modifying existing blocks, if not, remove it and just use processTimelineBlueprint
+export function processTimelineBlocks({ blocks: inputBlocks, start  }) {
+  const startTime = start ? parseStartTime(start) : Date.now();
+  const [blocks, intervals] = generateIntervals(inputBlocks, startTime);
   const [scales, scaleMap] = generateScales(blocks);
   const [pages, pageValues] = generatePages(blocks);
-
+  
   return {
     blocks,
     intervals,
@@ -136,4 +137,9 @@ export function parseTimeline(timeline) {
     pages,
     pageValues
   }
+}
+
+export function processTimelineBlueprint({ size, w, b, start }) {
+  const blocks = generateBlocks(size, w, b);
+  return processTimelineBlocks({ blocks, start });
 }

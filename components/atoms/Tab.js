@@ -35,7 +35,10 @@ Tab.propTypes = {
   active: PropTypes.bool,
   first: PropTypes.bool,
   last: PropTypes.bool,
-  value: PropTypes.string,
+  value: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.number,
+  ]),
   handleClick: PropTypes.func
 };
 

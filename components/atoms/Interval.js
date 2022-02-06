@@ -1,27 +1,30 @@
 import PropTypes from 'prop-types';
+import { BLOCK_SIZE } from '../../utils/constants';
 
 const types = {
   work: 'work',
   break: 'break',
   blank: 'blank',
   blocked: 'blocked',
-  floating: 'floating'
+  floating: 'floating',
+  end: 'end'
 };
 
 export { types as intervalTypes };
 
-function Interval({ type, first, last }) {
-  return <li className={getStyle(type, first, last)} />
+function Interval({ type, first, last, duration }) {
+  return <li className={getStyle(type, first, last)} style={{ flexGrow: duration / BLOCK_SIZE }} />
 }
 
 Interval.propTypes = {
   type: PropTypes.string,
   first: PropTypes.bool,
-  last: PropTypes.bool
+  last: PropTypes.bool,
+  duration: PropTypes.number
 };
 
 function getStyle(type, first, last) {
-  let baseStyle = 'block h-full w-32 420:w-40 932:w-full 932:h-32 1172:h-40 hover:bg-primary-600 hover:cursor-pointer';
+  let baseStyle = 'block h-full w-32 420:w-40 932:w-auto 932:h-32 1172:h-40 hover:bg-primary-600 hover:cursor-pointer';
 
   let colorStyle = '';
 

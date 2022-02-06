@@ -6,10 +6,13 @@ import Tab, { tabTypes } from '../atoms/Tab';
 import { isBelowBreakpoint } from '../../utils/tailwindUtil';
 import useClientWidth from '../../utils/useClientWidth';
 import findClosest from '../../utils/findClosest';
-import { generateBlocks, parseTimeline } from '../../utils/timelineUtil';
+import { processTimelineBlueprint } from '../../utils/timelineUtil';
 
-const timeline = parseTimeline({
-  blocks: generateBlocks(4 * 12, 30, 10)
+const timeline = processTimelineBlueprint({
+  size: 12 * 8,
+  w: 30,
+  b: 10,
+  start: '12:00'
 });
 
 const { pages, pageValues, scaleMap, scales, intervals } = timeline;

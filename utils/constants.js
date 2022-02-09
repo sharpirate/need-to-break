@@ -12,3 +12,6 @@ export const SCALES = [
 
 // 60 min, 30 min, 15 min, 5 min / 5 = DIVIDERS;
 export const DIVIDERS = [12, 6, 3, 1];
+
+// used for reading / writing the timeline in localStorage
+export const BLUEPRINT_KEY = 'blueprint';

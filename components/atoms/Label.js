@@ -25,8 +25,8 @@ const types = {
 export { types as labelTypes };
 
 
-function Label({ size, as, children, fieldId, type, center }) {
-  const style = getStyle(size, type, center);
+function Label({ size, as, children, fieldId, type, center, capitalize }) {
+  const style = getStyle(size, type, center, capitalize);
   
   switch (as) {
     case types.h1:
@@ -53,10 +53,11 @@ Label.propTypes = {
   as: PropTypes.string,
   fieldId: PropTypes.string,
   type: PropTypes.string,
-  center: PropTypes.bool
+  center: PropTypes.bool,
+  capitalize: PropTypes.bool,
 };
 
-function getStyle(size, type, center) {
+function getStyle(size, type, center, capitalize) {
   const baseStyle = 'tracking-2 font-base';
 
   let colorStyle = '';
@@ -101,7 +102,9 @@ function getStyle(size, type, center) {
     centerStyle = 'text-center';
   }
 
-  return `${baseStyle} ${centerStyle} ${sizeStyle} ${colorStyle}`;
+  const textStyle = capitalize ? 'capitalize' : 'normal-case';
+
+  return `${baseStyle} ${centerStyle} ${sizeStyle} ${colorStyle} ${textStyle}`;
 }
 
 export default Label;

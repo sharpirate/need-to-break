@@ -99,8 +99,8 @@ function MainTimeline() {
 
       {/* Timer Block */}
       <div className="mb-16 420:mb-24">
-        <Label size={labelTypes.large} as={labelTypes.h1} >Work</Label>
-        <p className="body-med text-gray-500">12:00 - 12:30</p>
+        <Label size={labelTypes.large} as={labelTypes.h1} capitalize>{activeInterval.type}</Label>
+        <p className="body-med text-gray-500">{activeInterval.start} - {activeInterval.end}</p>
       </div>
 
       <div className="mb-32 420:mb-48">

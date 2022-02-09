@@ -1,4 +1,4 @@
-import { parseTime, getTwoDigitTime } from "./timeUtil";
+import { parseTime, parseTimestampToTime } from "./timeUtil";
 import { BLOCK_SIZE, SCALES, DIVIDERS, BLUEPRINT_KEY } from "./constants";
 import { intervalTypes } from "../components/atoms/Interval";
 
@@ -7,24 +7,21 @@ function generateIntervals(blocks, startTime) {
   for (let i = 0; i <= blocks.length; i++) {
     const prevBlock = blocks[i - 1];
     const timestamp = i === 0 ? startTime : prevBlock.timestamp + BLOCK_SIZE.ms;
-    const date = new Date(timestamp);
-    const hours = getTwoDigitTime(date.getHours());
-    const minutes = getTwoDigitTime(date.getMinutes());
-    const time = `${hours}:${minutes}`;
+    const start = parseTimestampToTime(timestamp);
 
     if (i === blocks.length) {
       // add an additional end block at the end of the array (used when generating the scaleMap)
       blocks.push({
         type: intervalTypes.end,
         timestamp,
-        time
+        start
       });
 
       // if you don't break it will result in a infinite loop since the length of the array is always growing
       break;
     } else {
       blocks[i].timestamp = timestamp;
-      blocks[i].time = time;
+      blocks[i].start = start;
     }
   }
 
@@ -35,9 +32,14 @@ function generateIntervals(blocks, startTime) {
   let counter = 1;
   for (let i = blocks.length - 2; i >= 0; i--) {
     if (i === 0 || blocks[i].type !== blocks[i - 1].type) {
+      const durationMs = counter * BLOCK_SIZE.ms;
+      const durationSec = counter * BLOCK_SIZE.sec;
+      const end = parseTimestampToTime(blocks[i].timestamp + durationMs);
+
       intervals.unshift({
         ...blocks[i],
-        duration: counter * BLOCK_SIZE.sec
+        duration: durationSec,
+        end
       });
 
       duration += intervals[0].duration;
@@ -63,7 +65,7 @@ function generateScales(blocks) {
   const scales = SCALES.filter(scale => scale.value <= intervals * BLOCK_SIZE.min);
 
   for (const scale of scales) {
-    scaleMap[scale.value] = blocks.map(block => block.time).filter((time, index) => {
+    scaleMap[scale.value] = blocks.map(block => block.start).filter((time, index) => {
       // filter based on scale
       return index % (scale.value / BLOCK_SIZE.min) === 0;
     });
@@ -76,7 +78,7 @@ function generatePages(blocks) {
   const intervals = blocks.length - 1;
   const divider = DIVIDERS.find(divider => intervals % divider === 0 );
 
-  const pages = blocks.map(block => block.time).filter((time, index) => {
+  const pages = blocks.map(block => block.start).filter((start, index) => {
     return index % divider === 0;
   })
 

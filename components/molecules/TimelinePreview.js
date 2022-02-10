@@ -9,10 +9,10 @@ import SavePresetModal from "../molecules/cards/SavePresetModal";
 import { setBlueprintLocalStorage } from "../../utils/timelineUtil";
 
 const blueprint = {
-  size: 12 * 6,
-  w: 30,
-  b: 10,
-  // start: "9:00"
+  size: 12 * 2,
+  w: 5,
+  b: 5,
+  // start: "8:50"
 }
 
 function TimelinePreview({ hasFloating }) {
@@ -60,7 +60,7 @@ function TimelinePreview({ hasFloating }) {
         <div className="grid gap-24 420:gap-32 540:grid-cols-2 540:gap-24">
           <Button handleClick={() => setBlueprintLocalStorage({
             ...blueprint,
-            start: Date.now()
+            start: blueprint.start || Date.now()
           })} type={buttonTypes.primary}>Generate</Button>
           <Button handleClick={() => setModalIsOpen(true)} type={buttonTypes.outline}>Save Preset</Button>
         </div>

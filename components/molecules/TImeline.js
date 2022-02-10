@@ -234,7 +234,7 @@ function Hour({ children }) {
     <li className="mono-med text-gray-500 select-none">{children}</li>
   );
 }
-function Arrow({ type, visible, progress, isMobile }) {
+function Arrow({ type, progress, isMobile }) {
   let colorStyle = '';
 
   switch (type) {
@@ -250,10 +250,10 @@ function Arrow({ type, visible, progress, isMobile }) {
       break;
   }
 
-  const visibilityStyle = visible ? "visible" : "invisible";
+  const visibleStyle = progress >= 0 ? "visible" : "invisible";
 
   return (isMobile ? (
-    <div className={`${visibilityStyle} absolute left-full top-8 420:top-12 bottom-8 420:bottom-12`}>
+    <div className={`${visibleStyle} absolute left-full top-8 420:top-12 bottom-8 420:bottom-12`}>
       <svg
         className="relative w-16 h-16 420:w-20 420:h-20 ml-8 -translate-y-1/2"
         style={{ top: `${progress}%` }}
@@ -264,7 +264,7 @@ function Arrow({ type, visible, progress, isMobile }) {
       </svg>
     </div>
   ) : (
-    <div className={`${visibilityStyle}`}>
+    <div className={`${visibleStyle}`}>
       <svg
         className="relative mb-8 w-20 h-20 -rotate-90 -translate-x-1/2"
         style={{ left: `${progress}%` }}
@@ -280,7 +280,6 @@ function Arrow({ type, visible, progress, isMobile }) {
 
 Arrow.propTypes = {
   type: PropTypes.string,
-  visible: PropTypes.bool,
   progress: PropTypes.number
 };
 

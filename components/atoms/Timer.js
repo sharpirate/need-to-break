@@ -43,6 +43,11 @@ function Timer({ type, timeLeft, duration }) {
   let accentColor = '';
 
   switch (type) {
+    case intervalTypes.starting:
+      primaryColor = 'stroke-gray-400';
+      accentColor = 'text-gray-600';
+      ringColor = 'stroke-gray-300';
+      break;
     case intervalTypes.work:
       primaryColor = 'stroke-primary-500';
       accentColor = 'text-primary-600';

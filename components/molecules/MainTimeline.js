@@ -5,8 +5,11 @@ import Timeline from "./TImeline";
 import Label, { labelTypes } from "../atoms/Label";
 import RadioButton from "../atoms/RadioButton";
 import Button, { buttonTypes } from "../atoms/Button";
+import { intervalTypes } from "../atoms/Interval";
 import * as worker from 'worker-timers';
 import { getBlueprintLocalStorage, processTimelineBlueprint } from "../../utils/timelineUtil";
+import { parseTimestampToTime } from "../../utils/timeUtil";
+import { STARTING_KEY } from "../../utils/constants";
 
 function MainTimeline() {
   const timerRef = useRef();
@@ -16,15 +19,44 @@ function MainTimeline() {
   const [progress, setProgress] = useState();
 
   function tick() {
-    console.log('activeInterval: ', activeInterval)
     // get timer time left
     const endTimestamp = activeInterval.timestamp + (activeInterval.duration * 1000);
-    console.log(Math.round((endTimestamp - Date.now()) / 1000))
     setTimeLeft(Math.round((endTimestamp - Date.now()) / 1000));
 
     // get timeline progress
     const timelineProgress = (Math.round((Date.now() - timeline.start) / 1000) / timeline.duration * 100);
     setProgress(timelineProgress);
+  }
+
+  function createStartingTimer(firstTimestamp) {
+    const now = Date.now();
+    let timestamp = Number(localStorage.getItem(STARTING_KEY));
+    if (!timestamp) {
+      timestamp = now;
+      localStorage.setItem(STARTING_KEY, timestamp);
+    }
+
+    const type = intervalTypes.starting;
+    const durationMs = firstTimestamp - timestamp;
+    const durationSec = Math.round(durationMs / 1000);
+    const start = parseTimestampToTime(timestamp);
+    const end = parseTimestampToTime(timestamp + durationMs);
+
+    window.starting = {
+      type,
+      timestamp,
+      duration: durationSec,
+      start,
+      end
+    };
+
+    return {
+      type,
+      timestamp,
+      duration: durationSec,
+      start,
+      end
+    }
   }
 
   useEffect(() => {
@@ -34,16 +66,14 @@ function MainTimeline() {
       const timeline = processTimelineBlueprint(blueprint);
       setTimeline(timeline);
 
-      // check if the current time is before the start or after the end
       if (Date.now() < timeline.start) {
-        const now = Date.now();
-        setActiveInterval({
-          type: 'blocked',
-          timestamp: now,
-          duration: Math.round((timeline.intervals[0].timestamp - now) / 1000)
-        },)
+        // timeline hasn't started yey
+        const firstTimestamp = timeline.intervals[0].timestamp;
+        setActiveInterval(createStartingTimer(firstTimestamp));
+
       } else if (Date.now() > (timeline.start + (timeline.duration * 1000))) {
-        console.log('timeline has ended')
+        // timeline has ended
+        
       } else {
         const nextInterval = timeline.intervals.findIndex(interval => interval.timestamp > Date.now());
         setActiveInterval(timeline.intervals[nextInterval - 1]);
@@ -53,7 +83,6 @@ function MainTimeline() {
 
   useEffect(() => {
     if (activeInterval && timeline) {
-      console.log('useEffect: ', new Date().getSeconds())
       tick();
       timerRef.current = worker.setInterval(() => {
         tick();
@@ -61,6 +90,7 @@ function MainTimeline() {
 
       return () => {
         worker.clearInterval(timerRef.current);
+        localStorage.removeItem(STARTING_KEY);
         console.log('cleanup');
       }
     }
@@ -69,16 +99,23 @@ function MainTimeline() {
   useEffect(() => {
     if (timeLeft <= 0) {
       const oldIndex = timeline.intervals.indexOf(activeInterval);
-      setActiveInterval(timeline.intervals[oldIndex + 1]);
+      const nextInterval = timeline.intervals[oldIndex + 1];
+      setActiveInterval(nextInterval);
     }
   }, [timeLeft]);
 
-  const readyToShow = activeInterval;
+  const readyToShow = activeInterval && timeLeft;
+  let timeLabel;
+
+  if (activeInterval) {
+    timeLabel = activeInterval.type === intervalTypes.starting ? activeInterval.end : `${activeInterval.start} - ${activeInterval.end}`;
+  }
 
   return readyToShow ? (
     <div className="w-full flex flex-col justify-center items-center text-center bg-white rounded-8 py-16 px-32 420:py-24 420:px-48 932:py-32">
 
       {/* Restart Block */}
+
       <div className="flex flex-col justify-center items-center mb-32 420:mb-48">
         <ViewMoreLess viewMoreText="Restart Interval" viewLessText="Restart Interval">
           <div className="mt-16 420:mt-24">
@@ -100,7 +137,7 @@ function MainTimeline() {
       {/* Timer Block */}
       <div className="mb-16 420:mb-24">
         <Label size={labelTypes.large} as={labelTypes.h1} capitalize>{activeInterval.type}</Label>
-        <p className="body-med text-gray-500">{activeInterval.start} - {activeInterval.end}</p>
+        <p className="body-med text-gray-500">{timeLabel}</p>
       </div>
 
       <div className="mb-32 420:mb-48">

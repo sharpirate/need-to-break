@@ -20,11 +20,10 @@ Icon.propTypes = {
   active: PropTypes.bool
 };
 
-function SelectInput({ name, options, bigLabel, smallLabel, centerBig, centerSmall, widthStyle, disableFocus }) {
+function SelectInput({ name, options, bigLabel, smallLabel, centerBig, centerSmall, widthStyle, disableFocus, selected, handleSelect }) {
   const [active, setActive] = useState(false);
   // manage the focused item by index
   const [focused, setFocused] = useState(0);
-  const [selected, setSelected] = useState(options[0]);
   const ref = useRef(null);
 
   useEffect(() => {
@@ -73,7 +72,7 @@ function SelectInput({ name, options, bigLabel, smallLabel, centerBig, centerSma
         exitMenu();
         break;
       case 'Enter':
-        setSelected(options.find(option => option.value === value));
+        handleSelect(options.find(option => option.value === value).value);
         exitMenu();
       default:
         break;
@@ -81,7 +80,7 @@ function SelectInput({ name, options, bigLabel, smallLabel, centerBig, centerSma
   }
 
   function handleItemClick(value) {
-    setSelected(options.find(option => option.value === value));
+    handleSelect(options.find(option => option.value === value).value);
     exitMenu(true);
   }
 
@@ -108,14 +107,14 @@ function SelectInput({ name, options, bigLabel, smallLabel, centerBig, centerSma
           onKeyDown={handleMenuKeyPress}
           className={getRootItemStyle(active)}
         >
-          {selected.name}
+          {options.find(option => option.value === selected).name}
           <Icon active={active} />
         </li>
 
         {active ? 
           (<li className="relative z-10">
             <ul className="absolute w-full max-h-200 overflow-y-auto border-2 border-t-0 rounded-b-4 border-primary-500 hide-scrollbar">
-              {options.filter(option => option.value !== selected.value).map((option, index) => (
+              {options.filter(option => option.value !== selected).map((option, index) => (
                 <SelectItem
                   key={option.value}
                   value={option.value}

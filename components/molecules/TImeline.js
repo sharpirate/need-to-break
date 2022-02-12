@@ -305,7 +305,7 @@ function Pages({ pages, currentPage, handlePageChange }) {
 
 function Pagination({ pages, page, handlePageChange, scales, currentScale, handleScaleChange, isMobile }) {
   return isMobile ? (
-    <div className="flex justify-center py-32 420:py-48">
+    <div className="flex justify-center pb-32 420:pb-48">
       <Pages
         pages={scales}
         currentPage={currentScale}

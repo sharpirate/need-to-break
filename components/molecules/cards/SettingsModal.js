@@ -5,6 +5,7 @@ import { iconTypes } from "../../atoms/Icon";
 import Button, { buttonTypes } from "../../atoms/Button";
 import SelectInput from "../../atoms/SelectInput";
 import Modal from "../Modal";
+import { useReducer } from "react";
 
 const timeFormats = [
   { name: '12 hour', value: 12 },
@@ -16,7 +17,19 @@ const timerSounds = [
   { name: 'Guitar', value: 'guitar' },
 ];
 
+const actionTypes = {
+  SET_TIME_FORMAT: "SET_TIME_FORMAT",
+  SET_TIMER_SOUND: "SET_TIMER_SOUND"
+};
+
+const initialState = {
+  timeFormat: timeFormats[0].value,
+  timerSound: timerSounds[0].value
+}
+
 function SettingsModal({ isOpen, setIsOpen }) {
+  const [state, dispatch] = useReducer(reducer, initialState);
+
   return (
     <Modal
       isOpen={isOpen}
@@ -37,6 +50,8 @@ function SettingsModal({ isOpen, setIsOpen }) {
             bigLabel="Time Format"
             centerBig
             widthStyle="w-96 420:w-[112px]"
+            selected={state.timeFormat}
+            handleSelect={value => dispatch({ type: actionTypes.SET_TIME_FORMAT, value })}
           />
 
           <SelectInput
@@ -45,6 +60,8 @@ function SettingsModal({ isOpen, setIsOpen }) {
             bigLabel="Timer Sound"
             centerBig
             widthStyle="w-96 420:w-[112px]"
+            selected={state.timerSound}
+            handleSelect={value => dispatch({ type: actionTypes.SET_TIMER_SOUND, value })}
           />
           
           {/* Buttons */}
@@ -57,6 +74,23 @@ function SettingsModal({ isOpen, setIsOpen }) {
       </InputCard>
     </Modal>
   );
+}
+
+function reducer(state, action) {
+  switch (action.type) {
+    case actionTypes.SET_TIME_FORMAT:
+      return {
+        ...state,
+        timeFormat: action.value
+      }
+    case actionTypes.SET_TIMER_SOUND:
+      return {
+        ...state,
+        timerSound: action.value
+      }
+    default:
+      return state
+  }
 }
 
 SettingsModal.propTypes = {

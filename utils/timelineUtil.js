@@ -1,5 +1,5 @@
-import { parseTime, getTwoDigitTime } from "./timeUtil";
-import { BLOCK_SIZE, SCALES, DIVIDERS } from "./constants";
+import { parseTime, parseTimestampToTime } from "./timeUtil";
+import { BLOCK_SIZE, SCALES, DIVIDERS, BLUEPRINT_KEY } from "./constants";
 import { intervalTypes } from "../components/atoms/Interval";
 
 function generateIntervals(blocks, startTime) {
@@ -7,48 +7,53 @@ function generateIntervals(blocks, startTime) {
   for (let i = 0; i <= blocks.length; i++) {
     const prevBlock = blocks[i - 1];
     const timestamp = i === 0 ? startTime : prevBlock.timestamp + BLOCK_SIZE.ms;
-    const date = new Date(timestamp);
-    const hours = getTwoDigitTime(date.getHours());
-    const minutes = getTwoDigitTime(date.getMinutes());
-    const time = `${hours}:${minutes}`;
+    const start = parseTimestampToTime(timestamp);
 
     if (i === blocks.length) {
       // add an additional end block at the end of the array (used when generating the scaleMap)
       blocks.push({
         type: intervalTypes.end,
         timestamp,
-        time
+        start
       });
 
       // if you don't break it will result in a infinite loop since the length of the array is always growing
       break;
     } else {
       blocks[i].timestamp = timestamp;
-      blocks[i].time = time;
+      blocks[i].start = start;
     }
   }
 
   // reduce blocks to intervals
   const intervals = [];
 
+  let duration = 0;
   let counter = 1;
   for (let i = blocks.length - 2; i >= 0; i--) {
     if (i === 0 || blocks[i].type !== blocks[i - 1].type) {
+      const durationMs = counter * BLOCK_SIZE.ms;
+      const durationSec = counter * BLOCK_SIZE.sec;
+      const end = parseTimestampToTime(blocks[i].timestamp + durationMs);
+
       intervals.unshift({
         ...blocks[i],
-        duration: counter * BLOCK_SIZE.min
+        duration: durationSec,
+        end
       });
 
+      duration += intervals[0].duration;
       counter = 1;
     } else {
       counter++;
     }
   }
 
-  return [blocks, intervals];
+  return [blocks, intervals, duration];
 }
 
 function parseStartTime(startTime) {
+  console.log(startTime)
   const [hours, minutes] = parseTime(startTime);
   return new Date().setHours(hours, minutes, 0);
 }
@@ -60,7 +65,7 @@ function generateScales(blocks) {
   const scales = SCALES.filter(scale => scale.value <= intervals * BLOCK_SIZE.min);
 
   for (const scale of scales) {
-    scaleMap[scale.value] = blocks.map(block => block.time).filter((time, index) => {
+    scaleMap[scale.value] = blocks.map(block => block.start).filter((time, index) => {
       // filter based on scale
       return index % (scale.value / BLOCK_SIZE.min) === 0;
     });
@@ -73,7 +78,7 @@ function generatePages(blocks) {
   const intervals = blocks.length - 1;
   const divider = DIVIDERS.find(divider => intervals % divider === 0 );
 
-  const pages = blocks.map(block => block.time).filter((time, index) => {
+  const pages = blocks.map(block => block.start).filter((start, index) => {
     return index % divider === 0;
   })
 
@@ -124,8 +129,8 @@ function generateBlocks(size, w, b) {
 
 // probably useful when restaring intervals and modifying existing blocks, if not, remove it and just use processTimelineBlueprint
 export function processTimelineBlocks({ blocks: inputBlocks, start  }) {
-  const startTime = start ? parseStartTime(start) : Date.now();
-  const [blocks, intervals] = generateIntervals(inputBlocks, startTime);
+  const startTime = typeof start === 'string' ? parseStartTime(start) : start;
+  const [blocks, intervals, duration] = generateIntervals(inputBlocks, startTime);
   const [scales, scaleMap] = generateScales(blocks);
   const [pages, pageValues] = generatePages(blocks);
   
@@ -135,11 +140,21 @@ export function processTimelineBlocks({ blocks: inputBlocks, start  }) {
     scaleMap,
     scales,
     pages,
-    pageValues
+    pageValues,
+    start: startTime,
+    duration
   }
 }
 
 export function processTimelineBlueprint({ size, w, b, start }) {
   const blocks = generateBlocks(size, w, b);
   return processTimelineBlocks({ blocks, start });
+}
+
+export function setBlueprintLocalStorage(blueprint) {
+  localStorage.setItem(BLUEPRINT_KEY, JSON.stringify(blueprint));
+}
+
+export function getBlueprintLocalStorage() {
+  return JSON.parse(localStorage.getItem(BLUEPRINT_KEY));
 }

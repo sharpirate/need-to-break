@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 const types = {
   work: 'work',
   break: 'break',
-  blank: 'blank',
   blocked: 'blocked',
   floating: 'floating',
+  starting: 'starting',
   end: 'end'
 };
 

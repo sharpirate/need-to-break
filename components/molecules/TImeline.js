@@ -6,31 +6,28 @@ import Tab, { tabTypes } from '../atoms/Tab';
 import { isBelowBreakpoint } from '../../utils/tailwindUtil';
 import useClientWidth from '../../utils/useClientWidth';
 import findClosest from '../../utils/findClosest';
-import { processTimelineBlueprint } from '../../utils/timelineUtil';
 
-const timeline = processTimelineBlueprint({
-  size: 12 * 8,
-  w: 30,
-  b: 10,
-  start: '12:00'
-});
+function Timeline({ timeline, progress }) {
+  const { pages, pageValues, scaleMap, scales, intervals } = timeline;
 
-const { pages, pageValues, scaleMap, scales, intervals } = timeline;
-function Timeline() {
   const [scale, setScale] = useState(15);
   const [hours, setHours] = useState(scaleMap[scale]);
-
+  
   const clientWidth = useClientWidth();
   const isMobile = isBelowBreakpoint(clientWidth, '932');
 
+  
   const timelineProps = {
-    intervals,
     pages,
-    hours,
-    setHours,
+    pageValues,
+    scaleMap,
+    scales,
+    intervals,
     scale,
     setScale,
-    progress: 0,
+    hours,
+    setHours,
+    progress,
   };
   
   const regularTimeline = (
@@ -54,7 +51,7 @@ function Timeline() {
   ) : isMobile === false ? regularTimeline : mobileTimeline;
 }
 
-const RegularTimeline = ({ intervals, pages, scale, setScale, hours, setHours, progress }) => {
+const RegularTimeline = ({ pages, pageValues, scaleMap, scales, intervals, scale, setScale, hours, setHours, progress }) => {
   const timelineRef = useRef();
   const [page, setPage] = useState(0);
   const [scroll, setScroll] = useState(0);
@@ -183,8 +180,7 @@ const RegularTimeline = ({ intervals, pages, scale, setScale, hours, setHours, p
   );
 };
 
-function MobileTimeline({ intervals, scale, setScale, hours, setHours, progress }) {
-  // const timelineRef = useRef();
+function MobileTimeline({ scaleMap, scales, intervals, scale, setScale, hours, setHours, progress }) {
   const handleScaleChange = newScale => {
     if (newScale !== scale) {
       setScale(newScale);
@@ -199,11 +195,7 @@ function MobileTimeline({ intervals, scale, setScale, hours, setHours, progress 
         currentScale={scale}
         handleScaleChange={handleScaleChange}
         isMobile={true}
-      />
-      
-      <div
-        // ref={timelineRef}
-      >
+      />      
         <div
           className="relative inline-flex flex-row-reverse justify-center"
           style={{
@@ -229,14 +221,12 @@ function MobileTimeline({ intervals, scale, setScale, hours, setHours, progress 
             ))}
           </ul>
         </div>
-      </div>
     </div>
   );
 }
-  Timeline.propTypes = {
-  timeline: PropTypes.array,
-  hours: PropTypes.array,
-  showArrow: PropTypes.bool
+Timeline.propTypes = {
+  timeline: PropTypes.object,
+  progress: PropTypes.number
 };
 
 function Hour({ children }) {
@@ -244,7 +234,7 @@ function Hour({ children }) {
     <li className="mono-med text-gray-500 select-none">{children}</li>
   );
 }
-function Arrow({ type, visible, progress, isMobile }) {
+function Arrow({ type, progress, isMobile }) {
   let colorStyle = '';
 
   switch (type) {
@@ -260,10 +250,10 @@ function Arrow({ type, visible, progress, isMobile }) {
       break;
   }
 
-  const visibilityStyle = visible ? "visible" : "invisible";
+  const visibleStyle = progress >= 0 ? "visible" : "invisible";
 
   return (isMobile ? (
-    <div className={`${visibilityStyle} absolute left-full top-8 420:top-12 bottom-8 420:bottom-12`}>
+    <div className={`${visibleStyle} absolute left-full top-8 420:top-12 bottom-8 420:bottom-12`}>
       <svg
         className="relative w-16 h-16 420:w-20 420:h-20 ml-8 -translate-y-1/2"
         style={{ top: `${progress}%` }}
@@ -274,7 +264,7 @@ function Arrow({ type, visible, progress, isMobile }) {
       </svg>
     </div>
   ) : (
-    <div className={`${visibilityStyle}`}>
+    <div className={`${visibleStyle}`}>
       <svg
         className="relative mb-8 w-20 h-20 -rotate-90 -translate-x-1/2"
         style={{ left: `${progress}%` }}
@@ -290,7 +280,6 @@ function Arrow({ type, visible, progress, isMobile }) {
 
 Arrow.propTypes = {
   type: PropTypes.string,
-  visible: PropTypes.bool,
   progress: PropTypes.number
 };
 

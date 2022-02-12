@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { intervalTypes } from '../atoms/Interval';
 
@@ -10,10 +10,8 @@ const units = {
   MINUTES: 'MIN',
   HOURS: 'HRS'
 };
-function Timer({ type, duration }) {
-  const [timeLeft, setTimeLeft] = useState(30);
+function Timer({ type, timeLeft, duration }) {
   const [timeDisplay, setTimeDisplay] = useState(getTimeDisplay());
-  const intervalRef = useRef(null);
 
   function getTimeDisplay() {
     let number;
@@ -37,20 +35,6 @@ function Timer({ type, duration }) {
   }
 
   useEffect(() => {
-    intervalRef.current = setInterval(() => {
-      setTimeLeft(time => time - 1);
-    }, 1000)
-
-    return () => clearInterval(intervalRef.current);
-  }, [])
-
-  useEffect(() => {
-    if (timeLeft === 0) {
-      clearInterval(intervalRef.current);
-      // console.log('End')
-    }
-
-    // console.log(`${timeLeft} - ${getTimeDisplay().number}`)
     setTimeDisplay(getTimeDisplay());
   }, [timeLeft])
 
@@ -59,6 +43,11 @@ function Timer({ type, duration }) {
   let accentColor = '';
 
   switch (type) {
+    case intervalTypes.starting:
+      primaryColor = 'stroke-gray-400';
+      accentColor = 'text-gray-600';
+      ringColor = 'stroke-gray-300';
+      break;
     case intervalTypes.work:
       primaryColor = 'stroke-primary-500';
       accentColor = 'text-primary-600';
@@ -98,7 +87,9 @@ function Timer({ type, duration }) {
 }
 
 Timer.propTypes = {
-  type: PropTypes.string
+  type: PropTypes.string,
+  timeLeft: PropTypes.number,
+  duration: PropTypes.number,
 };
 
 export default Timer;

@@ -6,6 +6,14 @@ import Label, { labelTypes } from "../atoms/Label";
 import Button, { buttonTypes } from "../atoms/Button";
 import Icon, { iconTypes } from "../atoms/Icon";
 import SavePresetModal from "../molecules/cards/SavePresetModal";
+import { setBlueprintLocalStorage } from "../../utils/timelineUtil";
+
+const blueprint = {
+  size: 12 * 2,
+  w: 5,
+  b: 5,
+  // start: "8:50"
+}
 
 function TimelinePreview({ hasFloating }) {
   const [modalIsOpen, setModalIsOpen] = useState(false);
@@ -50,14 +58,17 @@ function TimelinePreview({ hasFloating }) {
       {/* Timeline & Buttons (Able To Reverse Flex Order) */}
       <div className="w-full flex flex-col 932:flex-col-reverse justify-center items-center gap-32 420:gap-48">
         <div className="grid gap-24 420:gap-32 540:grid-cols-2 540:gap-24">
-          <Button type={buttonTypes.primary}>Generate</Button>
+          <Button handleClick={() => setBlueprintLocalStorage({
+            ...blueprint,
+            start: blueprint.start || Date.now()
+          })} type={buttonTypes.primary}>Generate</Button>
           <Button handleClick={() => setModalIsOpen(true)} type={buttonTypes.outline}>Save Preset</Button>
         </div>
 
         <ViewMoreLess viewMoreText="View Timeline" viewLessText="Hide Timeline" isTimeline={true} >
-          <div className=" 932:mt-0 w-full">
+          {/* <div className=" 932:mt-0 w-full">
             <Timeline />
-          </div>
+          </div> */}
         </ViewMoreLess>
       </div>
 

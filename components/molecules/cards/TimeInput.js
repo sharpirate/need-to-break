@@ -40,7 +40,8 @@ function TimeInput({ paddingStyle, disableFocus }) {
     endDate.setHours(endHour);
     endDate.setMinutes(endMin);
 
-    const size = (endDate - startDate) / BLOCK_SIZE.ms;
+    // Math rouund is very important because sometimes it would return weird decimal numbers which will evaluate to true and crash the page
+    const size = Math.round((endDate - startDate) / BLOCK_SIZE.ms);
     
     if (size > 0) {
       blueprintDispatch({ type: blueprintActions.SET_SIZE, value: size });

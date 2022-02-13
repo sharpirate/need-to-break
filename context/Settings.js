@@ -21,9 +21,7 @@ function getInitialState() {
   }
 
   // initial state
-  return {
-    is12Hour: false
-  }
+  return initialState;
 }
 
 export const SettingsProvider = ({ children }) => {

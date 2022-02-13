@@ -17,7 +17,6 @@ function TimelinePreview({ hasFloating }) {
   const [timeline, setTimeline] = useState();
 
   useEffect(() => {
-    // console.log('blueprint: ', blueprint)
     if (blueprint.size) {
       const timeline = processTimelineBlueprint(blueprint);
       setTimeline(timeline);

@@ -3,7 +3,7 @@ import Header from "./Header";
 import { iconTypes } from "../../atoms/Icon";
 import InputCard from "./InputCard";
 import NumberInput from "../../atoms/NumberInput";
-import { blueprintActions, useDispatchBlueprint } from "./Blueprint";
+import { useDispatchBlueprint, blueprintActions } from "../../../context/Blueprint";
 import { BLOCK_SIZE } from "../../../utils/constants";
 
 function TimelineDuration() {

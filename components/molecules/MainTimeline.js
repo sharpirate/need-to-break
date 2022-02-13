@@ -7,9 +7,11 @@ import RadioButton from "../atoms/RadioButton";
 import Button, { buttonTypes } from "../atoms/Button";
 import { intervalTypes } from "../atoms/Interval";
 import * as worker from 'worker-timers';
-import { getBlueprintLocalStorage, processTimelineBlueprint } from "../../utils/timelineUtil";
-import { parseTimestampToTime } from "../../utils/timeUtil";
+import { processTimelineBlueprint } from "../../utils/timelineUtil";
+import { getBlueprintLocalStorage } from "../../utils/localStorageUtil";
+import { parseTimestampToTime, get12HourTime } from "../../utils/timeUtil";
 import { STARTING_KEY } from "../../utils/constants";
+import { useSettings } from "../../context/Settings";
 
 function MainTimeline() {
   const timerRef = useRef();
@@ -17,7 +19,8 @@ function MainTimeline() {
   const [activeInterval, setActiveInterval] = useState();
   const [timeLeft, setTimeLeft] = useState();
   const [progress, setProgress] = useState();
-
+  const { is12Hour } = useSettings();
+  
   function tick() {
     // get timer time left
     const endTimestamp = activeInterval.timestamp + (activeInterval.duration * 1000);
@@ -108,7 +111,21 @@ function MainTimeline() {
   let timeLabel;
 
   if (activeInterval) {
-    timeLabel = activeInterval.type === intervalTypes.starting ? activeInterval.end : `${activeInterval.start} - ${activeInterval.end}`;
+    let startTime;
+    let endTime;
+
+    if (is12Hour) {
+      const [startHour, startMin, startSuffix] = get12HourTime(activeInterval.start);
+      const [endHour, endMin, endSuffix] = get12HourTime(activeInterval.end);
+
+      startTime = `${startHour}:${startMin} ${startSuffix}`;
+      endTime = `${endHour}:${endMin} ${endSuffix}`;
+    } else {
+      startTime = activeInterval.start;
+      endTime = activeInterval.end;
+    }
+
+    timeLabel = activeInterval.type === intervalTypes.starting ? startTime : `${startTime} - ${endTime}`;
   }
 
   return readyToShow ? (

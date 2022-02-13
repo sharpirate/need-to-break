@@ -4,6 +4,7 @@ import AuthNav from "../components/molecules/AuthNav";
 import { useRouter } from "next/dist/client/router";
 import Modal from "react-modal";
 import Head from "next/head";
+import { SettingsProvider } from "../context/Settings";
 
 Modal.setAppElement('#__next');
 
@@ -12,7 +13,7 @@ function MyApp({ Component, pageProps }) {
   const url = router.pathname;
 
   return (
-    <>
+    <SettingsProvider>
       <Head>
         <title>Need To Break</title>
       </Head>
@@ -23,7 +24,7 @@ function MyApp({ Component, pageProps }) {
           <Component {...pageProps} />
         </div>
       </div>
-    </>
+    </SettingsProvider>
   );
 }
 

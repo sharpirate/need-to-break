@@ -6,8 +6,8 @@ import Label, { labelTypes } from "../atoms/Label";
 import Button, { buttonTypes } from "../atoms/Button";
 import Icon, { iconTypes } from "../atoms/Icon";
 import SavePresetModal from "../molecules/cards/SavePresetModal";
-import { setBlueprintLocalStorage } from "../../utils/timelineUtil";
-import { useBlueprint } from "./cards/Blueprint";
+import { setBlueprintLocalStorage } from "../../utils/localStorageUtil";
+import { useBlueprint } from "../../context/Blueprint";
 import { useEffect } from "react/cjs/react.development";
 import { processTimelineBlueprint } from "../../utils/timelineUtil";
 
@@ -17,6 +17,7 @@ function TimelinePreview({ hasFloating }) {
   const [timeline, setTimeline] = useState();
 
   useEffect(() => {
+    // console.log('blueprint: ', blueprint)
     if (blueprint.size) {
       const timeline = processTimelineBlueprint(blueprint);
       setTimeline(timeline);

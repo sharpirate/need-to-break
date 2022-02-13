@@ -1,5 +1,5 @@
 import { parseTime, parseTimestampToTime } from "./timeUtil";
-import { BLOCK_SIZE, SCALES, DIVIDERS, BLUEPRINT_KEY } from "./constants";
+import { BLOCK_SIZE, SCALES, DIVIDERS } from "./constants";
 import { intervalTypes } from "../components/atoms/Interval";
 
 function generateIntervals(blocks, startTime) {
@@ -53,7 +53,6 @@ function generateIntervals(blocks, startTime) {
 }
 
 function parseStartTime(startTime) {
-  console.log(startTime)
   const [hours, minutes] = parseTime(startTime);
   return new Date().setHours(hours, minutes, 0);
 }
@@ -149,12 +148,4 @@ export function processTimelineBlocks({ blocks: inputBlocks, start  }) {
 export function processTimelineBlueprint({ size, w, b, start }) {
   const blocks = generateBlocks(size, w, b);
   return processTimelineBlocks({ blocks, start });
-}
-
-export function setBlueprintLocalStorage(blueprint) {
-  localStorage.setItem(BLUEPRINT_KEY, JSON.stringify(blueprint));
-}
-
-export function getBlueprintLocalStorage() {
-  return JSON.parse(localStorage.getItem(BLUEPRINT_KEY));
 }

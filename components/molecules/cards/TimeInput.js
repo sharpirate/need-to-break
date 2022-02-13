@@ -2,9 +2,10 @@ import { useReducer, useEffect } from "react";
 import PropTypes from "prop-types";
 import Label, { labelTypes } from "../../atoms/Label";
 import SelectInput from "../../atoms/SelectInput";
-import { BLOCK_SIZE, hours, minutes } from "../../../utils/constants";
-import { useDispatchBlueprint, blueprintActions } from "./Blueprint";
+import { BLOCK_SIZE } from "../../../utils/constants";
+import { useDispatchBlueprint, blueprintActions, hours24, hours12, minutes } from "../../../context/Blueprint";
 import { parseTime } from "../../../utils/timeUtil";
+import { useSettings } from "../../../context/Settings";
 
 const actionTypes = {
   SET_START_HOUR: "SET_START_HOUR",
@@ -14,15 +15,17 @@ const actionTypes = {
 }
 
 const initialState = {
-  startHour: hours[0].value,
+  startHour: hours24[0].value,
   startMin: minutes[0].value,
-  endHour: hours[0].value,
+  endHour: hours24[0].value,
   endMin: minutes[0].value
 }
 
 function TimeInput({ paddingStyle, disableFocus }) {
   const [{ startHour, startMin, endHour, endMin }, dispatch] = useReducer(reducer, initialState);
   const blueprintDispatch = useDispatchBlueprint();
+
+  const settings = useSettings();
 
   useEffect(() => {
     blueprintDispatch({ type: blueprintActions.SET_START, value: parseTime([startHour, startMin])});
@@ -44,6 +47,17 @@ function TimeInput({ paddingStyle, disableFocus }) {
     }
   }, [startHour, startMin, endHour, endMin])
 
+  let hours;
+  let widthStyle;
+
+  if (settings.is12Hour) {
+    hours = hours12;
+    widthStyle = "w-80 420:w-96";
+  } else {
+    hours = hours24;
+    widthStyle = "w-64 420:w-72";
+  }
+
   return (
     <div className={`flex flex-col gap-16 420:gap-24 ${paddingStyle}`}>
 
@@ -54,7 +68,7 @@ function TimeInput({ paddingStyle, disableFocus }) {
           <SelectInput
             name="hour"
             options={hours}
-            widthStyle="w-64 420:w-72"
+            widthStyle={widthStyle}
             disableFocus={disableFocus}
             selected={startHour}
             handleSelect={value => dispatch({ type: actionTypes.SET_START_HOUR, value })}
@@ -63,7 +77,7 @@ function TimeInput({ paddingStyle, disableFocus }) {
           <SelectInput
             name="minute"
             options={minutes}
-            widthStyle="w-64 420:w-72"
+            widthStyle={widthStyle}
             disableFocus={disableFocus}
             selected={startMin}
             handleSelect={value => dispatch({ type: actionTypes.SET_START_MIN, value })}
@@ -78,7 +92,7 @@ function TimeInput({ paddingStyle, disableFocus }) {
           <SelectInput
             name="hour"
             options={hours}
-            widthStyle="w-64 420:w-72"
+            widthStyle={widthStyle}
             disableFocus={disableFocus}
             selected={endHour}
             handleSelect={value => dispatch({ type: actionTypes.SET_END_HOUR, value })}
@@ -87,7 +101,7 @@ function TimeInput({ paddingStyle, disableFocus }) {
           <SelectInput
             name="minute"
             options={minutes}
-            widthStyle="w-64 420:w-72"
+            widthStyle={widthStyle}
             disableFocus={disableFocus}
             selected={endMin}
             handleSelect={value => dispatch({ type: actionTypes.SET_END_MIN, value })}

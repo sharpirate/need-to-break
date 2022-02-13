@@ -5,7 +5,7 @@ import BlockTime from "./BlockTime";
 import TimelineDuration from "./TimelineDuration";
 import LongBreaks from "./LongBreaks";
 import TimelinePreview from "../TimelinePreview";
-import { BlueprintProvider } from "./Blueprint";
+import { BlueprintProvider } from "../../../context/Blueprint";
 
 const types = {
   fullTime: 'fullTime',
@@ -20,11 +20,11 @@ function CardsLayout({ type }) {
     <BlueprintProvider>
       <ul className="grid grid-cols-1 auto-rows-fr gap-24 420:gap-32 808:grid-cols-2 932:gap-48 1260:w-[100vw] 1260:max-w-[1600px] 1260:flex 1260:justify-evenly 1260:gap-0">
         <li>
-          {type === types.fullTime ? <TimelineStartEnd /> : <IntervalSize /> }
+          {type === types.fullTime ? <TimelineStartEnd /> : <TimelineDuration /> }
         </li>
 
         <li>
-          {type === types.fullTime ? <IntervalSize /> : <TimelineDuration /> }
+          <IntervalSize />
         </li>
 
         <li className="flex justify-center items-center col-span-1 808:col-span-2 1260:col-span-1">
@@ -33,7 +33,7 @@ function CardsLayout({ type }) {
       </ul>
 
       <div className="w-full pt-24 420:pt-32 932:pt-48">
-        <TimelinePreview hasFloating />
+        <TimelinePreview />
       </div>
     </BlueprintProvider>
   );

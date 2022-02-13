@@ -6,6 +6,8 @@ import Tab, { tabTypes } from '../atoms/Tab';
 import { isBelowBreakpoint } from '../../utils/tailwindUtil';
 import useClientWidth from '../../utils/useClientWidth';
 import findClosest from '../../utils/findClosest';
+import { useSettings } from '../../context/Settings';
+import { get12HourTime } from '../../utils/timeUtil';
 
 function Timeline({ timeline, progress }) {
   const { pages, pageValues, scaleMap, scales, intervals } = timeline;
@@ -230,8 +232,27 @@ Timeline.propTypes = {
 };
 
 function Hour({ children }) {
+  const { is12Hour } = useSettings();
+
+  let item;
+
+  if (is12Hour) {
+    const [hour, min, suffix] = get12HourTime(children);
+
+    item = (
+      <div className="flex flex-col">
+        <span className="text-16">{hour}:{min}</span>
+        <span className="text-13">{suffix}</span>
+      </div>
+    );
+  } else {
+    item = children;
+  }
+
   return (
-    <li className="mono-med text-gray-500 select-none">{children}</li>
+    <li className="mono-med text-gray-500 select-none">
+      {item}
+    </li>
   );
 }
 function Arrow({ type, progress, isMobile }) {
@@ -303,7 +324,24 @@ function Pages({ pages, currentPage, handlePageChange }) {
   );
 }
 
-function Pagination({ pages, page, handlePageChange, scales, currentScale, handleScaleChange, isMobile }) {
+function Pagination({ pages: rawPages, page, handlePageChange, scales, currentScale, handleScaleChange, isMobile }) {
+  const { is12Hour } = useSettings();
+
+  let pages;
+
+  if (is12Hour) {
+    pages = rawPages.map(page => {
+      const [hour, min, suffix] = get12HourTime(page.name);
+
+      return {
+        ...page,
+        name: `${hour}:${min} ${suffix}`
+      }
+    });
+  } else {
+    pages = rawPages;
+  }
+
   return isMobile ? (
     <div className="flex justify-center pb-32 420:pb-48">
       <Pages

@@ -3,7 +3,7 @@ import Header from "./Header";
 import NumberInput from "../../atoms/NumberInput";
 import { iconTypes } from "../../atoms/Icon";
 import { useState } from "react";
-import { useDispatchBlueprint, blueprintActions } from "./Blueprint";
+import { useDispatchBlueprint, blueprintActions } from "../../../context/Blueprint";
 import { useEffect } from "react/cjs/react.development";
 
 function IntervalSize() {

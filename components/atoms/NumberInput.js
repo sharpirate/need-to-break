@@ -11,25 +11,25 @@ const types = {
 export { types as numberInputTypes };
 
 
-const valueToString = value => {
-  return value.unit ? `${value.number} ${value.unit}` : `${value.number}`;
+const valueToString = (value, unit) => {
+  return unit ? `${value} ${unit}` : `${value}`;
 }
-function NumberInput({ name, initial, step, min, max, unit, widthStyle, bigLabel, smallLabel, centerBig, centerSmall }) {
-  const [value, setValue] = useState({ number: initial, unit: unit });
+function NumberInput({ name, value, handleChange, step, min, max, unit: unitText, widthStyle, bigLabel, smallLabel, centerBig, centerSmall }) {
+  const [unit, setUnit] = useState(unitText);
   const [stringValue, setStringValue] = useState(valueToString(value));
 
   useEffect(() => {
-    setStringValue(valueToString(value));
-  }, [value.number, value.unit])
+    setStringValue(valueToString(value, unit));
+  }, [value, unit])
 
   const handleClick = (type, step, min, max) => {
     if (type === types.plus) {
-      if ((value.number + step) <= max) {
-        setValue({ ...value, number: value.number + step });
+      if ((value + step) <= max) {
+        handleChange(value + step);
       }
     } else {
-      if (value.number - step >= min) {
-        setValue({ ...value, number: value.number - step });
+      if (value - step >= min) {
+        handleChange(value - step);
       }
     }
   }
@@ -38,20 +38,22 @@ function NumberInput({ name, initial, step, min, max, unit, widthStyle, bigLabel
     const newValue = Number(e.target.value);
 
     if (!isNaN(newValue)) {
-      setValue({ unit: null, number: Number(newValue) });
+      setUnit(null);
+      handleChange(Number(newValue));
     }
   }
 
   const handleBlur = (min, max) => {
-    let normalizedValue = value.number;
+    let normalizedValue = value;
 
-    if (value.number < min) {
+    if (value < min) {
       normalizedValue = min;
-    } else if (value.number > max) {
+    } else if (value > max) {
       normalizedValue = max;
     }
 
-    setValue({ number: normalizedValue, unit: unit })
+    setUnit(unitText);
+    handleChange(normalizedValue);
   }
 
   const renderBigLabel = bigLabel ? <Label center={centerBig} as={labelTypes.label} size={labelTypes.big} fieldId={name}>{bigLabel}</Label> : null;
@@ -81,7 +83,7 @@ function NumberInput({ name, initial, step, min, max, unit, widthStyle, bigLabel
 
 NumberInput.propTypes = {
   name: PropTypes.string,
-  initial: PropTypes.number,
+  selected: PropTypes.number,
   step: PropTypes.number,
   min: PropTypes.number,
   max: PropTypes.number,

@@ -17,3 +17,5 @@ export const DIVIDERS = [12, 6, 3, 1];
 export const BLUEPRINT_KEY = 'blueprint';
 
 export const STARTING_KEY = 'starting';
+
+export const SETTINGS_KEY = 'settings';

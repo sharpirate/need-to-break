@@ -5,23 +5,19 @@ import Interval, { intervalTypes } from '../atoms/Interval';
 import Tab, { tabTypes } from '../atoms/Tab';
 import { isBelowBreakpoint } from '../../utils/tailwindUtil';
 import useClientWidth from '../../utils/useClientWidth';
-import findClosest from '../../utils/findClosest';
 import { useSettings } from '../../context/Settings';
 import { get12HourTime } from '../../utils/timeUtil';
 
 function Timeline({ timeline, progress }) {
-  const { pages, pageValues, scaleMap, scales, intervals } = timeline;
+  const { scaleMap, scales, intervals } = timeline;
 
-  const [scale, setScale] = useState(15);
+  const [scale, setScale] = useState(scales[1].value);
   const [hours, setHours] = useState(scaleMap[scale]);
   
   const clientWidth = useClientWidth();
   const isMobile = isBelowBreakpoint(clientWidth, '932');
-
   
   const timelineProps = {
-    pages,
-    pageValues,
     scaleMap,
     scales,
     intervals,
@@ -53,9 +49,8 @@ function Timeline({ timeline, progress }) {
   ) : isMobile === false ? regularTimeline : mobileTimeline;
 }
 
-const RegularTimeline = ({ pages, pageValues, scaleMap, scales, intervals, scale, setScale, hours, setHours, progress }) => {
+const RegularTimeline = ({ scaleMap, scales, intervals, scale, setScale, hours, setHours, progress }) => {
   const timelineRef = useRef();
-  const [page, setPage] = useState(0);
   const [scroll, setScroll] = useState(0);
   const [scrollTarget, setScrollTarget] = useState({ value: null, smooth: null });
 
@@ -82,15 +77,6 @@ const RegularTimeline = ({ pages, pageValues, scaleMap, scales, intervals, scale
 
     return () => timeline.removeEventListener('scroll', handleScroll);
   }, [timelineRef, scrollTarget.value]);
-
-  // Update the current page while scrolling
-  useEffect(() => {
-    const nextPage = findClosest(scroll, pageValues);
-
-    if (page !== nextPage && scrollTarget.value === null) {
-      setPage(nextPage);
-    }
-  }, [scroll]);
 
   // Programatically scroll to a certain scroll target
   useIsomorphicLayoutEffect(() => {
@@ -124,14 +110,6 @@ const RegularTimeline = ({ pages, pageValues, scaleMap, scales, intervals, scale
     }
   }
 
-  const handlePageChange = newPage => {
-    setPage(newPage);
-    setScrollTarget({
-      value: newPage,
-      smooth: true
-    });
-  }
-
   return (
     <div> 
       <div
@@ -145,7 +123,6 @@ const RegularTimeline = ({ pages, pageValues, scaleMap, scales, intervals, scale
           style={{
             width: `calc(100% + ${(156 * (hours.length - 1))}px)`,
             // (label width in px * 3) * (number of labels - 1)
-            // minWidth: clientWidth - monopadding
           }}
         >
           <Arrow
@@ -170,9 +147,6 @@ const RegularTimeline = ({ pages, pageValues, scaleMap, scales, intervals, scale
       </div>
 
       <Pagination
-        pages={pages}
-        page={page}
-        handlePageChange={handlePageChange}
         scales={scales}
         currentScale={scale}
         handleScaleChange={handleScaleChange}
@@ -196,7 +170,6 @@ function MobileTimeline({ scaleMap, scales, intervals, scale, setScale, hours, s
         scales={scales}
         currentScale={scale}
         handleScaleChange={handleScaleChange}
-        isMobile={true}
       />      
         <div
           className="relative inline-flex flex-row-reverse justify-center"
@@ -324,43 +297,13 @@ function Pages({ pages, currentPage, handlePageChange }) {
   );
 }
 
-function Pagination({ pages: rawPages, page, handlePageChange, scales, currentScale, handleScaleChange, isMobile }) {
-  const { is12Hour } = useSettings();
-
-  let pages;
-
-  if (is12Hour) {
-    pages = rawPages.map(page => {
-      const [hour, min, suffix] = get12HourTime(page.name);
-
-      return {
-        ...page,
-        name: `${hour}:${min} ${suffix}`
-      }
-    });
-  } else {
-    pages = rawPages;
-  }
-
-  return isMobile ? (
-    <div className="flex justify-center pb-32 420:pb-48">
+function Pagination({ scales, currentScale, handleScaleChange }) {
+  return (
+    <div className="flex justify-center pb-32 420:pb-48 932:pb-0 932:pt-48">
       <Pages
         pages={scales}
         currentPage={currentScale}
         handlePageChange={handleScaleChange}  
-      />
-    </div>
-  ) : (
-    <div className="flex flex-col justify-center items-center gap-24 pb-0 pt-48">
-      <Pages
-        pages={pages}
-        currentPage={page}
-        handlePageChange={handlePageChange}
-      />
-      <Pages
-        pages={scales}
-        currentPage={currentScale}
-        handlePageChange={handleScaleChange}
       />
     </div>
   );

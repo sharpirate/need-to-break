@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import ViewMoreLess from "../atoms/ViewMoreLess";
 import Timeline from "./TImeline";
@@ -6,10 +6,9 @@ import Label, { labelTypes } from "../atoms/Label";
 import Button, { buttonTypes } from "../atoms/Button";
 import Icon, { iconTypes } from "../atoms/Icon";
 import SavePresetModal from "../molecules/cards/SavePresetModal";
-import { setBlueprintLocalStorage } from "../../utils/localStorageUtil";
 import { useBlueprint } from "../../context/Blueprint";
-import { useEffect } from "react/cjs/react.development";
-import { processTimelineBlueprint } from "../../utils/timelineUtil";
+import { blueprintToStored, blueprintToTimeline } from "../../utils/timelineUtil";
+import { setStoredLocalStorate } from "../../utils/localStorageUtil";
 
 function TimelinePreview({ hasFloating }) {
   const [modalIsOpen, setModalIsOpen] = useState(false);
@@ -17,14 +16,15 @@ function TimelinePreview({ hasFloating }) {
   const [timeline, setTimeline] = useState();
 
   useEffect(() => {
-    if (blueprint.size) {
-      const timeline = processTimelineBlueprint(blueprint);
+    if (blueprint.duration) {
+      const timeline = blueprintToTimeline(blueprint);
       setTimeline(timeline);
     }
   }, [blueprint])
 
   function handleStart() {
-    setBlueprintLocalStorage(blueprint);
+    const stored = blueprintToStored(blueprint);
+    setStoredLocalStorate(stored);
   }
 
   const floatingStyle = hasFloating ? '932:grid-cols-2' : '';
@@ -73,7 +73,7 @@ function TimelinePreview({ hasFloating }) {
 
         <ViewMoreLess viewMoreText="View Timeline" viewLessText="Hide Timeline" isTimeline={true} >
           <div className="932:mt-0 w-full">
-            <Timeline timeline={timeline}/>
+            <Timeline timeline={timeline} />
           </div>
         </ViewMoreLess>
       </div>

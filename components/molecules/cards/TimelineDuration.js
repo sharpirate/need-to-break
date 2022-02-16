@@ -4,7 +4,6 @@ import { iconTypes } from "../../atoms/Icon";
 import InputCard from "./InputCard";
 import NumberInput from "../../atoms/NumberInput";
 import { useDispatchBlueprint, blueprintActions } from "../../../context/Blueprint";
-import { BLOCK_SIZE } from "../../../utils/constants";
 
 function TimelineDuration() {
   const [hours, setHours] = useState(0);
@@ -12,11 +11,10 @@ function TimelineDuration() {
   const blueprintDispatch = useDispatchBlueprint();
 
   useEffect(() => {
-    const hoursInMinutes = hours * 60;
-    const size = (hoursInMinutes + minutes) / BLOCK_SIZE.min;
+    const duration = (hours * 3600) + (minutes * 60);
 
     blueprintDispatch({ type: blueprintActions.SET_START, value: Date.now() });
-    blueprintDispatch({ type: blueprintActions.SET_SIZE, value: size });
+    blueprintDispatch({ type: blueprintActions.SET_DURATION, value: duration });
   }, [hours, minutes]);
 
   return (

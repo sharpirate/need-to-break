@@ -7,10 +7,9 @@ import RadioButton from "../atoms/RadioButton";
 import Button, { buttonTypes } from "../atoms/Button";
 import { intervalTypes } from "../atoms/Interval";
 import * as worker from 'worker-timers';
-import { processTimelineBlueprint } from "../../utils/timelineUtil";
-import { getBlueprintLocalStorage } from "../../utils/localStorageUtil";
-import { parseTimestampToTime, get12HourTime } from "../../utils/timeUtil";
-import { STARTING_KEY } from "../../utils/constants";
+import { processTimelineBlueprint, storedToTimeline } from "../../utils/timelineUtil";
+import { getBlueprintLocalStorage, getStartingLocalStorage, getStoredLocalStorage, removeStartingLocalStorage, setStartingLocalStorage } from "../../utils/localStorageUtil";
+import { timestampToString, get12HourTime } from "../../utils/timeUtil";
 import { useSettings } from "../../context/Settings";
 
 function MainTimeline() {
@@ -27,54 +26,46 @@ function MainTimeline() {
     setTimeLeft(Math.round((endTimestamp - Date.now()) / 1000));
 
     // get timeline progress
-    const timelineProgress = (Math.round((Date.now() - timeline.start) / 1000) / timeline.duration * 100);
+    const timelineProgress = (Math.round((Date.now() - timeline.startTime) / 1000) / timeline.duration * 100);
     setProgress(timelineProgress);
   }
 
   function createStartingTimer(firstTimestamp) {
     const now = Date.now();
-    let timestamp = Number(localStorage.getItem(STARTING_KEY));
+    let timestamp = getStartingLocalStorage();
+
     if (!timestamp) {
       timestamp = now;
-      localStorage.setItem(STARTING_KEY, timestamp);
+      setStartingLocalStorage(timestamp);
     }
 
     const type = intervalTypes.starting;
     const durationMs = firstTimestamp - timestamp;
     const durationSec = Math.round(durationMs / 1000);
-    const start = parseTimestampToTime(timestamp);
-    const end = parseTimestampToTime(timestamp + durationMs);
-
-    window.starting = {
-      type,
-      timestamp,
-      duration: durationSec,
-      start,
-      end
-    };
+    const startLabel = timestampToString(timestamp);
+    const endLabel = timestampToString(timestamp + durationMs);
 
     return {
       type,
-      timestamp,
       duration: durationSec,
-      start,
-      end
+      timestamp,
+      startLabel,
+      endLabel
     }
   }
 
   useEffect(() => {
-    const blueprint = getBlueprintLocalStorage();
+    const stored = getStoredLocalStorage();
 
-    if (blueprint) {
-      const timeline = processTimelineBlueprint(blueprint);
+    if (stored) {
+      const timeline = storedToTimeline(stored);
       setTimeline(timeline);
 
-      if (Date.now() < timeline.start) {
-        // timeline hasn't started yey
-        const firstTimestamp = timeline.intervals[0].timestamp;
-        setActiveInterval(createStartingTimer(firstTimestamp));
+      if (Date.now() < timeline.startTime) {
+        // timeline hasn't started yet
+        setActiveInterval(createStartingTimer(timeline.startTime));
 
-      } else if (Date.now() > (timeline.start + (timeline.duration * 1000))) {
+      } else if (Date.now() > (timeline.startTime + (timeline.duration * 1000))) {
         // timeline has ended
         
       } else {
@@ -93,7 +84,7 @@ function MainTimeline() {
 
       return () => {
         worker.clearInterval(timerRef.current);
-        localStorage.removeItem(STARTING_KEY);
+        removeStartingLocalStorage();
         console.log('cleanup');
       }
     }
@@ -107,7 +98,7 @@ function MainTimeline() {
     }
   }, [timeLeft]);
 
-  const readyToShow = activeInterval && timeLeft;
+  const readyToShow = activeInterval && timeline && !isNaN(timeLeft);
   let timeLabel;
 
   if (activeInterval) {
@@ -115,17 +106,17 @@ function MainTimeline() {
     let endTime;
 
     if (is12Hour) {
-      const [startHour, startMin, startSuffix] = get12HourTime(activeInterval.start);
-      const [endHour, endMin, endSuffix] = get12HourTime(activeInterval.end);
+      const [startHour, startMin, startSuffix] = get12HourTime(activeInterval.startLabel);
+      const [endHour, endMin, endSuffix] = get12HourTime(activeInterval.endLabel);
 
       startTime = `${startHour}:${startMin} ${startSuffix}`;
       endTime = `${endHour}:${endMin} ${endSuffix}`;
     } else {
-      startTime = activeInterval.start;
-      endTime = activeInterval.end;
+      startTime = activeInterval.startLabel;
+      endTime = activeInterval.endLabel;
     }
 
-    timeLabel = activeInterval.type === intervalTypes.starting ? startTime : `${startTime} - ${endTime}`;
+    timeLabel = activeInterval.type === intervalTypes.starting ? endTime : `${startTime} - ${endTime}`;
   }
 
   return readyToShow ? (

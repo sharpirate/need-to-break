@@ -8,7 +8,7 @@ export function getTwoDigitTime(time) {
   return time < 10 ? `0${time}` : time;
 }
 
-export function parseTimestampToTime(timestamp) {
+export function timestampToString(timestamp) {
   const date = new Date(timestamp);
   const hours = getTwoDigitTime(date.getHours());
   const minutes = getTwoDigitTime(date.getMinutes());

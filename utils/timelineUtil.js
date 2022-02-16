@@ -1,151 +1,120 @@
-import { parseTime, parseTimestampToTime } from "./timeUtil";
-import { BLOCK_SIZE, SCALES, DIVIDERS } from "./constants";
 import { intervalTypes } from "../components/atoms/Interval";
-
-function generateIntervals(blocks, startTime) {
-  // add timestamp and time
-  for (let i = 0; i <= blocks.length; i++) {
-    const prevBlock = blocks[i - 1];
-    const timestamp = i === 0 ? startTime : prevBlock.timestamp + BLOCK_SIZE.ms;
-    const start = parseTimestampToTime(timestamp);
-
-    if (i === blocks.length) {
-      // add an additional end block at the end of the array (used when generating the scaleMap)
-      blocks.push({
-        type: intervalTypes.end,
-        timestamp,
-        start
-      });
-
-      // if you don't break it will result in a infinite loop since the length of the array is always growing
-      break;
-    } else {
-      blocks[i].timestamp = timestamp;
-      blocks[i].start = start;
-    }
-  }
-
-  // reduce blocks to intervals
-  const intervals = [];
-
-  let duration = 0;
-  let counter = 1;
-  for (let i = blocks.length - 2; i >= 0; i--) {
-    if (i === 0 || blocks[i].type !== blocks[i - 1].type) {
-      const durationMs = counter * BLOCK_SIZE.ms;
-      const durationSec = counter * BLOCK_SIZE.sec;
-      const end = parseTimestampToTime(blocks[i].timestamp + durationMs);
-
-      intervals.unshift({
-        ...blocks[i],
-        duration: durationSec,
-        end
-      });
-
-      duration += intervals[0].duration;
-      counter = 1;
-    } else {
-      counter++;
-    }
-  }
-
-  return [blocks, intervals, duration];
-}
+import { SCALES } from "./constants";
+import { parseTime, timestampToString } from "./timeUtil";
 
 function parseStartTime(startTime) {
   const [hours, minutes] = parseTime(startTime);
   return new Date().setHours(hours, minutes, 0);
 }
 
-function generateScales(blocks) {
+function generateScales(intervals, totalDuration) {
   const scaleMap = {};
 
-  const intervals = blocks.length - 1;
-  const scales = SCALES.filter(scale => scale.value <= intervals * BLOCK_SIZE.min);
+  const scales = SCALES.filter(scale => totalDuration % scale.value === 0);
+
+  const smallestScale = scales[0].value;
+  const numberOfBlocks = totalDuration / smallestScale;
+
+  const timeLabels = [];
+
+  for (let i = 0; i <= numberOfBlocks; i++ ) {
+    const timestamp = intervals[0].timestamp + (i * smallestScale * 1000);
+
+    timeLabels.push(timestampToString(timestamp));
+  }
 
   for (const scale of scales) {
-    scaleMap[scale.value] = blocks.map(block => block.start).filter((time, index) => {
-      // filter based on scale
-      return index % (scale.value / BLOCK_SIZE.min) === 0;
-    });
+    scaleMap[scale.value] = timeLabels.filter((timeLabel, i) => i % (scale.value / smallestScale) === 0);
   }
 
   return [scales, scaleMap];
 }
 
-function generatePages(blocks) {
-  const intervals = blocks.length - 1;
-  const divider = DIVIDERS.find(divider => intervals % divider === 0 );
+export function blueprintToStored(blueprint) {
+  const { workDuration, breakDuration, startTime, duration } = blueprint;
 
-  const pages = blocks.map(block => block.start).filter((start, index) => {
-    return index % divider === 0;
-  })
+  // generate intervals
+  const intervals = [];
 
-  const valueStep = 1 / (pages.length - 1);
+  // how many intervals will be needed in order to fill the timeline (round up if we don't get a perfect number)
+  let numberOfIntevals;
+  // fix additional interval added at the end
+  if (workDuration >= duration || breakDuration >= duration) {
+    numberOfIntevals = 1;
+  } else {
+    numberOfIntevals = Math.ceil(duration / ((workDuration + breakDuration) / 2));
+  }
 
-  const pageMap = pages.map((page, index) => ({
-    name: page,
-    value: index * valueStep
-  }));
+  let totalDuration = 0;
 
-  const values = pageMap.map(page => page.value);
-
-  return [pageMap, values];
-}
-
-function generateBlocks(size, w, b) {
-  const blocks = [];
-
-  const workBlocks = w / BLOCK_SIZE.min; // 2
-  const breakBlocks = b / BLOCK_SIZE.min; // 1
-
-  let counter = 0;
-  let type = 'work';
-
-  for (let i = 0; i < size; i++) {
-    if (type === 'work') {
-      if (counter < workBlocks) {
-        blocks.push({ type: 'work' });
-      } else {
-        type = 'break';
-        counter = 0;
-        blocks.push({ type: 'break' });
-      }
+  for (let i = 0; i < numberOfIntevals; i++) {
+    let type;
+    if (i === 0) {
+      type = intervalTypes.work;
     } else {
-      if (counter < breakBlocks) {
-        blocks.push({ type: 'break' });
-      } else {
-        type = 'work';
-        counter = 0;
-        blocks.push({ type: 'work' });
-      }
+      type = intervals[i - 1].type === intervalTypes.work ? intervalTypes.break : intervalTypes.work;
     }
-    counter++;
+
+    const duration = type === intervalTypes.work ? workDuration : breakDuration;
+    totalDuration += duration;
+
+    intervals.push({
+      type,
+      duration
+    });
   }
 
-  return blocks;
-}
+  // clip the duration of the last intervals in case it overflows the maximum timeline duration (if Math.ceil has rounded up)
+  const durationOverflow = totalDuration - duration;
+  intervals[intervals.length - 1].duration -= durationOverflow;
 
-// probably useful when restaring intervals and modifying existing blocks, if not, remove it and just use processTimelineBlueprint
-export function processTimelineBlocks({ blocks: inputBlocks, start  }) {
-  const startTime = typeof start === 'string' ? parseStartTime(start) : start;
-  const [blocks, intervals, duration] = generateIntervals(inputBlocks, startTime);
-  const [scales, scaleMap] = generateScales(blocks);
-  const [pages, pageValues] = generatePages(blocks);
-  
   return {
-    blocks,
     intervals,
-    scaleMap,
-    scales,
-    pages,
-    pageValues,
-    start: startTime,
-    duration
-  }
+    startTime
+  };
 }
 
-export function processTimelineBlueprint({ size, w, b, start }) {
-  const blocks = generateBlocks(size, w, b);
-  return processTimelineBlocks({ blocks, start });
+export function storedToTimeline(stored) {
+  const { intervals, startTime } = stored;
+
+  const parsedStartTime = typeof startTime === "string" ? parseStartTime(startTime) : startTime;
+
+  let totalDuration = 0;
+
+  for (let i = 0; i < intervals.length; i++) {
+    let timestamp;
+
+    if (i === 0) {
+      timestamp = parsedStartTime;
+    } else {
+      timestamp = intervals[i - 1].timestamp + (intervals[i - 1].duration * 1000);
+    }
+
+    const startLabel = timestampToString(timestamp);
+    const endLabel = timestampToString(timestamp + (intervals[i].duration * 1000));
+
+    intervals[i].timestamp = timestamp;
+    intervals[i].startLabel = startLabel;
+    intervals[i].endLabel = endLabel;
+
+    totalDuration += intervals[i].duration;
+  }
+
+  
+  const [scales, scaleMap] = generateScales(intervals, totalDuration);
+
+  return {
+    intervals,
+    scales,
+    scaleMap,
+    startTime: parsedStartTime,
+    duration: totalDuration
+  };
+}
+
+export function blueprintToTimeline(blueprint) {
+  const stored = blueprintToStored(blueprint);
+  const timeline = storedToTimeline(stored);
+
+  return timeline;
 }

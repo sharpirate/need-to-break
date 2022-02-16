@@ -2,7 +2,6 @@ import { useReducer, useEffect } from "react";
 import PropTypes from "prop-types";
 import Label, { labelTypes } from "../../atoms/Label";
 import SelectInput from "../../atoms/SelectInput";
-import { BLOCK_SIZE } from "../../../utils/constants";
 import { useDispatchBlueprint, blueprintActions, hours24, hours12, minutes } from "../../../context/Blueprint";
 import { parseTime } from "../../../utils/timeUtil";
 import { useSettings } from "../../../context/Settings";
@@ -41,10 +40,10 @@ function TimeInput({ paddingStyle, disableFocus }) {
     endDate.setMinutes(endMin);
 
     // Math rouund is very important because sometimes it would return weird decimal numbers which will evaluate to true and crash the page
-    const size = Math.round((endDate - startDate) / BLOCK_SIZE.ms);
+    const duration = Math.round((endDate - startDate) / 1000);
     
-    if (size > 0) {
-      blueprintDispatch({ type: blueprintActions.SET_SIZE, value: size });
+    if (duration > 0) {
+      blueprintDispatch({ type: blueprintActions.SET_DURATION, value: duration });
     }
   }, [startHour, startMin, endHour, endMin])
 

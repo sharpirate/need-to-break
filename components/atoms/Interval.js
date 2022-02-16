@@ -49,7 +49,9 @@ function getStyle(type, first, last) {
 
   let borderStyle = '';
 
-  if (first) {
+  if (first && last) {
+    borderStyle = 'rounded-t-20 rounded-b-20 932:rounded-0 932:rounded-l-20 932:rounded-r-20';
+  } else if (first) {
     borderStyle = 'rounded-t-20 932:rounded-0 932:rounded-l-20';
   } else if (last) {
     borderStyle = 'rounded-b-20 932:rounded-0 932:rounded-r-20 ';

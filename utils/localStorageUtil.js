@@ -1,11 +1,23 @@
-import { BLUEPRINT_KEY, SETTINGS_KEY } from "./constants";
+import { STORED_KEY, STARTING_KEY, SETTINGS_KEY } from "./constants";
 
-export function setBlueprintLocalStorage(blueprint) {
-  localStorage.setItem(BLUEPRINT_KEY, JSON.stringify(blueprint));
+export function setStoredLocalStorate(stored) {
+  localStorage.setItem(STORED_KEY, JSON.stringify(stored));
 }
 
-export function getBlueprintLocalStorage() {
-  return JSON.parse(localStorage.getItem(BLUEPRINT_KEY));
+export function getStoredLocalStorage() {
+  return JSON.parse(localStorage.getItem(STORED_KEY));
+}
+
+export function getStartingLocalStorage() {
+  return Number(localStorage.getItem(STARTING_KEY));
+}
+
+export function setStartingLocalStorage(starting) {
+  localStorage.setItem(STARTING_KEY, starting);
+}
+
+export function removeStartingLocalStorage() {
+  localStorage.removeItem(STARTING_KEY);
 }
 
 export function setSettingsLocalStorage(settings) {

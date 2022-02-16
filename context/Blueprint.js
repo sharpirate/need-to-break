@@ -4,7 +4,7 @@ const BlueprintStateContext = createContext()
 const BlueprintDispatchContext = createContext()
 
 const actionTypes = {
-  SET_SIZE: 'SET_SIZE',
+  SET_DURATION: 'SET_DURATION',
   SET_WORK: 'SET_WORK',
   SET_BREAK: 'SET_BREAK',
   SET_START: 'SET_START'
@@ -14,25 +14,25 @@ export { actionTypes as blueprintActions };
 
 function reducer(blueprint, action) {
   switch(action.type) {
-    case actionTypes.SET_SIZE:
+    case actionTypes.SET_DURATION:
       return {
         ...blueprint,
-        size: action.value
+        duration: action.value
       }
     case actionTypes.SET_START:
       return {
         ...blueprint,
-        start: action.value
+        startTime: action.value
       }
     case actionTypes.SET_WORK:
       return {
         ...blueprint,
-        w: action.value
+        workDuration: action.value
       }
     case actionTypes.SET_BREAK:
       return {
         ...blueprint,
-        b: action.value
+        breakDuration: action.value
       }
     default:
       return blueprint;

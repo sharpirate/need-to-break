@@ -12,11 +12,11 @@ function IntervalSize() {
   const dispatch = useDispatchBlueprint();
 
   useEffect(() => {
-    dispatch({ type: blueprintActions.SET_WORK, value: w });
+    dispatch({ type: blueprintActions.SET_WORK, value: w * 60 });
   }, [w]);
 
   useEffect(() => {
-    dispatch({ type: blueprintActions.SET_BREAK, value: b });
+    dispatch({ type: blueprintActions.SET_BREAK, value: b * 60 });
   }, [b]);
 
   return (

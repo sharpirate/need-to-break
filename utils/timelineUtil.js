@@ -31,51 +31,50 @@ function generateScales(intervals, totalDuration) {
 }
 
 export function blueprintToStored(blueprint) {
-  const { workDuration, breakDuration, startTime, duration } = blueprint;
-
-  // generate intervals
+  const { workDuration, breakDuration, startTime, duration, startWith } = blueprint;
+  
   const intervals = [];
-
-  // how many intervals will be needed in order to fill the timeline (round up if we don't get a perfect number)
-  let numberOfIntevals;
-  // fix additional interval added at the end
-  if (workDuration >= duration || breakDuration >= duration) {
-    numberOfIntevals = 1;
-  } else {
-    numberOfIntevals = Math.ceil(duration / ((workDuration + breakDuration) / 2));
-  }
-
   let totalDuration = 0;
+  let i = 0;
 
-  for (let i = 0; i < numberOfIntevals; i++) {
+  do {
     let type;
     if (i === 0) {
-      type = intervalTypes.work;
+      // use the startWith if exists or default to work
+      type = startWith || intervalTypes.work;
     } else {
       type = intervals[i - 1].type === intervalTypes.work ? intervalTypes.break : intervalTypes.work;
     }
 
-    const duration = type === intervalTypes.work ? workDuration : breakDuration;
-    totalDuration += duration;
+    const intervalDuration = type === intervalTypes.work ? workDuration : breakDuration;
+    totalDuration += intervalDuration;
+
+    const overflow = totalDuration - duration;
+    let normalizedDuration = intervalDuration;
+    
+    if (overflow > 0) {
+      normalizedDuration -= overflow;
+    }
 
     intervals.push({
       type,
-      duration
+      duration: normalizedDuration
     });
-  }
 
-  // clip the duration of the last intervals in case it overflows the maximum timeline duration (if Math.ceil has rounded up)
-  const durationOverflow = totalDuration - duration;
-  intervals[intervals.length - 1].duration -= durationOverflow;
+    i++;
+  } while (totalDuration < duration);
 
   return {
     intervals,
-    startTime
+    startTime,
+    // we need these only when restarting
+    workDuration,
+    breakDuration
   };
 }
 
 export function storedToTimeline(stored) {
-  const { intervals, startTime } = stored;
+  const { intervals, startTime, workDuration, breakDuration } = stored;
 
   const parsedStartTime = typeof startTime === "string" ? parseStartTime(startTime) : startTime;
 
@@ -108,7 +107,10 @@ export function storedToTimeline(stored) {
     scales,
     scaleMap,
     startTime: parsedStartTime,
-    duration: totalDuration
+    duration: totalDuration,
+    // we need these only when restarting
+    workDuration,
+    breakDuration
   };
 }
 

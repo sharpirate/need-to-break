@@ -11,7 +11,7 @@ import { get12HourTime } from '../../utils/timeUtil';
 function Timeline({ timeline, progress }) {
   const { scaleMap, scales, intervals } = timeline;
 
-  const [scale, setScale] = useState(scales[1].value);
+  const [scale, setScale] = useState(scales[scales.length - 1].value);
   const [hours, setHours] = useState(scaleMap[scale]);
   
   const clientWidth = useClientWidth();
@@ -205,11 +205,11 @@ Timeline.propTypes = {
 };
 
 function Hour({ children }) {
-  const { is12Hour } = useSettings();
+  const { use12Hour } = useSettings();
 
   let item;
 
-  if (is12Hour) {
+  if (use12Hour) {
     const [hour, min, suffix] = get12HourTime(children);
 
     item = (

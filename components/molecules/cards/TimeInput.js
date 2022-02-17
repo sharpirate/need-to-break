@@ -50,7 +50,7 @@ function TimeInput({ paddingStyle, disableFocus }) {
   let hours;
   let widthStyle;
 
-  if (settings.is12Hour) {
+  if (settings.use12Hour) {
     hours = hours12;
     widthStyle = "w-80 420:w-96";
   } else {

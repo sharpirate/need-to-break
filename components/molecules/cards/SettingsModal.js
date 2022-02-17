@@ -6,7 +6,7 @@ import { iconTypes } from "../../atoms/Icon";
 import Button, { buttonTypes } from "../../atoms/Button";
 import SelectInput from "../../atoms/SelectInput";
 import Modal from "../Modal";
-import { useSettings, useSetSettings, timeFormats } from "../../../context/Settings";
+import { useSettings, useSetSettings, timeFormats, restartTypes } from "../../../context/Settings";
 
 function SettingsModal({ isOpen, setIsOpen }) {
   const settings = useSettings();
@@ -45,19 +45,19 @@ function SettingsModal({ isOpen, setIsOpen }) {
             bigLabel="Time Format"
             centerBig
             widthStyle="w-96 420:w-[112px]"
-            selected={localSettings.is12Hour}
-            handleSelect={value => setLocalSettings({ is12Hour: value })}
+            selected={localSettings.use12Hour}
+            handleSelect={value => setLocalSettings({ ...localSettings, use12Hour: value })}
           />
-{/* 
+
           <SelectInput
-            name="sound"
-            options={timerSounds}
-            bigLabel="Timer Sound"
+            name="restart"
+            options={restartTypes}
+            bigLabel="Restart Type"
             centerBig
             widthStyle="w-96 420:w-[112px]"
-            selected={state.timerSound}
-            handleSelect={value => dispatch({ type: actionTypes.SET_TIMER_SOUND, value })}
-          /> */}
+            selected={localSettings.useSmartRestart}
+            handleSelect={value => setLocalSettings({ ...localSettings,  useSmartRestart: value })}
+          />
           
           {/* Buttons */}
           <div className="grid grid-cols-2 gap-24 mt-16 420:mt-24">

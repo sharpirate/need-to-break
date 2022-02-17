@@ -8,7 +8,8 @@ const SetSettingsContext = createContext()
 
 function getInitialState() {
   const initialState = {
-    is12Hour: false
+    use12Hour: false,
+    useSmartRestart: false
   };
 
   // prioritize settings from localStorage
@@ -46,4 +47,9 @@ export const useSetSettings = () => useContext(SetSettingsContext)
 export const timeFormats = [
   { name: "AM / PM", value: true },
   { name: "24 hour", value: false }
+];
+
+export const restartTypes = [
+  { name: "Instant", value: false },
+  { name: "Smart", value: true }
 ];

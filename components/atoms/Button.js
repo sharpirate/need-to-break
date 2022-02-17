@@ -8,7 +8,7 @@ const types = {
 
 export { types as buttonTypes };
 
-function Button({ type, children, disabled, handleClick }) {
+function Button({ type, children, disabled, handleClick, isSubmit }) {
   let style;
 
   switch (type) {
@@ -26,7 +26,7 @@ function Button({ type, children, disabled, handleClick }) {
   }
 
   return (
-    <button onClick={handleClick} disabled={disabled} className={'select-none px-24 420:px-32 py-8 body-sbold rounded-4 outline-none active:scale-90' + ' ' + style}>
+    <button type={isSubmit ? "submit" : "button"} onClick={handleClick} disabled={disabled} className={'select-none px-24 420:px-32 py-8 body-sbold rounded-4 outline-none active:scale-90' + ' ' + style}>
       {children}
     </button>
   );

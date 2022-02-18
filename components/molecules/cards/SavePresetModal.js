@@ -11,7 +11,7 @@ function SavePresetModal({ isOpen, setIsOpen }) {
   return (
     <Modal
       isOpen={isOpen}
-      setIsOpen={setIsOpen}
+      handleClose={() => setIsOpen(false)}
     >
       <InputCard>
         <Header

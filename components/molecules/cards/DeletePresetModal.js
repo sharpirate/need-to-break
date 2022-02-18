@@ -10,7 +10,7 @@ function DeletePresetModal({ isOpen, setIsOpen, presetName }) {
   return (
     <Modal
       isOpen={isOpen}
-      setIsOpen={setIsOpen}
+      handleClose={() => setIsOpen(false)}
     >
       <InputCard>
         <Header

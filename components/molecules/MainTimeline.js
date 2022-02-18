@@ -13,6 +13,8 @@ import { timestampToString, get12HourTime } from "../../utils/timeUtil";
 import { useSettings } from "../../context/Settings";
 import { SCALES } from "../../utils/constants";
 import cloneDeep from "lodash.clonedeep";
+import EnableNotificationsModal from "./cards/EnableNotificationsModal";
+import { useNotifications } from "../../utils/notificationUtil";
 
 function MainTimeline() {
   const timerRef = useRef();
@@ -22,6 +24,8 @@ function MainTimeline() {
   const [progress, setProgress] = useState();
   const [restartType, setRestartType] = useState(intervalTypes.work);
   const { use12Hour, useSmartRestart } = useSettings();
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+  const allowNotifications = useNotifications();
   
   function tick() {
     // get timer time left
@@ -102,8 +106,28 @@ function MainTimeline() {
       const oldIndex = timeline.intervals.indexOf(activeInterval);
       const nextInterval = timeline.intervals[oldIndex + 1];
       setActiveInterval(nextInterval);
+
+      if (allowNotifications) {
+        showNotificationOnIntervalEnd(nextInterval);
+      }
     }
   }, [timeLeft]);
+
+  useEffect(() => {
+    if (allowNotifications === null) {
+      setTimeout(() => {
+        setModalIsOpen(true);
+      }, 3000)
+    }
+  }, [allowNotifications]);
+
+  function showNotificationOnIntervalEnd(nextInterval) {
+    const title = nextInterval.type === intervalTypes.work ? "Work Time!" : "Break Time!";
+    const minutes = nextInterval.duration / 60;
+    const body = `${minutes} min`;
+
+    new Notification(title, { body: body });
+  }
 
   function handleRestartChange(e) {
     setRestartType(e.target.value);
@@ -222,6 +246,7 @@ function MainTimeline() {
 
   return readyToShow ? (
     <div className="w-full flex flex-col justify-center items-center text-center bg-white rounded-8 py-16 px-32 420:py-24 420:px-48 932:py-32">
+      <EnableNotificationsModal isOpen={modalIsOpen} setIsOpen={setModalIsOpen} />
 
       {/* Restart Block */}
       <form className="flex flex-col justify-center items-center mb-32 420:mb-48" onSubmit={e => handleRestart(e)}>

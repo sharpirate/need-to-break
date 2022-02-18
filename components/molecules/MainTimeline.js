@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import ViewMoreLess from "../atoms/ViewMoreLess";
 import Timer from "../atoms/Timer";
 import Timeline from "./TImeline";
@@ -6,7 +6,6 @@ import Label, { labelTypes } from "../atoms/Label";
 import RadioButton from "../atoms/RadioButton";
 import Button, { buttonTypes } from "../atoms/Button";
 import { intervalTypes } from "../atoms/Interval";
-import * as worker from 'worker-timers';
 import { blueprintToStored, storedToTimeline } from "../../utils/timelineUtil";
 import { getStartingLocalStorage, getStoredLocalStorage, removeStartingLocalStorage, setStartingLocalStorage, setStoredLocalStorate } from "../../utils/localStorageUtil";
 import { timestampToString, get12HourTime } from "../../utils/timeUtil";
@@ -15,9 +14,9 @@ import { SCALES } from "../../utils/constants";
 import cloneDeep from "lodash.clonedeep";
 import EnableNotificationsModal from "./cards/EnableNotificationsModal";
 import { useNotifications } from "../../utils/notificationUtil";
+import useWorkerInterval from "../../utils/useWorker";
 
 function MainTimeline() {
-  const timerRef = useRef();
   const [timeline, setTimeline] = useState();
   const [activeInterval, setActiveInterval] = useState();
   const [timeLeft, setTimeLeft] = useState();
@@ -27,13 +26,13 @@ function MainTimeline() {
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const allowNotifications = useNotifications();
   
-  function tick() {
+  function tick(now) {
     // get timer time left
     const endTimestamp = activeInterval.timestamp + (activeInterval.duration * 1000);
-    setTimeLeft(Math.round((endTimestamp - Date.now()) / 1000));
+    setTimeLeft(Math.round((endTimestamp - now) / 1000));
 
     // get timeline progress
-    const timelineProgress = (Math.round((Date.now() - timeline.startTime) / 1000) / timeline.duration * 100);
+    const timelineProgress = (Math.round((now - timeline.startTime) / 1000) / timeline.duration * 100);
     setProgress(timelineProgress);
   }
 
@@ -88,15 +87,12 @@ function MainTimeline() {
 
   useEffect(() => {
     if (activeInterval && timeline) {
-      tick();
-      timerRef.current = worker.setInterval(() => {
-        tick();
-      }, 1000);
+      // call the tick function every second with Date.now provided from the worker
+      const clearWorker = useWorkerInterval(tick, 1000);
 
       return () => {
-        worker.clearInterval(timerRef.current);
+        clearWorker();
         removeStartingLocalStorage();
-        console.log('cleanup');
       }
     }
   }, [activeInterval, timeline]);

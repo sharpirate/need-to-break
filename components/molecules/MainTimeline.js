@@ -22,8 +22,9 @@ function MainTimeline() {
   const [timeLeft, setTimeLeft] = useState();
   const [progress, setProgress] = useState();
   const [restartType, setRestartType] = useState(intervalTypes.work);
-  const { use12Hour, useSmartRestart } = useSettings();
   const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [audio, setAudio] = useState(null);
+  const { use12Hour, useSmartRestart } = useSettings();
   const allowNotifications = useNotifications();
   
   function tick(now) {
@@ -98,7 +99,14 @@ function MainTimeline() {
   }, [activeInterval, timeline]);
 
   useEffect(() => {
+    if (timeLeft <= 3 && !audio) {
+      const audio = new Audio("sounds/timer.wav");
+      audio.autoplay = true;
+      setAudio(audio)
+    }
+
     if (timeLeft <= 0) {
+      setAudio(null);
       const oldIndex = timeline.intervals.indexOf(activeInterval);
       const nextInterval = timeline.intervals[oldIndex + 1];
       setActiveInterval(nextInterval);

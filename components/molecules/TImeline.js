@@ -27,6 +27,11 @@ function Timeline({ timeline, progress }) {
     setHours,
     progress,
   };
+
+  useEffect(() => {
+    // fix stale state in TimelinePreview
+    setHours(scaleMap[scale]);
+  }, [timeline])
   
   const regularTimeline = (
     <div className="hidden 932:block">

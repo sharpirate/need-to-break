@@ -9,12 +9,14 @@ import SavePresetModal from "../molecules/cards/SavePresetModal";
 import { useBlueprint } from "../../context/Blueprint";
 import { blueprintToStored, blueprintToTimeline } from "../../utils/timelineUtil";
 import { setStoredLocalStorate } from "../../utils/localStorageUtil";
+import { useRouter } from "next/router";
 
 function TimelinePreview({ hasFloating }) {
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const blueprint = useBlueprint();
   const [timeline, setTimeline] = useState();
   const [viewMore, setViewMore] = useState(false);
+  const router = useRouter();
 
   useEffect(() => {
     if (blueprint.duration) {
@@ -26,6 +28,8 @@ function TimelinePreview({ hasFloating }) {
   function handleStart() {
     const stored = blueprintToStored(blueprint);
     setStoredLocalStorate(stored);
+
+    router.push('/active');
   }
 
   const floatingStyle = hasFloating ? '932:grid-cols-2' : '';

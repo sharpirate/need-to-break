@@ -10,8 +10,9 @@ class MyDocument extends Document {
           <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="true"/>
           <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"></link>
           <link href="https://fonts.googleapis.com/css2?family=Azeret+Mono:wght@500&display=swap" rel="stylesheet"></link>
+          <meta name="viewport" content="initial-scale=1.0, width=device-width" />
         </Head>
-        <body className="bg-primary-300 hide-scrollbar">
+        <body className="bg-primary-300 overflow-hidden hide-scrollbar">
           <Main />
           <NextScript />
         </body>

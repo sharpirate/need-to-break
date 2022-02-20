@@ -12,22 +12,17 @@ import { TRANSITIONS } from "../utils/constants";
 Modal.setAppElement('#__next');
 
 const pageVariants = {
-  initial: direction => {
-    return {
-      x: direction < 0 ? "-100vw" : "100vw",
-    }
-  },
+  initial: direction => ({
+    x: direction < 0 ? "-100vw" : "100vw",
+  }),
   center: {
     x: "0",
     transition: TRANSITIONS.spring500
   },
-  exit: direction => {
-    console.log(direction)
-    return {
-      x: direction > 0 ? "-100vw" : "100vw",
-      transition: TRANSITIONS.spring500
-    }
-  }
+  exit: direction => ({
+    x: direction > 0 ? "-100vw" : "100vw",
+    transition: TRANSITIONS.spring500
+  })
 };
 
 const pages = [

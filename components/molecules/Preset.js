@@ -9,7 +9,7 @@ import DeletePresetModal from "./cards/DeletePresetModal";
 
 function Preset({ name }) {
   const [modalIsOpen, setModalIsOpen] = useState(false);
-
+  return null;
   return (
     <section className="w-full flex flex-col justify-center items-center text-center bg-white rounded-8 py-16 px-32 420:py-24 420:px-48 932:py-32">
 

@@ -2,9 +2,8 @@ import InputCard from "./InputCard";
 import Header from "./Header";
 import NumberInput from "../../atoms/NumberInput";
 import { iconTypes } from "../../atoms/Icon";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useDispatchBlueprint, blueprintActions } from "../../../context/Blueprint";
-import { useEffect } from "react/cjs/react.development";
 
 function IntervalSize() {
   const [w, setW] = useState(5);

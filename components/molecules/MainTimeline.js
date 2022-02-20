@@ -313,7 +313,7 @@ function MainTimeline() {
       </ViewMoreLess>
 
     </div>
-  ) : null;
+  ) : <p>No Active</p>;
 }
 
 export default MainTimeline;

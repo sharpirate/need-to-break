@@ -55,6 +55,7 @@ function MyApp({ Component, pageProps }) {
     <SettingsProvider>
       <Head>
         <title>Need To Break</title>
+        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head>
       
       <div className="flex flex-col justify-start items-center">

@@ -14,6 +14,7 @@ function TimelinePreview({ hasFloating }) {
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const blueprint = useBlueprint();
   const [timeline, setTimeline] = useState();
+  const [viewMore, setViewMore] = useState(false);
 
   useEffect(() => {
     if (blueprint.duration) {
@@ -71,7 +72,13 @@ function TimelinePreview({ hasFloating }) {
           <Button handleClick={() => setModalIsOpen(true)} type={buttonTypes.outline}>Save Preset</Button>
         </div>
 
-        <ViewMoreLess viewMoreText="View Timeline" viewLessText="Hide Timeline" isTimeline={true} >
+        <ViewMoreLess
+          viewMoreText="View Timeline"
+          viewLessText="Hide Timeline"
+          isTimeline={true}
+          active={viewMore}
+          handleClick={() => setViewMore(!viewMore)}
+        >
           <div className="932:mt-0 w-full">
             <Timeline timeline={timeline} />
           </div>

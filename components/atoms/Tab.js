@@ -1,5 +1,4 @@
 import PropTypes from 'prop-types';
-import Link from 'next/link';
 
 const types = {
   authNav: 'authNav',
@@ -9,25 +8,11 @@ const types = {
 
 export { types as tabTypes };
 function Tab({ children, type, active, first, last, value, handleClick }) {
-  let tab;
-
-  if (type === types.pagination) {
-    tab = (
-      <li>
-        <button className={getStyle(type, active, first, last)} onClick={() => handleClick(value)}>{children}</button>
-      </li>
-    );
-  } else {
-    tab = (
-      <li>
-        <Link href={value}>
-          <a className={getStyle(type, active, first, last)}>{children}</a>
-        </Link>
-      </li>
-    );
-  }
-
-  return tab;
+  return (
+    <li>
+      <button className={getStyle(type, active, first, last)} onClick={() => handleClick(value)}>{children}</button>
+    </li>
+  );
 }
 
 Tab.propTypes = {
@@ -78,7 +63,7 @@ function getAuthNavStyle(active, first, last) {
 }
 
 function getMainNavStyle(active, first, last) {
-  let baseStyle = 'block outline-none text-center text-white body-med p-6 border-b border-white 420:p-8 420:text-16 732:font-sbold 732:py-8 732:px-32 732:border-t-2 732:border-b-2 732:border-r-2 732:border-primary-500 732:focus-visible:bg-primary-600 732:focus-visible:text-white';
+  let baseStyle = 'w-full block outline-none text-center text-white body-med p-6 border-b border-white 420:p-8 420:text-16 732:font-sbold 732:py-8 732:px-32 732:border-t-2 732:border-b-2 732:border-r-2 732:border-primary-500 732:focus-visible:bg-primary-600 732:focus-visible:text-white';
 
   let activeStyle = '';
   

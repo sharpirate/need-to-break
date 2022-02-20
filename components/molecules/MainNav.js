@@ -1,24 +1,15 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import Tab, { tabTypes } from "../atoms/Tab";
-import { useRouter } from "next/dist/client/router";
 import SettingsModal from "./cards/SettingsModal";
-
-const tabs = [
-  { name: 'Active', url: '/active' },
-  { name: 'Full Time', url: '/fulltime' },
-  { name: 'Flexible', url: '/flexible' },
-  { name: 'Presets', url: '/presets' }
-];
 
 const types = {
   desktop: 'desktop',
   mobile: 'mobile'
 };
 
-function MainNav() {
+function MainNav({ tabs, active, handlePageChange }) {
   const [modalIsOpen, setModalIsOpen] = useState(false);
-  const router = useRouter();
 
   return (
     <nav className="flex w-full justify-between 732:p-32 732:pb-0 932:p-48 932:pb-0">
@@ -27,11 +18,12 @@ function MainNav() {
         {tabs.map((tab, index) => (
           <Tab
             key={tab.name}
-            active={router.pathname === tab.url}
+            active={tab.url === active}
             type={tabTypes.mainNav}
             first={index === 0}
             last={index === tabs.length - 1}
             value={tab.url}
+            handleClick={handlePageChange}
           >
             {tab.name}
           </Tab>

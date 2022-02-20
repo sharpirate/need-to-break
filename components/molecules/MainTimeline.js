@@ -24,6 +24,8 @@ function MainTimeline() {
   const [restartType, setRestartType] = useState(intervalTypes.work);
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [audio, setAudio] = useState(null);
+  const [viewMoreTimeline, setViewMoreTimeline] = useState(false);
+  const [viewMoreRestart, setViewMoreRestart] = useState(false);
   const { use12Hour, useSmartRestart } = useSettings();
   const allowNotifications = useNotifications();
   
@@ -140,6 +142,8 @@ function MainTimeline() {
   function handleRestart(e) {
     e.preventDefault();
 
+    setViewMoreRestart(false);
+
     let closestBlock;
     const now = Date.now();
 
@@ -254,7 +258,12 @@ function MainTimeline() {
 
       {/* Restart Block */}
       <form className="flex flex-col justify-center items-center mb-32 420:mb-48" onSubmit={e => handleRestart(e)}>
-        <ViewMoreLess viewMoreText="Restart Interval" viewLessText="Restart Interval">
+        <ViewMoreLess
+          viewMoreText="Restart Interval"
+          viewLessText="Restart Interval"
+          active={viewMoreRestart}
+          handleClick={() => setViewMoreRestart(!viewMoreRestart)}
+        >
           <div className="mt-16 420:mt-24">
             <Label size={labelTypes.large} as={labelTypes.h1} >Restart</Label>
             <p className="mb-16 body-med text-gray-500">
@@ -286,7 +295,13 @@ function MainTimeline() {
       </div>
 
       {/* Timeline Block */}
-      <ViewMoreLess viewMoreText="View Timeline" viewLessText="Hide Timeline" isTimeline={true} >
+      <ViewMoreLess
+        viewMoreText="View Timeline"
+        viewLessText="Hide Timeline"
+        isTimeline={true}
+        active={viewMoreTimeline}
+        handleClick={() => setViewMoreTimeline(!viewMoreTimeline)}
+      >
         <div className="mt-32 420:mt-48 932:mt-0 w-full">
           <Timeline timeline={timeline} progress={progress} />
         </div>

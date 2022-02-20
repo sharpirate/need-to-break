@@ -1,4 +1,4 @@
-import { useReducer, useEffect } from "react";
+import { useReducer, useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import Label, { labelTypes } from "../../atoms/Label";
 import SelectInput from "../../atoms/SelectInput";
@@ -22,9 +22,11 @@ const initialState = {
 
 function TimeInput({ paddingStyle, disableFocus }) {
   const [{ startHour, startMin, endHour, endMin }, dispatch] = useReducer(reducer, initialState);
+  const [hours, setHours] = useState(hours24);
+  const [widthStyle, setWidthStyle] = useState();
   const blueprintDispatch = useDispatchBlueprint();
 
-  const settings = useSettings();
+  const { use12Hour } = useSettings();
 
   useEffect(() => {
     blueprintDispatch({ type: blueprintActions.SET_START, value: parseTime([startHour, startMin])});
@@ -42,21 +44,22 @@ function TimeInput({ paddingStyle, disableFocus }) {
     // Math rouund is very important because sometimes it would return weird decimal numbers which will evaluate to true and crash the page
     const duration = Math.round((endDate - startDate) / 1000);
     
-    if (duration > 0) {
-      blueprintDispatch({ type: blueprintActions.SET_DURATION, value: duration });
+    if (duration <= 0) {
+      dispatch({ type: actionTypes.SET_END_HOUR, value: startHour })
     }
+    
+    blueprintDispatch({ type: blueprintActions.SET_DURATION, value: duration });
   }, [startHour, startMin, endHour, endMin])
 
-  let hours;
-  let widthStyle;
-
-  if (settings.use12Hour) {
-    hours = hours12;
-    widthStyle = "w-80 420:w-96";
-  } else {
-    hours = hours24;
-    widthStyle = "w-64 420:w-72";
-  }
+  useEffect(() => {
+    if (use12Hour) {
+      setHours(hours12);
+      setWidthStyle("w-80 420:w-96");
+    } else {
+      setHours(hours24);
+      setWidthStyle("w-64 420:w-72");
+    }
+  }, [use12Hour])
 
   return (
     <div className={`flex flex-col gap-16 420:gap-24 ${paddingStyle}`}>

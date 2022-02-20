@@ -24,7 +24,16 @@ function SelectInput({ name, options, bigLabel, smallLabel, centerBig, centerSma
   const [active, setActive] = useState(false);
   // manage the focused item by index
   const [focused, setFocused] = useState(0);
+  const [sortedOptions, setSortedOptions] = useState(options);
   const ref = useRef(null);
+
+  useEffect(() => {
+    const selectedIndex = options.findIndex(option => option.value === selected);
+    const firstHalf = options.slice(0, selectedIndex);
+    const secondHalf = options.slice(selectedIndex + 1);
+    
+    setSortedOptions([...secondHalf, ...firstHalf]);
+  }, [selected]);
 
   useEffect(() => {
     if (active) {
@@ -60,11 +69,11 @@ function SelectInput({ name, options, bigLabel, smallLabel, centerBig, centerSma
 
     switch (e.key) {
       case 'ArrowDown':
-        newFocusedIndex = focused + 1 === options.length - 1 ? 0 : focused + 1;
+        newFocusedIndex = focused + 1 === sortedOptions.length - 1 ? 0 : focused + 1;
         setFocused(newFocusedIndex);
         break;
       case 'ArrowUp':
-        newFocusedIndex = focused - 1 === -1 ? options.length - 2 : focused - 1;
+        newFocusedIndex = focused - 1 === -1 ? sortedOptions.length - 2 : focused - 1;
         setFocused(newFocusedIndex);
         break;
       case 'Escape':
@@ -72,7 +81,7 @@ function SelectInput({ name, options, bigLabel, smallLabel, centerBig, centerSma
         exitMenu();
         break;
       case 'Enter':
-        handleSelect(options.find(option => option.value === value).value);
+        handleSelect(sortedOptions.find(option => option.value === value).value);
         exitMenu();
       default:
         break;
@@ -80,7 +89,7 @@ function SelectInput({ name, options, bigLabel, smallLabel, centerBig, centerSma
   }
 
   function handleItemClick(value) {
-    handleSelect(options.find(option => option.value === value).value);
+    handleSelect(sortedOptions.find(option => option.value === value).value);
     exitMenu(true);
   }
 
@@ -114,7 +123,8 @@ function SelectInput({ name, options, bigLabel, smallLabel, centerBig, centerSma
         {active ? 
           (<li className="relative z-10">
             <ul className="absolute w-full max-h-200 overflow-y-auto border-2 border-t-0 rounded-b-4 border-primary-500 hide-scrollbar">
-              {options.filter(option => option.value !== selected).map((option, index) => (
+              {/* {sortedOptions.filter(option => option.value !== selected).map((option, index) => ( */}
+              {sortedOptions.map((option, index) => (
                 <SelectItem
                   key={option.value}
                   value={option.value}

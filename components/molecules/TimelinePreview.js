@@ -22,6 +22,8 @@ function TimelinePreview({ hasFloating }) {
     if (blueprint.duration) {
       const timeline = blueprintToTimeline(blueprint);
       setTimeline(timeline);
+    } else {
+      setTimeline(null);
     }
   }, [blueprint])
 

@@ -14,7 +14,7 @@ import { SCALES } from "../../utils/constants";
 import cloneDeep from "lodash.clonedeep";
 import EnableNotificationsModal from "./cards/EnableNotificationsModal";
 import { useNotifications } from "../../utils/notificationUtil";
-import useWorkerInterval from "../../utils/useWorker";
+import useWorkerInterval from "../../utils/useWorkerInterval";
 
 function MainTimeline() {
   const [timeline, setTimeline] = useState();
@@ -28,6 +28,7 @@ function MainTimeline() {
   const [viewMoreRestart, setViewMoreRestart] = useState(false);
   const { use12Hour, useSmartRestart } = useSettings();
   const allowNotifications = useNotifications();
+  const [startWorker, endWorker] = useWorkerInterval(tick);
   
   function tick(now) {
     // get timer time left
@@ -90,11 +91,10 @@ function MainTimeline() {
 
   useEffect(() => {
     if (activeInterval && timeline) {
-      // call the tick function every second with Date.now provided from the worker
-      const clearWorker = useWorkerInterval(tick, 1000);
+      startWorker(1000);
 
       return () => {
-        clearWorker();
+        endWorker();
         removeStartingLocalStorage();
       }
     }

@@ -236,7 +236,7 @@ function MainTimeline() {
     startTimeline();
   }
 
-  const readyToShow = (activeInterval && timeline && !isNaN(timeLeft));
+  const readyToShow = (activeInterval && timeline && timeLeft >= 0);
   let timeLabel;
 
   if (activeInterval) {

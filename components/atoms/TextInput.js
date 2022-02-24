@@ -8,7 +8,7 @@ const types = {
 }
 
 export { types as textInputTypes };
-function TextInput({ name, type, bigLabel, smallLabel, widthStyle, centerBig, centerSmall, successLabel, errorLabel, children, value, disabled }) {
+function TextInput({ name, type, bigLabel, smallLabel, widthStyle, centerBig, centerSmall, successLabel, errorLabel, children, value, disabled, handleChange }) {
   const renderBigLabel = bigLabel ? <Label center={centerBig} as={labelTypes.label} size={labelTypes.big} fieldId={name}>{bigLabel}</Label> : null;
 
   const renderSmallLabel = smallLabel ? <Label center={centerSmall} as={labelTypes.label} size={labelTypes.small} fieldId={name}>{smallLabel}</Label> : null;
@@ -21,7 +21,7 @@ function TextInput({ name, type, bigLabel, smallLabel, widthStyle, centerBig, ce
     <div className={`flex flex-col ${widthStyle}`}>
       {renderBigLabel}
       {renderSmallLabel}
-      <input disabled={disabled} className={getStyle(false, false)} placeholder={children} type={type} id={name} name={name} value={value} />
+      <input disabled={disabled} onChange={e => handleChange(e.target.value)} className={getStyle(false, false)} placeholder={children} type={type} id={name} name={name} value={value} />
       {renderSuccessLabel}
       {renderErrorLabel}
     </div>

@@ -85,6 +85,11 @@ function MainTimeline() {
 
   useEffect(() => {
     startTimeline();
+
+    return () => {
+      // setActiveInterval(null);
+      // setTimeLeft(null);
+    }
   }, []);
 
   useEffect(() => {
@@ -98,6 +103,7 @@ function MainTimeline() {
       worker.onmessage = ({ data }) => tick(data);
 
       return () => {
+        console.log('cleanup')
         // end worker
         worker.postMessage({ clear: true });
         removeStartingLocalStorage();

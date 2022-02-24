@@ -8,48 +8,114 @@ import { SettingsProvider } from "../context/Settings";
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { TRANSITIONS } from "../utils/constants";
+import { getAuthInstance, useAuth } from "../firebase/Firebase";
+import { PRE_LOGIN_PAGES, PROTECTED_PAGES, DIRECTIONS } from "../utils/constants";
 
 Modal.setAppElement('#__next');
 
 const pageVariants = {
-  initial: direction => ({
-    x: direction < 0 ? "-100vw" : "100vw",
-  }),
+  initial: direction => {
+    if (direction === DIRECTIONS.none) {
+      return false;
+    }
+
+    if (direction === DIRECTIONS.left) {
+      return {
+        x: "-100vw"
+      }
+    } else if (direction === DIRECTIONS.right) {
+      return {
+        x: "100vw"
+      }
+    }
+  },
   center: {
-    x: "0",
+    x: 0,
     transition: TRANSITIONS.spring500
   },
-  exit: direction => ({
-    x: direction > 0 ? "-100vw" : "100vw",
-    transition: TRANSITIONS.spring500
-  })
+  exit: direction => {
+    if (direction === 0) {
+      return false;
+    }
+    
+    if (direction === DIRECTIONS.left) {
+      return {
+        x: "100vw"
+      }
+    } else if (direction === DIRECTIONS.right) {
+      return {
+        x: "-100vw"
+      }
+    }
+  }
 };
 
-const pages = [
-  { name: 'Active', url: '/active' },
-  { name: 'Full Time', url: '/fulltime' },
-  { name: 'Flexible', url: '/flexible' },
-  { name: 'Presets', url: '/presets' }
-];
+export function isProtectedPage(url) {
+  return Boolean(PROTECTED_PAGES.find(page => page.url === url))
+}
+
+export function isPreLoginPage(url) {
+  return Boolean(PRE_LOGIN_PAGES.find(page => page.url === url))
+}
+
+function getPagesByUrl(url) {
+  if (isProtectedPage(url)) {
+    return PROTECTED_PAGES;
+  } else if (isPreLoginPage(url)) {
+    return PRE_LOGIN_PAGES;
+  } else {
+    return null;
+  }
+}
+
+function isSameContext(prevUrl, nextUrl) {
+  return isProtectedPage(prevUrl) === isProtectedPage(nextUrl) || isPreLoginPage(prevUrl) === isPreLoginPage(nextUrl);
+}
 
 function MyApp({ Component, pageProps }) {
   const router = useRouter();
   const url = router.pathname;
-  const [newPage, setNewPage] = useState({ direction: 0, url: "" });
+  const [page, setPage] = useState({ direction: DIRECTIONS.none, url: url });
+  const { user, userLoading } = useAuth();
 
-  function handlePageChange(value) {
-    const oldPageIndex = pages.findIndex(page => page.url === url);
-    const newPageIndex = pages.findIndex(page => page.url === value);
+  useEffect(() => {
+    if (page.url) {
+      router.push(page.url);
+    }
+  }, [page]);
 
-    setNewPage({
-      direction: newPageIndex - oldPageIndex,
-      url: value 
+  useEffect(() => {
+    // if user is not logged in and tries to access a protected page redirect him to login
+    if (!userLoading && !user && isProtectedPage(url)) {
+      pushPage('/login')
+    }
+  }, [user, userLoading]);
+  
+  function pushPage(targetUrl) {
+    let direction;
+    
+    if (!isSameContext(url, targetUrl)) {
+      direction = DIRECTIONS.none;
+    } else {
+      const pages = getPagesByUrl(targetUrl);
+  
+      const currentIndex = pages.findIndex(page => page.url === url);
+      const nextIndex = pages.findIndex(page => page.url === targetUrl);
+  
+      direction = (nextIndex - currentIndex) > 0 ? DIRECTIONS.right : DIRECTIONS.left;  
+    }
+  
+    setPage({
+      url: targetUrl,
+      direction
     });
   }
 
-  useEffect(() => {
-    router.push(newPage.url);
-  }, [newPage]);
+  // loading -> empty page
+  // is prelogin page -> render prelogin 
+  // is protected
+    // logged in -> render
+    // not logged in -> redirect to login
 
   return (
     <SettingsProvider>
@@ -57,27 +123,33 @@ function MyApp({ Component, pageProps }) {
         <title>Need To Break</title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head>
-      
-      <div className="flex flex-col justify-start items-center">
 
-        <MainNav tabs={pages} active={url} handlePageChange={handlePageChange} />
+      {user || !isProtectedPage(url) ? (
+        <div className="flex flex-col justify-start items-center">
 
-        <div className="relative w-full max-w-[1600px]">
-          <AnimatePresence>
-            <motion.div
-              key={url}
-              variants={pageVariants}
-              custom={newPage.direction}
-              initial="initial"
-              animate="center"
-              exit="exit"
-              className="absolute top-0 left-0 w-full flex flex-col justify-start items-center p-24 420:p-32 932:p-48"
-            >
-              <Component {...pageProps} />
-            </motion.div>
-          </AnimatePresence>
+        {!isProtectedPage(url) ? (
+          <AuthNav tabs={PRE_LOGIN_PAGES} active={url} handlePageChange={pushPage} />
+        ) : (
+          <MainNav tabs={PROTECTED_PAGES} active={url} handlePageChange={pushPage} />
+        )}
+  
+          <div className="relative w-full max-w-[1600px]">
+            <AnimatePresence onExitComplete={() => setPage({ direction: DIRECTIONS.none })}>
+              <motion.div
+                key={url}
+                variants={pageVariants}
+                custom={page.direction}
+                initial="initial"
+                animate="center"
+                exit="exit"
+                className="absolute top-0 left-0 w-full flex flex-col justify-start items-center p-24 420:p-32 932:p-48"
+              >
+                <Component {...pageProps} />
+              </motion.div>
+            </AnimatePresence>
+          </div>
         </div>
-      </div>
+      ) : null}
     </SettingsProvider>
   );
 }

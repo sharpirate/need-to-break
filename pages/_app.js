@@ -1,4 +1,3 @@
-import "../styles/globals.css";
 import MainNav from "../components/molecules/MainNav";
 import AuthNav from "../components/molecules/AuthNav";
 import { useRouter } from "next/dist/client/router";
@@ -8,7 +7,7 @@ import { SettingsProvider } from "../context/Settings";
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { TRANSITIONS } from "../utils/constants";
-import { getAuthInstance, useAuth } from "../firebase/Firebase";
+import { useAuth } from "../firebase/Firebase";
 import { PRE_LOGIN_PAGES, PROTECTED_PAGES, DIRECTIONS } from "../utils/constants";
 
 Modal.setAppElement('#__next');
@@ -119,12 +118,6 @@ function MyApp({ Component, pageProps }) {
       direction
     });
   }
-
-  // loading -> empty page
-  // is prelogin page -> render prelogin 
-  // is protected
-    // logged in -> render
-    // not logged in -> redirect to login
 
   return (
     <SettingsProvider>

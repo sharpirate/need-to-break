@@ -86,11 +86,6 @@ function MainTimeline() {
 
   useEffect(() => {
     startTimeline();
-
-    return () => {
-      // setActiveInterval(null);
-      // setTimeLeft(null);
-    }
   }, []);
 
   useEffect(() => {
@@ -104,7 +99,6 @@ function MainTimeline() {
       worker.onmessage = ({ data }) => tick(data);
 
       return () => {
-        console.log('cleanup')
         // end worker
         worker.postMessage({ clear: true });
         removeStartingLocalStorage();
@@ -135,7 +129,7 @@ function MainTimeline() {
     if (allowNotifications === null) {
       setTimeout(() => {
         setModalIsOpen(true);
-      }, 2000)
+      }, 3000)
     }
   }, [allowNotifications]);
 

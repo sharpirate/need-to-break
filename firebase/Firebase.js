@@ -11,6 +11,50 @@ const firebaseConfig = {
   appId: "1:252334492634:web:4806a035bb76c62a460ee3"
 };
 
+export const errorTypes = {
+  password: 'password',
+  email: 'email',
+  unknown: 'unknown'
+};
+
+const errorMap = {
+  "auth/user-not-found": {
+    msg: "User not found",
+    type: errorTypes.email
+  },
+  "auth/email-already-in-use": {
+    msg: "Email has already been used",
+    type: errorTypes.email
+  },
+  "auth/invalid-email": {
+    msg: "Invalid email",
+    type: errorTypes.email
+  },
+  "auth/missing-email": {
+    msg: "Missing email",
+    type: errorTypes.email
+  },
+  "auth/too-many-requests": {
+    msg: "Account locked: too many login attempts",
+    type: errorTypes.email
+  },
+  "auth/wrong-password": {
+    msg: "Incorrect password",
+    type: errorTypes.password
+  },
+  "auth/weak-password": {
+    msg: "Should be at least 6 characters",
+    type: errorTypes.password
+  },
+}
+
+function getErrorMessage(code) {
+  return errorMap[code] || {
+    msg: "There was an error",
+    type: errorTypes.unknown
+  };
+}
+
 function getAppInstance() {
   // initialize the app only once
   return !getApps().length ? initializeApp(firebaseConfig) : getApp();
@@ -39,10 +83,6 @@ export function useAuth() {
     return unsubscribe;
   }, []);
 
-  useEffect(() => {
-    console.error('user loading: ', userLoading)
-  }, [userLoading])
-
   async function signUp(email, password) {
     setUserLoading(true);
 
@@ -54,13 +94,10 @@ export function useAuth() {
         user: result.user
       };
     } catch (error) {
-      const { code, message } = error;
+      console.error(error)
       setUserLoading(false);
       return {
-        error: {
-          code,
-          message
-        }
+        error: getErrorMessage(error.code)
       }
     }
   }
@@ -76,13 +113,10 @@ export function useAuth() {
         user: result.user
       };
     } catch (error) {
-      const { code, message } = error;
+      console.error(error)
       setUserLoading(false);
       return {
-        error: {
-          code,
-          message
-        }
+        error: getErrorMessage(error.code)
       }
     }
   }

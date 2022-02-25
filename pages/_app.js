@@ -15,37 +15,46 @@ Modal.setAppElement('#__next');
 
 const pageVariants = {
   initial: direction => {
-    if (direction === DIRECTIONS.none) {
-      return false;
-    }
-
-    if (direction === DIRECTIONS.left) {
-      return {
-        x: "-100vw"
-      }
-    } else if (direction === DIRECTIONS.right) {
-      return {
-        x: "100vw"
-      }
+    switch(direction) {
+      case DIRECTIONS.left:
+        return {
+          x: "-100vw"
+        }
+      case DIRECTIONS.right:
+        return {
+          x: "100vw"
+        }
+      case DIRECTIONS.vertical:
+        return {
+          y: "100vh"
+        }
+      case DIRECTIONS.none:
+      default:
+        return false;
     }
   },
   center: {
     x: 0,
+    y: 0,
     transition: TRANSITIONS.spring500
   },
   exit: direction => {
-    if (direction === 0) {
-      return false;
-    }
-    
-    if (direction === DIRECTIONS.left) {
-      return {
-        x: "100vw"
-      }
-    } else if (direction === DIRECTIONS.right) {
-      return {
-        x: "-100vw"
-      }
+    switch(direction) {
+      case DIRECTIONS.left:
+        return {
+          x: "100vw"
+        }
+      case DIRECTIONS.right:
+        return {
+          x: "-100vw"
+        }
+      case DIRECTIONS.vertical:
+        return {
+          y: "100vh"
+        }
+      case DIRECTIONS.none:
+      default:
+        return false;
     }
   }
 };
@@ -75,7 +84,7 @@ function isSameContext(prevUrl, nextUrl) {
 function MyApp({ Component, pageProps }) {
   const router = useRouter();
   const url = router.pathname;
-  const [page, setPage] = useState({ direction: DIRECTIONS.none, url: url });
+  const [page, setPage] = useState({ direction: DIRECTIONS.vertical, url: url });
   const { user, userLoading } = useAuth();
 
   useEffect(() => {
@@ -134,7 +143,7 @@ function MyApp({ Component, pageProps }) {
         )}
   
           <div className="relative w-full max-w-[1600px]">
-            <AnimatePresence onExitComplete={() => setPage({ direction: DIRECTIONS.none })}>
+            <AnimatePresence onExitComplete={() => setPage({ direction: DIRECTIONS.vertical })}>
               <motion.div
                 key={url}
                 variants={pageVariants}

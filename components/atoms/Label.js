@@ -78,7 +78,7 @@ function getStyle(size, type, center, capitalize) {
 
   switch (size) {
     case types.status:
-      sizeStyle = 'font-med text-10 mt-4 420:text-13';
+      sizeStyle = 'font-med text-10 pt-4 420:text-13 absolute bottom-0 translate-y-full';
       break;
     case types.small:
       sizeStyle = 'font-med text-10 mb-4 420:text-13';

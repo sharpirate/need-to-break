@@ -1,9 +1,7 @@
-import SignUp from "../components/molecules/cards/SignUp";
+import AuthCard, { authTypes } from "../components/molecules/cards/AuthCard";
 
 function SignUpPage() {
-  return (
-    <SignUp />
-  );
+  return <AuthCard type={authTypes.signUp} />
 }
 
 export default SignUpPage;

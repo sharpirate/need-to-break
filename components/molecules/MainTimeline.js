@@ -4,7 +4,7 @@ import Timer from "../atoms/Timer";
 import Timeline from "./TImeline";
 import Label, { labelTypes } from "../atoms/Label";
 import RadioButton from "../atoms/RadioButton";
-import Button, { buttonTypes } from "../atoms/Button";
+import Button, { buttonDelay, buttonTypes } from "../atoms/Button";
 import { intervalTypes } from "../atoms/Interval";
 import { blueprintToStored, storedToTimeline } from "../../utils/timelineUtil";
 import { getStartingLocalStorage, getStoredLocalStorage, removeStartingLocalStorage, setStartingLocalStorage, setStoredLocalStorate } from "../../utils/localStorageUtil";
@@ -14,6 +14,7 @@ import { SCALES } from "../../utils/constants";
 import cloneDeep from "lodash.clonedeep";
 import EnableNotificationsModal from "./cards/EnableNotificationsModal";
 import { useNotifications } from "../../utils/notificationUtil";
+import NoActiveTimeline from "./cards/NoActiveTimeline";
 
 function MainTimeline() {
   const [timeline, setTimeline] = useState();
@@ -262,7 +263,10 @@ function MainTimeline() {
       <EnableNotificationsModal isOpen={modalIsOpen} setIsOpen={setModalIsOpen} />
 
       {/* Restart Block */}
-      <form className="flex flex-col justify-center items-center mb-32 420:mb-48" onSubmit={e => handleRestart(e)}>
+      <form className="flex flex-col justify-center items-center mb-32 420:mb-48" onSubmit={e => {
+        e.preventDefault();
+        setTimeout(handleRestart.bind(this, e), buttonDelay);
+      }}>
         <ViewMoreLess
           viewMoreText="Restart Interval"
           viewLessText="Restart Interval"
@@ -313,7 +317,7 @@ function MainTimeline() {
       </ViewMoreLess>
 
     </div>
-  ) : <p>No Active</p>;
+  ) : <NoActiveTimeline />;
 }
 
 export default MainTimeline;

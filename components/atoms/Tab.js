@@ -41,7 +41,7 @@ function getStyle(type, active, first, last) {
 }
 
 function getAuthNavStyle(active, first, last) {
-  let baseStyle = 'block outline-none text-center body-sbold py-8 px-24 420:px-32 border-t-2 border-b-2 border-r-2 border-primary-500 focus-visible:bg-primary-600 focus-visible:text-white';
+  let baseStyle = 'w-full block outline-none text-center body-sbold py-8 px-24 420:px-32 border-t-2 border-b-2 border-r-2 border-primary-500 focus-visible:bg-primary-600 focus-visible:text-white';
 
   let activeStyle = '';
   

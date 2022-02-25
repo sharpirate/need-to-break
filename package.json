@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "firebase": "^9.6.7",
     "framer-motion": "^6.2.6",
     "lodash.clonedeep": "^4.5.0",
     "next": "^12.1.0",

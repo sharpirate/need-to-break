@@ -1,3 +1,4 @@
+import "../styles/globals.css";
 import MainNav from "../components/molecules/MainNav";
 import AuthNav from "../components/molecules/AuthNav";
 import { useRouter } from "next/dist/client/router";

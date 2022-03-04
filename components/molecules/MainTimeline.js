@@ -79,7 +79,13 @@ function MainTimeline() {
         
       } else {
         const nextIntervalIndex = timeline.intervals.findIndex(interval => interval.timestamp > Date.now());
-        setActiveInterval(timeline.intervals[nextIntervalIndex - 1]);
+
+        // check if we are already at the last interval
+        if (nextIntervalIndex === -1) {
+          setActiveInterval(timeline.intervals.pop());
+        } else {
+          setActiveInterval(timeline.intervals[nextIntervalIndex - 1]);
+        }
       }
     }
   }

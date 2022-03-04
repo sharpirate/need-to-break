@@ -15,6 +15,11 @@ export function timestampToString(timestamp) {
   return `${hours}:${minutes}`;
 }
 
+export function parseStartTime(startTime) {
+  const [hours, minutes] = parseTime(startTime);
+  return new Date().setHours(hours, minutes, 0);
+}
+
 export function get12HourTime(time) {
   const [hour, min] = typeof time === 'string' ? parseTime(time) : time;
 

@@ -6,6 +6,7 @@ import Button, { buttonTypes } from "../../atoms/Button";
 import { useState } from "react";
 import { useAuth, errorTypes } from "../../../firebase/Firebase";
 import { useRouter } from "next/router";
+import { ACTION_DELAYS } from "../../../utils/constants";
 
 export const authTypes = {
   signUp: 'signUp',
@@ -25,13 +26,14 @@ function AuthCard({ type }) {
     e.preventDefault();
     const action = type === authTypes.signUp ? signUp : signIn;
 
-    const { user, error } = await action(email, password)
+    const { user, error } = await action(email, password);
+    
     if (user) {
       setSuccess(true);
 
       setTimeout(() => {
         router.push('/active');
-      }, 1000)
+      }, ACTION_DELAYS.long)
     } else {
       const { msg, type } = error;
 

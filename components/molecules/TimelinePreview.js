@@ -7,10 +7,9 @@ import Button, { buttonTypes } from "../atoms/Button";
 import Icon, { iconTypes } from "../atoms/Icon";
 import SavePresetModal from "../molecules/cards/SavePresetModal";
 import { useBlueprint } from "../../context/Blueprint";
-import { blueprintToStored, blueprintToTimeline } from "../../utils/timelineUtil";
-import { setStoredLocalStorate } from "../../utils/localStorageUtil";
+import { blueprintToTimeline } from "../../utils/timelineUtil";
+import { startTimeline } from "../../utils/timelineUtil";
 import { useRouter } from "next/router";
-
 function TimelinePreview({ hasFloating }) {
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const blueprint = useBlueprint();
@@ -28,9 +27,7 @@ function TimelinePreview({ hasFloating }) {
   }, [blueprint])
 
   function handleStart() {
-    const stored = blueprintToStored(blueprint);
-    setStoredLocalStorate(stored);
-
+    startTimeline(blueprint);
     router.push('/active');
   }
 
@@ -95,6 +92,7 @@ function TimelinePreview({ hasFloating }) {
       <SavePresetModal
         isOpen={modalIsOpen}
         setIsOpen={setModalIsOpen}
+        blueprint={blueprint}
       />
     </section>
   ) : null;

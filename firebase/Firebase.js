@@ -1,5 +1,6 @@
 import { initializeApp, getApps, getApp } from "firebase/app";
 import { getAuth, onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword  } from "firebase/auth";
+import { addDoc, collection, getDocs, deleteDoc, doc, getFirestore  } from "firebase/firestore"
 import { useEffect, useState } from "react";
 
 const firebaseConfig = {
@@ -63,6 +64,58 @@ function getAppInstance() {
 function getAuthInstance() {
   const app = getAppInstance();
   return getAuth(app);
+}
+
+function getDBInstance() {
+  const app = getAppInstance();
+  return getFirestore(app);
+}
+
+
+export function useDB() {
+  async function savePreset(preset) {
+    try {
+      const userId = getAuth().currentUser.uid;
+      await addDoc(collection(getDBInstance(), `users/${userId}/presets`), preset);
+    } catch (error) {
+      console.error(error);
+      return error;
+    }
+  }
+
+  async function getPresets() {
+    try {
+      const userId = getAuth().currentUser.uid;
+      const querySnapshot = await getDocs(collection(getDBInstance(), `users/${userId}/presets`));
+      const presets = querySnapshot.docs.map(doc => {
+        return {
+          id: doc.id,
+          ...doc.data()
+        };
+      });
+
+      return presets;
+    } catch (error) {
+      console.error(error);
+      return error;
+    }
+  }
+
+  async function deletePreset(id) {
+    try {
+      const userId = getAuth().currentUser.uid;
+      await deleteDoc(doc(getDBInstance(), `users/${userId}/presets`, id));
+    } catch (error) {
+      console.error(error);
+      return error;
+    }
+  }
+
+  return {
+    savePreset,
+    deletePreset,
+    getPresets
+  };
 }
 
 export function useAuth() {

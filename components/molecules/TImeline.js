@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useRef } from 'react';
 import useIsomorphicLayoutEffect from '../../utils/useIsomorphicLayoutEffect';
 import PropTypes from 'prop-types';
 import Interval, { intervalTypes } from '../atoms/Interval';
@@ -28,7 +28,7 @@ function Timeline({ timeline, progress }) {
     progress,
   };
 
-  useEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     // fix stale state in TimelinePreview
     setHours(scaleMap[scale]);
   }, [timeline])

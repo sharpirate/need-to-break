@@ -8,9 +8,14 @@ export function getStoredLocalStorage() {
   return JSON.parse(localStorage.getItem(STORED_KEY));
 }
 
+export function removeStoredLocalStorage() {
+  localStorage.removeItem(STORED_KEY);
+}
+
 export function getStartingLocalStorage() {
   return Number(localStorage.getItem(STARTING_KEY));
 }
+
 
 export function setStartingLocalStorage(starting) {
   localStorage.setItem(STARTING_KEY, starting);

@@ -5,8 +5,34 @@ import Header from "./Header";
 import { iconTypes } from "../../atoms/Icon";
 import Button, { buttonTypes } from "../../atoms/Button";
 import Modal from "../Modal";
+import { useDB } from "../../../firebase/Firebase";
+import { useState } from "react";
+import { ACTION_DELAYS } from "../../../utils/constants";
+import { useFetchPresets } from "../../../context/Presets";
 
-function DeletePresetModal({ isOpen, setIsOpen, presetName }) {
+function DeletePresetModal({ isOpen, setIsOpen, name, id }) {
+  const [success, setSuccess] = useState(false);
+  const { deletePreset } = useDB();
+  const fetchPresets = useFetchPresets();
+
+  async function handleDelete() {
+    const error = await deletePreset(id);
+
+    if (!error) {
+      await fetchPresets();
+      setSuccess(true);
+
+      setTimeout(() => {
+        handleClose();
+      }, ACTION_DELAYS.short);
+    }
+  }
+
+  function handleClose() {
+    setIsOpen(false);
+    setSuccess(false);
+  }
+
   return (
     <Modal
       isOpen={isOpen}
@@ -16,12 +42,12 @@ function DeletePresetModal({ isOpen, setIsOpen, presetName }) {
         <Header
           icon={iconTypes.delete}
           heading="Are you Sure?"
-          description={`Do you really want to remove ${presetName} from your presets?`}
+          description={`Do you really want to remove "${name}" from your presets?`}
         />
 
         <div className="grid grid-cols-2 gap-24 mt-16 420:mt-24">
-          <Button handleClick={() => setIsOpen(false)} type={buttonTypes.outline}>Cancel</Button>
-          <Button type={buttonTypes.delete}>Delete</Button>
+          <Button handleClick={handleClose} type={buttonTypes.outline}>Cancel</Button>
+          <Button handleClick={handleDelete} type={success ? buttonTypes.success : buttonTypes.delete}>Delete</Button>
         </div>
       </InputCard>
     </Modal>

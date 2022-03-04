@@ -10,6 +10,7 @@ import { useEffect, useState } from "react";
 import { TRANSITIONS } from "../utils/constants";
 import { useAuth } from "../firebase/Firebase";
 import { PRE_LOGIN_PAGES, PROTECTED_PAGES, DIRECTIONS } from "../utils/constants";
+import { PresetsProvider } from "../context/Presets";
 
 Modal.setAppElement('#__next');
 
@@ -121,39 +122,41 @@ function MyApp({ Component, pageProps }) {
   }
 
   return (
-    <SettingsProvider>
-      <Head>
-        <title>Need To Break</title>
-        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
-      </Head>
+    <PresetsProvider>
+      <SettingsProvider>
+        <Head>
+          <title>Need To Break</title>
+          <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+        </Head>
 
-      {user || !isProtectedPage(url) ? (
-        <div className="flex flex-col justify-start items-center">
+        {user || !isProtectedPage(url) ? (
+          <div className="flex flex-col justify-start items-center">
 
-        {!isProtectedPage(url) ? (
-          <AuthNav tabs={PRE_LOGIN_PAGES} active={url} handlePageChange={pushPage} />
-        ) : (
-          <MainNav tabs={PROTECTED_PAGES} active={url} handlePageChange={pushPage} />
-        )}
-  
-          <div className="relative w-full max-w-[1600px]">
-            <AnimatePresence onExitComplete={() => setPage({ direction: DIRECTIONS.vertical })}>
-              <motion.div
-                key={url}
-                variants={pageVariants}
-                custom={page.direction}
-                initial="initial"
-                animate="center"
-                exit="exit"
-                className="absolute top-0 left-0 w-full flex flex-col justify-start items-center p-24 420:p-32 932:p-48"
-              >
-                <Component {...pageProps} />
-              </motion.div>
-            </AnimatePresence>
+          {!isProtectedPage(url) ? (
+            <AuthNav tabs={PRE_LOGIN_PAGES} active={url} handlePageChange={pushPage} />
+          ) : (
+            <MainNav tabs={PROTECTED_PAGES} active={url} handlePageChange={pushPage} />
+          )}
+    
+            <div className="relative w-full max-w-[1600px]">
+              <AnimatePresence onExitComplete={() => setPage({ direction: DIRECTIONS.vertical })}>
+                <motion.div
+                  key={url}
+                  variants={pageVariants}
+                  custom={page.direction}
+                  initial="initial"
+                  animate="center"
+                  exit="exit"
+                  className="absolute top-0 left-0 w-full flex flex-col justify-start items-center p-24 420:p-32 932:p-48"
+                >
+                  <Component {...pageProps} />
+                </motion.div>
+              </AnimatePresence>
+            </div>
           </div>
-        </div>
-      ) : null}
-    </SettingsProvider>
+        ) : null}
+      </SettingsProvider>
+    </PresetsProvider>
   );
 }
 

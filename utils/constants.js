@@ -16,6 +16,11 @@ export const TRANSITIONS = {
   }
 }
 
+export const ACTION_DELAYS = {
+  short: 500,
+  long: 1000
+}
+
 export const DIRECTIONS = {
   default: 'default',
   left: 'left',

@@ -21,7 +21,17 @@ function TextInput({ name, type, bigLabel, smallLabel, widthStyle, centerBig, ce
     <div className={`relative flex flex-col ${widthStyle}`}>
       {renderBigLabel}
       {renderSmallLabel}
-      <input disabled={disabled} onChange={e => handleChange(e.target.value)} className={getStyle(Boolean(errorLabel), hasSuccess)} placeholder={children} type={type} id={name} name={name} value={value} />
+      <input
+        disabled={disabled}
+        onChange={e => handleChange(e.target.value)}
+        className={getStyle(Boolean(errorLabel), hasSuccess)}
+        placeholder={children}
+        type={type}
+        id={name}
+        name={name}
+        value={value}
+        spellCheck={false}
+      />
       {renderSuccessLabel}
       {renderErrorLabel}
     </div>

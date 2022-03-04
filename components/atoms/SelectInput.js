@@ -3,9 +3,18 @@ import PropTypes from 'prop-types';
 import SelectItem from './SelectItem';
 import Label, { labelTypes } from './Label';
 
-function Icon({ active }) {
+function Icon({ active, hasSuccess }) {
   const wrapperStyle = active ? 'rotate-180' : '';
-  const iconStyle = active ? 'fill-primary-500' : 'fill-gray-400';
+
+  let iconStyle;
+
+  if (active) {
+    iconStyle = 'fill-primary-500';
+  } else if (hasSuccess) {
+    iconStyle = 'fill-support-success';
+  } else {
+    iconStyle = 'fill-gray-400';
+  }
 
   return (
     <span className="pt-4 absolute right-8 top-1/2 -translate-y-1/2 pointer-events-none">
@@ -20,7 +29,7 @@ Icon.propTypes = {
   active: PropTypes.bool
 };
 
-function SelectInput({ name, options, bigLabel, smallLabel, centerBig, centerSmall, widthStyle, disableFocus, selected, handleSelect }) {
+function SelectInput({ name, options, bigLabel, smallLabel, centerBig, centerSmall, widthStyle, disableFocus, selected, handleSelect, hasSuccess }) {
   const [active, setActive] = useState(false);
   // manage the focused item by index
   const [focused, setFocused] = useState(0);
@@ -93,11 +102,21 @@ function SelectInput({ name, options, bigLabel, smallLabel, centerBig, centerSma
     exitMenu(true);
   }
 
-  function getRootItemStyle(active) {
+  function getRootItemStyle(active, hasSuccess) {
     const baseStyle = 'group relative p-8 border-2 focus:outline-none focus:border-primary-500 hover:border-primary-500';
-    const activeStyle = active ? 'rounded-t-4 border-primary-500' : 'border-gray-400 rounded-4';
+    const activeStyle = active ? 'rounded-t-4' : 'rounded-4';
 
-    return `${baseStyle} ${activeStyle}`;
+    let colorStyle = "";
+
+    if (active) {
+      colorStyle = "border-primary-500";
+    } else if (hasSuccess) {
+      colorStyle = "border-support-success";
+    } else {
+      colorStyle = "border-gray-400";
+    }
+
+    return `${baseStyle} ${activeStyle} ${colorStyle}`;
   }
 
   const renderBigLabel = bigLabel ? <Label center={centerBig} as={labelTypes.label} size={labelTypes.big} fieldId={name}>{bigLabel}</Label> : null;
@@ -114,10 +133,10 @@ function SelectInput({ name, options, bigLabel, smallLabel, centerBig, centerSma
           ref={ref}
           onClick={() => active ? exitMenu(true) : setActive(true)}
           onKeyDown={handleMenuKeyPress}
-          className={getRootItemStyle(active)}
+          className={getRootItemStyle(active, hasSuccess)}
         >
           {options.find(option => option.value === selected).name}
-          <Icon active={active} />
+          <Icon active={active} hasSuccess={hasSuccess} />
         </li>
 
         {active ? 

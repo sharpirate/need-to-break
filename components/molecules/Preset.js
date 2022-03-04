@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import ViewMoreLess from "../atoms/ViewMoreLess";
 import Timeline from "./TImeline";
@@ -6,17 +6,35 @@ import Label, { labelTypes } from "../atoms/Label";
 import Button, { buttonTypes } from "../atoms/Button";
 import Icon, { iconTypes } from "../atoms/Icon";
 import DeletePresetModal from "./cards/DeletePresetModal";
+import { blueprintToTimeline } from "../../utils/timelineUtil";
+import { startTimeline } from "../../utils/timelineUtil";
+import { useRouter } from "next/router";
+import { getDetails } from "../../utils/timelineUtil";
 
-function Preset({ name }) {
+function Preset({ preset }) {
   const [modalIsOpen, setModalIsOpen] = useState(false);
-  return null;
-  return (
+  const [timeline, setTimeline] = useState();
+  const router = useRouter();
+
+  useEffect(() => {
+    setTimeline(blueprintToTimeline(preset));
+  }, []);
+
+  function handleStart() {
+    startTimeline(preset);
+
+    router.push('/active');
+  }
+
+  const details = getDetails(preset);
+
+  return timeline ? (
     <section className="w-full flex flex-col justify-center items-center text-center bg-white rounded-8 py-16 px-32 420:py-24 420:px-48 932:py-32">
 
       {/* Icon & Name */}
       <div className="flex flex-col justify-center items-center gap-16 420:gap-24 mb-16 420:mb-24">
         <Icon type={iconTypes.save}/>
-        <Label size={labelTypes.large} as={labelTypes.h2}>{name}</Label>
+        <Label size={labelTypes.large} as={labelTypes.h2}>{preset.name}</Label>
       </div>
 
       {/* Info List */}
@@ -24,46 +42,46 @@ function Preset({ name }) {
         <li>
           <Label size={labelTypes.big} as={labelTypes.h3}>Type</Label>
           <p className="body-sbold text-gray-500">
-            Full Time
+            {details.type}
           </p>
         </li>
         
         <li>
           <Label size={labelTypes.big} as={labelTypes.h3}>Timeline</Label>
           <p className="body-sbold text-gray-500">
-            12:00 to 20:00
+            {details.duration}
           </p>
         </li>
         
         <li>
           <Label size={labelTypes.big} as={labelTypes.h3}>Intervals</Label>
           <p className="body-sbold text-gray-500">
-            Work: 30 min
+            Work: {details.workDuration} min
             <br />
-            Break: 15 min
+            Break: {details.breakDuration} min
           </p>
         </li>
         
-        <li>
+        {/* <li>
           <Label size={labelTypes.big} as={labelTypes.h3}>Blocked</Label>
           <p className="body-sbold text-gray-500">
             12:00 to 12:30
             <br />
             17:00 to 17:15
           </p>
-        </li>
+        </li> */}
       </ul>
 
       {/* Timeline & Buttons (Able To Reverse Flex Order) */}
       <div className="w-full flex flex-col 932:flex-col-reverse justify-center items-center gap-32 420:gap-48">
         <div className="grid gap-24 420:gap-32 540:grid-cols-2 540:gap-24">
-          <Button type={buttonTypes.primary}>Generate</Button>
+          <Button handleClick={handleStart} type={buttonTypes.primary}>Start</Button>
           <Button handleClick={() => setModalIsOpen(true)} type={buttonTypes.outline}>Delete</Button>
         </div>
 
         <ViewMoreLess viewMoreText="View Timeline" viewLessText="Hide Timeline" isTimeline={true} >
           <div className=" 932:mt-0 w-full">
-            <Timeline />
+            <Timeline timeline={timeline} />
           </div>
         </ViewMoreLess>
       </div>
@@ -72,10 +90,11 @@ function Preset({ name }) {
       <DeletePresetModal
         isOpen={modalIsOpen}
         setIsOpen={setModalIsOpen}
-        presetName={name}
+        name={preset.name}
+        id={preset.id}
       />
     </section>
-  );
+  ) : null;
 }
 
 Preset.propTypes = {

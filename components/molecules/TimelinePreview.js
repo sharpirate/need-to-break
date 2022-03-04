@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
 import ViewMoreLess from "../atoms/ViewMoreLess";
 import Timeline from "./TImeline";
@@ -10,6 +10,7 @@ import { useBlueprint } from "../../context/Blueprint";
 import { blueprintToTimeline } from "../../utils/timelineUtil";
 import { startTimeline } from "../../utils/timelineUtil";
 import { useRouter } from "next/router";
+import useIsomorphicLayoutEffect from "../../utils/useIsomorphicLayoutEffect";
 function TimelinePreview({ hasFloating }) {
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const blueprint = useBlueprint();
@@ -17,7 +18,7 @@ function TimelinePreview({ hasFloating }) {
   const [viewMore, setViewMore] = useState(false);
   const router = useRouter();
 
-  useEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     if (blueprint.duration) {
       const timeline = blueprintToTimeline(blueprint);
       setTimeline(timeline);

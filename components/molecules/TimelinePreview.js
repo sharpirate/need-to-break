@@ -71,7 +71,7 @@ function TimelinePreview({ hasFloating }) {
       <div className="w-full flex flex-col 932:flex-col-reverse justify-center items-center">
         <div className="grid gap-24 420:gap-32 540:grid-cols-2 540:gap-24 mb-32 420:mb-48 932:mb-0 932:mt-48">
           <Button handleClick={handleStart} type={buttonTypes.primary}>Start</Button>
-          <Button handleClick={() => setModalIsOpen(true)} type={buttonTypes.outline}>Delete</Button>
+          <Button handleClick={() => setModalIsOpen(true)} type={buttonTypes.outline}>Save</Button>
         </div>
 
         {/* Timeline Block */}

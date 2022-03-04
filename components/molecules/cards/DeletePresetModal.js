@@ -19,24 +19,27 @@ function DeletePresetModal({ isOpen, setIsOpen, name, id }) {
     const error = await deletePreset(id);
 
     if (!error) {
-      await fetchPresets();
       setSuccess(true);
 
       setTimeout(() => {
-        handleClose();
+        handleClose(true);
       }, ACTION_DELAYS.short);
     }
   }
 
-  function handleClose() {
+  function handleClose(refetch) {
     setIsOpen(false);
     setSuccess(false);
+
+    if (refetch) {
+      fetchPresets();
+    }
   }
 
   return (
     <Modal
       isOpen={isOpen}
-      handleClose={() => setIsOpen(false)}
+      handleClose={handleClose}
     >
       <InputCard>
         <Header

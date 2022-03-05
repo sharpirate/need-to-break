@@ -6,12 +6,14 @@ import { iconTypes } from "../../atoms/Icon";
 import Button, { buttonTypes } from "../../atoms/Button";
 import Modal from "../Modal";
 import { useAuth } from "../../../firebase/Firebase";
-
+import { removeStartingLocalStorage, removeStoredLocalStorage } from "../../../utils/localStorageUtil";
 function LogoutModal({ isOpen, setIsOpen}) {
-  const { signOut } = useAuth();
+  const { signOut, user } = useAuth();
 
   async function handleLogout() {
     await signOut();
+    removeStoredLocalStorage(user.uid);
+    removeStartingLocalStorage(user.uid);
     handleClose(true);
   }
 

@@ -94,10 +94,14 @@ export function useDB() {
         };
       });
 
-      return presets;
+      return {
+        presets
+      };
     } catch (error) {
       console.error(error);
-      return error;
+      return {
+        error
+      };
     }
   }
 

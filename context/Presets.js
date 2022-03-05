@@ -7,23 +7,25 @@ const PresetsContext = createContext()
 const FetchPresetsContext = createContext()
 
 export const PresetsProvider = ({ children }) => {
-  const { getPresets } = useDB(null);
+  const { getPresets } = useDB();
   const [presets, setPresets] = useState();
   const { user } = useAuth();
 
   async function fetchPresets() {
-    const results = await getPresets();
+    const { presets: results } = await getPresets();
 
-    const processedPresets = results.map(preset => {      
-
-      if (!preset.startTime) {
-        preset.startTime = Date.now();
-      }
-      
-      return preset;
-    });
-
-    setPresets(processedPresets);
+    if (results) {
+      const processedPresets = results.map(preset => {
+  
+        if (!preset.startTime) {
+          preset.startTime = Date.now();
+        }
+        
+        return preset;
+      });
+  
+      setPresets(processedPresets);
+    }
   }
 
   useEffect(() => {

@@ -5,11 +5,9 @@ import isBrowser from '../utils/isBrowser'
 import { useAuth } from '../firebase/Firebase'
 
 const SettingsContext = createContext()
-const SetSettingsContext = createContext()
+const SaveSettingsContext = createContext()
 
-function getInitialState() {
-  const { user } = useAuth();
-
+function getInitialState(user) {
   const initialState = {
     use12Hour: false,
     useSmartRestart: false
@@ -34,21 +32,29 @@ export const SettingsProvider = ({ children }) => {
 
   useEffect(() => {
     if (user) {
+      setSettings(getInitialState(user));
+    }
+  }, [user]);
+
+  function saveSettings(settings) {
+    setSettings(settings);
+
+    if (user) {
       setSettingsLocalStorage(settings, user.uid);
     }
-  }, [settings, user])
+  }
 
   return (
-    <SetSettingsContext.Provider value={setSettings}>
+    <SaveSettingsContext.Provider value={saveSettings}>
       <SettingsContext.Provider value={settings}>
         {children}
       </SettingsContext.Provider>
-    </SetSettingsContext.Provider>
+    </SaveSettingsContext.Provider>
   )
 }
 
 export const useSettings = () => useContext(SettingsContext)
-export const useSetSettings = () => useContext(SetSettingsContext)
+export const useSaveSettings = () => useContext(SaveSettingsContext)
 
 export const timeFormats = [
   { name: "AM / PM", value: true },

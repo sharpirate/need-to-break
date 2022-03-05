@@ -2,19 +2,22 @@ import { useState, useEffect } from 'react'
 import { useContext, createContext } from 'react'
 import { getSettingsLocalStorage, setSettingsLocalStorage } from '../utils/localStorageUtil'
 import isBrowser from '../utils/isBrowser'
+import { useAuth } from '../firebase/Firebase'
 
 const SettingsContext = createContext()
 const SetSettingsContext = createContext()
 
 function getInitialState() {
+  const { user } = useAuth();
+
   const initialState = {
     use12Hour: false,
     useSmartRestart: false
   };
 
   // prioritize settings from localStorage
-  if (isBrowser) {
-    const localStorageSettings = getSettingsLocalStorage();
+  if (isBrowser && user) {
+    const localStorageSettings = getSettingsLocalStorage(user.uid);
 
     if (localStorageSettings) {
       return localStorageSettings;
@@ -27,10 +30,13 @@ function getInitialState() {
 
 export const SettingsProvider = ({ children }) => {
   const [settings, setSettings] = useState(getInitialState());
+  const { user } = useAuth();
 
   useEffect(() => {
-    setSettingsLocalStorage(settings);
-  }, [settings])
+    if (user) {
+      setSettingsLocalStorage(settings, user.uid);
+    }
+  }, [settings, user])
 
   return (
     <SetSettingsContext.Provider value={setSettings}>

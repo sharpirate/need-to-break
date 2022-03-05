@@ -11,12 +11,14 @@ import { blueprintToTimeline } from "../../utils/timelineUtil";
 import { startTimeline } from "../../utils/timelineUtil";
 import { useRouter } from "next/router";
 import useIsomorphicLayoutEffect from "../../utils/useIsomorphicLayoutEffect";
+import { useAuth } from "../../firebase/Firebase";
 function TimelinePreview({ hasFloating }) {
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const blueprint = useBlueprint();
   const [timeline, setTimeline] = useState();
   const [viewMore, setViewMore] = useState(false);
   const router = useRouter();
+  const { user } = useAuth();
 
   useIsomorphicLayoutEffect(() => {
     if (blueprint.duration) {
@@ -28,8 +30,10 @@ function TimelinePreview({ hasFloating }) {
   }, [blueprint])
 
   function handleStart() {
-    startTimeline(blueprint);
-    router.push('/active');
+    if (blueprint && user) {
+      startTimeline(blueprint, user.uid);
+      router.push('/active');
+    }
   }
 
   const floatingStyle = hasFloating ? '932:grid-cols-2' : '';

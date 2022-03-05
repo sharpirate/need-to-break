@@ -177,7 +177,7 @@ function MobileTimeline({ scaleMap, scales, intervals, scale, setScale, hours, s
         handleScaleChange={handleScaleChange}
       />      
         <div
-          className="relative inline-flex flex-row-reverse justify-center"
+          className="relative inline-flex flex-row-reverse justify-center mb-32 420:mb-48"
           style={{
             height: `${(156 * (hours.length - 1))}px`,
           }}
@@ -218,9 +218,9 @@ function Hour({ children }) {
     const [hour, min, suffix] = get12HourTime(children);
 
     item = (
-      <div className="flex flex-col">
+      <div className="relative flex flex-col">
         <span className="text-16">{hour}:{min}</span>
-        <span className="text-13">{suffix}</span>
+        <span className="absolute -bottom-full -translate-y-1/2 left-1/2 -translate-x-1/2 text-13">{suffix}</span>
       </div>
     );
   } else {

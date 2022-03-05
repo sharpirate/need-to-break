@@ -19,11 +19,15 @@ function SavePresetModal({ isOpen, setIsOpen, blueprint }) {
   const [nameError, setNameError] = useState("");
   const [success, setSuccess] = useState(false);
 
-  function handleClose() {
+  function handleClose(refetch) {
     setName("");
     setNameError("");
     setSuccess(false);
     setIsOpen(false);
+
+    if (refetch) {
+      fetchPresets();
+    }
   }
 
   async function handleSave(e) {
@@ -47,13 +51,11 @@ function SavePresetModal({ isOpen, setIsOpen, blueprint }) {
       const error = await savePreset(preset);
   
       if (!error) {
-        await fetchPresets();
-        
         // success
         setSuccess(true);
 
         setTimeout(() => {
-          handleClose();
+          handleClose(true);
         }, ACTION_DELAYS.short);
       }
     }

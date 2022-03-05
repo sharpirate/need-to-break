@@ -7,7 +7,7 @@ import RadioButton from "../atoms/RadioButton";
 import Button, { buttonDelay, buttonTypes } from "../atoms/Button";
 import { intervalTypes } from "../atoms/Interval";
 import { blueprintToStored, storedToTimeline } from "../../utils/timelineUtil";
-import { getStartingLocalStorage, getStoredLocalStorage, removeStartingLocalStorage, setStartingLocalStorage, setStoredLocalStorate } from "../../utils/localStorageUtil";
+import { getStartingLocalStorage, getStoredLocalStorage, removeStoredLocalStorage, removeStartingLocalStorage, setStartingLocalStorage, setStoredLocalStorate } from "../../utils/localStorageUtil";
 import { timestampToString, get12HourTime } from "../../utils/timeUtil";
 import { useSettings } from "../../context/Settings";
 import { SCALES } from "../../utils/constants";
@@ -78,8 +78,8 @@ function MainTimeline() {
         // timeline has ended
         
       } else {
-        const nextInterval = timeline.intervals.findIndex(interval => interval.timestamp > Date.now());
-        setActiveInterval(timeline.intervals[nextInterval - 1]);
+        const nextIntervalIndex = timeline.intervals.findIndex(interval => interval.timestamp > Date.now());
+        setActiveInterval(timeline.intervals[nextIntervalIndex - 1]);
       }
     }
   }
@@ -116,7 +116,16 @@ function MainTimeline() {
     if (timeLeft <= 0) {
       setAudio(null);
       const oldIndex = timeline.intervals.indexOf(activeInterval);
-      const nextInterval = timeline.intervals[oldIndex + 1];
+
+      let nextInterval;
+      
+      // if timeline has ended next interval will be null
+      if (oldIndex + 1 === timeline.intervals.length) {
+        nextInterval = null;
+      } else {
+        nextInterval = timeline.intervals[oldIndex + 1];
+      }
+
       setActiveInterval(nextInterval);
 
       if (allowNotifications) {
@@ -134,11 +143,15 @@ function MainTimeline() {
   }, [allowNotifications]);
 
   function showNotificationOnIntervalEnd(nextInterval) {
-    const title = nextInterval.type === intervalTypes.work ? "Work Time!" : "Break Time!";
-    const minutes = nextInterval.duration / 60;
-    const body = `${minutes} min`;
-
-    new Notification(title, { body: body });
+    if (!nextInterval) {
+      new Notification("Timeline Has Ended!");
+    } else {
+      const title = nextInterval.type === intervalTypes.work ? "Work Time!" : "Break Time!";
+      const minutes = nextInterval.duration / 60;
+      const body = `${minutes} min`;
+  
+      new Notification(title, { body: body });
+    }
   }
 
   function handleRestartChange(e) {

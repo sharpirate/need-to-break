@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
 import ViewMoreLess from "../atoms/ViewMoreLess";
 import Timeline from "./TImeline";
@@ -10,6 +10,7 @@ import { useBlueprint } from "../../context/Blueprint";
 import { blueprintToTimeline } from "../../utils/timelineUtil";
 import { startTimeline } from "../../utils/timelineUtil";
 import { useRouter } from "next/router";
+import useIsomorphicLayoutEffect from "../../utils/useIsomorphicLayoutEffect";
 function TimelinePreview({ hasFloating }) {
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const blueprint = useBlueprint();
@@ -17,7 +18,7 @@ function TimelinePreview({ hasFloating }) {
   const [viewMore, setViewMore] = useState(false);
   const router = useRouter();
 
-  useEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     if (blueprint.duration) {
       const timeline = blueprintToTimeline(blueprint);
       setTimeline(timeline);
@@ -67,14 +68,14 @@ function TimelinePreview({ hasFloating }) {
         ) : null}
 
       </div>
-
       {/* Timeline & Buttons (Able To Reverse Flex Order) */}
-      <div className="w-full flex flex-col 932:flex-col-reverse justify-center items-center gap-32 420:gap-48">
-        <div className="grid gap-24 420:gap-32 540:grid-cols-2 540:gap-24">
+      <div className="w-full flex flex-col 932:flex-col-reverse justify-center items-center">
+        <div className="grid gap-24 420:gap-32 540:grid-cols-2 540:gap-24 mb-32 420:mb-48 932:mb-0 932:mt-48">
           <Button handleClick={handleStart} type={buttonTypes.primary}>Start</Button>
-          <Button handleClick={() => setModalIsOpen(true)} type={buttonTypes.outline}>Save Preset</Button>
+          <Button handleClick={() => setModalIsOpen(true)} type={buttonTypes.outline}>Save</Button>
         </div>
 
+        {/* Timeline Block */}
         <ViewMoreLess
           viewMoreText="View Timeline"
           viewLessText="Hide Timeline"
@@ -82,7 +83,7 @@ function TimelinePreview({ hasFloating }) {
           active={viewMore}
           handleClick={() => setViewMore(!viewMore)}
         >
-          <div className="932:mt-0 w-full">
+          <div className="mt-32 420:mt-48 932:mt-0 w-full">
             <Timeline timeline={timeline} />
           </div>
         </ViewMoreLess>

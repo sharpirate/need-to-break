@@ -2,6 +2,8 @@ import { intervalTypes } from "../components/atoms/Interval";
 import { SCALES } from "./constants";
 import { parseStartTime, timestampToString } from "./timeUtil";
 import { setStoredLocalStorate } from "./localStorageUtil";
+import { useSettings } from "../context/Settings";
+import { get12HourTime } from "./timeUtil";
 
 function generateScales(intervals, totalDuration) {
   const scaleMap = {};
@@ -123,11 +125,21 @@ export function startTimeline(blueprint) {
 }
 
 export function getDetails(blueprint) {
-  const type = typeof blueprint.startTime === "number" ? "Flexible" : "Full Time";
+  const { use12Hour } = useSettings();
 
+  const type = typeof blueprint.startTime === "number" ? "Flexible" : "Full Time";
+  
   const startTime = isNaN(blueprint.startTime) ? parseStartTime(blueprint.startTime) : blueprint.startTime;
   const endTime = startTime + (blueprint.duration * 1000);
-  const duration = `${timestampToString(startTime)} to ${timestampToString(endTime)}`;
+  
+  let duration;
+  if (use12Hour) {
+    const [startHour, startMin, startSuffix] = get12HourTime(timestampToString(startTime));
+    const [endHour, endMin, endSuffix] = get12HourTime(timestampToString(endTime));
+    duration = `${startHour}:${startMin} ${startSuffix} to ${endHour}:${endMin} ${endSuffix}`;
+  } else {
+    duration = `${timestampToString(startTime)} to ${timestampToString(endTime)}`;
+  }
 
   return {
     type,

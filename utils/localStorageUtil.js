@@ -1,34 +1,44 @@
 import { STORED_KEY, STARTING_KEY, SETTINGS_KEY } from "./constants";
 
-export function setStoredLocalStorate(stored) {
-  localStorage.setItem(STORED_KEY, JSON.stringify(stored));
+const keys = {
+  stored: STORED_KEY,
+  starting: STARTING_KEY,
+  settings: SETTINGS_KEY
 }
 
-export function getStoredLocalStorage() {
-  return JSON.parse(localStorage.getItem(STORED_KEY));
+function getUserKey(key, uid) {
+  return `${key}_${uid}`;
 }
 
-export function removeStoredLocalStorage() {
-  localStorage.removeItem(STORED_KEY);
+export function setStoredLocalStorate(stored, uid) {
+  localStorage.setItem(getUserKey(keys.stored, uid), JSON.stringify(stored));
 }
 
-export function getStartingLocalStorage() {
-  return Number(localStorage.getItem(STARTING_KEY));
+export function getStoredLocalStorage(uid) {
+  return JSON.parse(localStorage.getItem(getUserKey(keys.stored, uid)));
+}
+
+export function removeStoredLocalStorage(uid) {
+  localStorage.removeItem(getUserKey(keys.stored, uid));
+}
+
+export function getStartingLocalStorage(uid) {
+  return Number(localStorage.getItem(getUserKey(keys.starting, uid)));
 }
 
 
-export function setStartingLocalStorage(starting) {
-  localStorage.setItem(STARTING_KEY, starting);
+export function setStartingLocalStorage(starting, uid) {
+  localStorage.setItem(getUserKey(keys.starting, uid), starting);
 }
 
-export function removeStartingLocalStorage() {
-  localStorage.removeItem(STARTING_KEY);
+export function removeStartingLocalStorage(uid) {
+  localStorage.removeItem(getUserKey(keys.starting, uid));
 }
 
-export function setSettingsLocalStorage(settings) {
-  localStorage.setItem(SETTINGS_KEY, JSON.stringify(settings));
+export function setSettingsLocalStorage(settings, uid) {
+  localStorage.setItem(getUserKey(keys.settings, uid), JSON.stringify(settings));
 }
 
-export function getSettingsLocalStorage() {
-  return JSON.parse(localStorage.getItem(SETTINGS_KEY));
+export function getSettingsLocalStorage(uid) {
+  return JSON.parse(localStorage.getItem(getUserKey(keys.settings, uid)));
 }

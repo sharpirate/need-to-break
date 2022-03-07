@@ -10,21 +10,24 @@ import { blueprintToTimeline } from "../../utils/timelineUtil";
 import { startTimeline } from "../../utils/timelineUtil";
 import { useRouter } from "next/router";
 import { getDetails } from "../../utils/timelineUtil";
+import { useAuth } from "../../firebase/Firebase";
 
 function Preset({ preset }) {
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [viewMore, setViewMore] = useState(false);
   const [timeline, setTimeline] = useState();
   const router = useRouter();
+  const { user } = useAuth();
 
   useEffect(() => {
     setTimeline(blueprintToTimeline(preset));
   }, []);
 
   function handleStart() {
-    startTimeline(preset);
-
-    router.push('/active');
+    if (preset && user) {
+      startTimeline(preset, user.uid);
+      router.push('/active');
+    }
   }
 
   const details = getDetails(preset);

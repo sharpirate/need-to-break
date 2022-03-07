@@ -7,7 +7,7 @@ import RadioButton from "../atoms/RadioButton";
 import Button, { buttonDelay, buttonTypes } from "../atoms/Button";
 import { intervalTypes } from "../atoms/Interval";
 import { blueprintToStored, storedToTimeline } from "../../utils/timelineUtil";
-import { getStartingLocalStorage, getStoredLocalStorage, removeStoredLocalStorage, removeStartingLocalStorage, setStartingLocalStorage, setStoredLocalStorate } from "../../utils/localStorageUtil";
+import { getStartingLocalStorage, getStoredLocalStorage, removeStartingLocalStorage, setStartingLocalStorage, setStoredLocalStorate } from "../../utils/localStorageUtil";
 import { timestampToString, get12HourTime } from "../../utils/timeUtil";
 import { useSettings } from "../../context/Settings";
 import { SCALES } from "../../utils/constants";
@@ -15,6 +15,7 @@ import cloneDeep from "lodash.clonedeep";
 import EnableNotificationsModal from "./cards/EnableNotificationsModal";
 import { useNotifications } from "../../utils/notificationUtil";
 import NoActiveTimeline from "./cards/NoActiveTimeline";
+import { useAuth } from "../../firebase/Firebase";
 
 function MainTimeline() {
   const [timeline, setTimeline] = useState();
@@ -28,6 +29,7 @@ function MainTimeline() {
   const [viewMoreRestart, setViewMoreRestart] = useState(false);
   const { use12Hour, useSmartRestart } = useSettings();
   const allowNotifications = useNotifications();
+  const { user } = useAuth();
   
   function tick(now) {
     // get timer time left
@@ -39,13 +41,13 @@ function MainTimeline() {
     setProgress(timelineProgress);
   }
 
-  function createStartingTimer(firstTimestamp) {
+  function createStartingTimer(firstTimestamp, uid) {
     const now = Date.now();
-    let timestamp = getStartingLocalStorage();
+    let timestamp = getStartingLocalStorage(uid);
 
     if (!timestamp) {
       timestamp = now;
-      setStartingLocalStorage(timestamp);
+      setStartingLocalStorage(timestamp, uid);
     }
 
     const type = intervalTypes.starting;
@@ -63,8 +65,8 @@ function MainTimeline() {
     }
   }
 
-  function startTimeline() {
-    const stored = getStoredLocalStorage();
+  function startTimeline(uid) {
+    const stored = getStoredLocalStorage(uid);
 
     if (stored) {
       const timeline = storedToTimeline(stored);
@@ -72,7 +74,7 @@ function MainTimeline() {
 
       if (Date.now() < timeline.startTime) {
         // timeline hasn't started yet
-        setActiveInterval(createStartingTimer(timeline.startTime));
+        setActiveInterval(createStartingTimer(timeline.startTime, uid));
 
       } else if (Date.now() > (timeline.startTime + (timeline.duration * 1000))) {
         // timeline has ended
@@ -85,8 +87,10 @@ function MainTimeline() {
   }
 
   useEffect(() => {
-    startTimeline();
-  }, []);
+    if (user) {
+      startTimeline(user.uid);
+    }
+  }, [user]);
 
   useEffect(() => {
     if (activeInterval && timeline) {
@@ -101,7 +105,7 @@ function MainTimeline() {
       return () => {
         // end worker
         worker.postMessage({ clear: true });
-        removeStartingLocalStorage();
+        removeStartingLocalStorage(user.uid);
       }
     }
   }, [activeInterval, timeline]);

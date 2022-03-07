@@ -1,5 +1,5 @@
 import { initializeApp, getApps, getApp } from "firebase/app";
-import { getAuth, onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword  } from "firebase/auth";
+import { getAuth, onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut as signOutFirebase } from "firebase/auth";
 import { addDoc, collection, getDocs, deleteDoc, doc, getFirestore  } from "firebase/firestore"
 import { useEffect, useState } from "react";
 
@@ -94,10 +94,14 @@ export function useDB() {
         };
       });
 
-      return presets;
+      return {
+        presets
+      };
     } catch (error) {
       console.error(error);
-      return error;
+      return {
+        error
+      };
     }
   }
 
@@ -174,10 +178,20 @@ export function useAuth() {
     }
   }
 
+  async function signOut() {
+    try {
+      await signOutFirebase(getAuthInstance());
+    } catch (error) {
+      console.error(error)
+      return error;
+    }
+  }
+
   return {
     user,
     userLoading,
     signUp,
-    signIn
+    signIn,
+    signOut
   };
 }

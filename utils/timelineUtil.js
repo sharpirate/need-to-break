@@ -119,9 +119,9 @@ export function blueprintToTimeline(blueprint) {
   return timeline;
 }
 
-export function startTimeline(blueprint) {
+export function startTimeline(blueprint, uid) {
   const stored = blueprintToStored(blueprint);
-  setStoredLocalStorate(stored);
+  setStoredLocalStorate(stored, uid);
 }
 
 export function getDetails(blueprint) {

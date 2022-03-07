@@ -6,18 +6,18 @@ import { iconTypes } from "../../atoms/Icon";
 import Button, { buttonTypes } from "../../atoms/Button";
 import SelectInput from "../../atoms/SelectInput";
 import Modal from "../Modal";
-import { useSettings, useSetSettings, timeFormats, restartTypes } from "../../../context/Settings";
+import { useSettings, useSaveSettings, timeFormats, restartTypes } from "../../../context/Settings";
 import { ACTION_DELAYS } from "../../../utils/constants";
 
 function SettingsModal({ isOpen, setIsOpen }) {
   const settings = useSettings();
-  const setSettings = useSetSettings();
+  const saveSettings = useSaveSettings();
   const [localSettings, setLocalSettings] = useState(settings);
   const [success, setSuccess] = useState(false);
 
   function handleApply() {
-    // push local settings to the context
-    setSettings(localSettings);
+    // save local settings to the context and localStorage
+    saveSettings(localSettings);
 
     setSuccess(true);
 

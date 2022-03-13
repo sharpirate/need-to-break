@@ -4,12 +4,12 @@ import { addDoc, collection, getDocs, deleteDoc, doc, getFirestore  } from "fire
 import { useEffect, useState } from "react";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyBySxdDgTmP7RAFMVHxDtgs1vexKGJqXW4",
-  authDomain: "need-to-break.firebaseapp.com",
-  projectId: "need-to-break",
-  storageBucket: "need-to-break.appspot.com",
-  messagingSenderId: "252334492634",
-  appId: "1:252334492634:web:4806a035bb76c62a460ee3"
+  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
+  authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
+  projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
+  storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID
 };
 
 export const errorTypes = {

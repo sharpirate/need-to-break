@@ -18,7 +18,7 @@ function CardsLayout({ type }) {
 
   return (
     <BlueprintProvider>
-      <ul className="grid grid-cols-1 auto-rows-fr gap-24 420:gap-32 808:grid-cols-2 932:gap-48 1260:w-[100vw] 1260:max-w-[1600px] 1260:flex 1260:justify-evenly 1260:gap-0">
+      <ul className="grid grid-cols-1 auto-rows-fr gap-24 420:gap-32 808:grid-cols-2 932:gap-48 1260:w-screen 1260:max-w-1600 1260:flex 1260:justify-evenly 1260:gap-0">
         <li>
           {type === types.fullTime ? <TimelineStartEnd /> : <TimelineDuration /> }
         </li>

@@ -81,4 +81,20 @@
   .body-sbold {
     @apply font-base font-sbold text-13 420:text-16 tracking-2;
   }
+
+  .heading-landing {
+    @apply font-base font-black text-32 420:text-40 480:text-50 tracking-2;
+  }
+
+  .subheading-landing {
+    @apply font-base font-sbold text-16 420:text-20 tracking-2;
+  }
+
+  .devices-landing {
+    background: url('/images/devices.svg') top center/contain no-repeat;
+  }
+
+  .bg-landing {
+    background: url('/images/bg-landing.svg') top left/cover no-repeat;
+  }
 }

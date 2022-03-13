@@ -68,6 +68,10 @@ export function isPreLoginPage(url) {
   return Boolean(PRE_LOGIN_PAGES.find(page => page.url === url))
 }
 
+export function isAppPage(url) {
+  return isPreLoginPage(url) || isProtectedPage(url);
+}
+
 function getPagesByUrl(url) {
   if (isProtectedPage(url)) {
     return PROTECTED_PAGES;
@@ -80,6 +84,15 @@ function getPagesByUrl(url) {
 
 function isSameContext(prevUrl, nextUrl) {
   return isProtectedPage(prevUrl) === isProtectedPage(nextUrl) || isPreLoginPage(prevUrl) === isPreLoginPage(nextUrl);
+}
+
+function PageHead() {
+  return (
+    <Head>
+      <title>Need To Break</title>
+      <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+    </Head>
+  );
 }
 
 function MyApp({ Component, pageProps }) {
@@ -121,43 +134,54 @@ function MyApp({ Component, pageProps }) {
     });
   }
 
-  return (
-    <PresetsProvider>
-      <SettingsProvider>
-        <Head>
-          <title>Need To Break</title>
-          <meta name="viewport" content="initial-scale=1.0, width=device-width" />
-        </Head>
+  function renderNavBar(url) {
+    if (isPreLoginPage(url)) {
+      return <AuthNav tabs={PRE_LOGIN_PAGES} active={url} handlePageChange={pushPage} />;
+    } else if (isProtectedPage(url)) {
+      return <MainNav tabs={PROTECTED_PAGES} active={url} handlePageChange={pushPage} />;
+    } else {
+      return null;
+    }
+  }
 
-        {user || !isProtectedPage(url) ? (
-          <div className="flex flex-col justify-start items-center">
+  if (isAppPage(url)) {
+    return (
+      <PresetsProvider>
+        <SettingsProvider>
+          <PageHead />
 
-          {!isProtectedPage(url) ? (
-            <AuthNav tabs={PRE_LOGIN_PAGES} active={url} handlePageChange={pushPage} />
-          ) : (
-            <MainNav tabs={PROTECTED_PAGES} active={url} handlePageChange={pushPage} />
-          )}
-    
-            <div className="relative w-full max-w-[1600px]">
-              <AnimatePresence onExitComplete={() => setPage({ direction: DIRECTIONS.vertical })}>
-                <motion.div
-                  key={url}
-                  variants={pageVariants}
-                  custom={page.direction}
-                  initial="initial"
-                  animate="center"
-                  exit="exit"
-                  className="absolute top-0 left-0 w-full flex flex-col justify-start items-center p-24 420:p-32 932:p-48"
-                >
-                  <Component {...pageProps} />
-                </motion.div>
-              </AnimatePresence>
+          {user || !isProtectedPage(url) ? (
+            <div className="flex flex-col justify-start items-center">
+            {renderNavBar(url)}
+              <div className="relative w-full max-w-1600">
+                <AnimatePresence onExitComplete={() => setPage({ direction: DIRECTIONS.vertical })}>
+                  <motion.div
+                    key={url}
+                    variants={pageVariants}
+                    custom={page.direction}
+                    initial="initial"
+                    animate="center"
+                    exit="exit"
+                    className="absolute top-0 left-0 w-full flex flex-col justify-start items-center p-24 420:p-32 932:p-48"
+                  >
+                    <Component {...pageProps} />
+                  </motion.div>
+                </AnimatePresence>
+              </div>
             </div>
-          </div>
-        ) : null}
-      </SettingsProvider>
-    </PresetsProvider>
-  );
+          ) : null}
+        </SettingsProvider>
+      </PresetsProvider>
+    );
+  } else {
+    return (
+      <>
+        <PageHead />
+
+        <Component {...pageProps} />
+      </>
+    );
+  }
 }
 
 export default MyApp;

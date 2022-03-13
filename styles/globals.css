@@ -31,10 +31,6 @@
     scrollbar-width: none;  /* Firefox */
   }
 
-  .debug > * {
-    outline: 1px solid red;
-  }
-
   .term {
     @apply text-gray-600;
   }

@@ -9,7 +9,8 @@ const types = {
   primary: 'primary',
   outline: 'outline',
   delete: 'delete',
-  success: 'success'
+  success: 'success',
+  callToAction: 'callToAction'
 };
 
 export { types as buttonTypes };
@@ -20,6 +21,9 @@ function Button({ type, children, disabled, handleClick, isSubmit }) {
   switch (type) {
     case types.primary:
       style = 'text-white bg-primary-500 disabled:bg-gray-300 focus-visible:bg-primary-600';
+      break;
+    case types.callToAction:
+      style = 'text-primary-600 bg-support-attention focus-visible:bg-white';
       break;
     case types.outline:
       style = 'text-primary-500 bg-white ring-5/2 ring-inset ring-primary-500 disabled:ring-gray-300 disabled:text-gray-300 focus-visible:ring-primary-600';

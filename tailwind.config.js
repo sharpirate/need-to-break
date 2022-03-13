@@ -34,7 +34,7 @@ module.exports = {
       support: {
         'success': '#00B076',
         'error': '#F8644F',
-        'warning': '#F8D34F'
+        'attention': '#F8D34F'
       },
       gray: {
         '300': '#D9D9D9',
@@ -51,6 +51,7 @@ module.exports = {
       '438': '438px',
       '480': '480px',
       '540': '540px',
+      '640': '640px',
       '732': '732px',
       '808': '808px',
       '932': '932px',
@@ -87,7 +88,9 @@ module.exports = {
       '160': '160px',
       '200': '200px',
       '220': '220px',
-      '1472': '1472px'
+    },
+    maxWidth: {
+      '1600': '1600px'
     },
     fontFamily: {
       base: ['Inter', 'sans-serif'],
@@ -110,7 +113,8 @@ module.exports = {
       reg: '400',
       med: '500',
       sbold: '600',
-      bold: '700'
+      bold: '700',
+      black: '900'
     },
     letterSpacing: {
       '2': '0.02em'

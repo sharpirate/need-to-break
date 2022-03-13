@@ -11,6 +11,7 @@ import { TRANSITIONS } from "../utils/constants";
 import { useAuth } from "../firebase/Firebase";
 import { PRE_LOGIN_PAGES, PROTECTED_PAGES, DIRECTIONS } from "../utils/constants";
 import { PresetsProvider } from "../context/Presets";
+import { useLayoutEffect } from "react/cjs/react.production.min";
 
 Modal.setAppElement('#__next');
 
@@ -107,18 +108,22 @@ function MyApp({ Component, pageProps }) {
     }
   }, [page]);
 
+  // handle redirects
   useEffect(() => {
-    // if user is not logged in and tries to access a protected page redirect him to login
-    if (!userLoading && !user && isProtectedPage(url)) {
-      pushPage('/login')
+    if (!userLoading) {
+      if (isPreLoginPage(url) && user) {
+        pushPage('/active');
+      } else if (isProtectedPage(url) && !user) {
+        pushPage('/login');
+      }
     }
-  }, [user, userLoading]);
+  }, [userLoading, user, url]);
   
   function pushPage(targetUrl) {
     let direction;
     
     if (!isSameContext(url, targetUrl)) {
-      direction = DIRECTIONS.none;
+      direction = DIRECTIONS.vertical;
     } else {
       const pages = getPagesByUrl(targetUrl);
   
@@ -144,36 +149,46 @@ function MyApp({ Component, pageProps }) {
     }
   }
 
-  if (isAppPage(url)) {
-    return (
-      <PresetsProvider>
-        <SettingsProvider>
-          <PageHead />
+  function allowAppPage() {
+    const allowPreLogin = isPreLoginPage(url) && !user;
+    const allowProtected = isProtectedPage(url) && user;
 
-          {user || !isProtectedPage(url) ? (
-            <div className="flex flex-col justify-start items-center">
-            {renderNavBar(url)}
-              <div className="relative w-full max-w-1600">
-                <AnimatePresence onExitComplete={() => setPage({ direction: DIRECTIONS.vertical })}>
-                  <motion.div
-                    key={url}
-                    variants={pageVariants}
-                    custom={page.direction}
-                    initial="initial"
-                    animate="center"
-                    exit="exit"
-                    className="absolute top-0 left-0 w-full flex flex-col justify-start items-center p-24 420:p-32 932:p-48"
-                  >
-                    <Component {...pageProps} />
-                  </motion.div>
-                </AnimatePresence>
+    return allowPreLogin || allowProtected;
+  }
+
+  function renderAppPage() {
+    if (!userLoading && allowAppPage()) {
+      return (
+        <PresetsProvider>
+          <SettingsProvider>
+            <PageHead />
+              <div className="flex flex-col justify-start items-center">
+              {renderNavBar(url)}
+                <div className="relative w-full max-w-1600">
+                  <AnimatePresence onExitComplete={() => setPage({ direction: DIRECTIONS.vertical })}>
+                    <motion.div
+                      key={url}
+                      variants={pageVariants}
+                      custom={page.direction}
+                      initial="initial"
+                      animate="center"
+                      exit="exit"
+                      className="absolute top-0 left-0 w-full flex flex-col justify-start items-center p-24 420:p-32 932:p-48"
+                    >
+                      <Component {...pageProps} />
+                    </motion.div>
+                  </AnimatePresence>
+                </div>
               </div>
-            </div>
-          ) : null}
-        </SettingsProvider>
-      </PresetsProvider>
-    );
-  } else {
+          </SettingsProvider>
+        </PresetsProvider>
+      );
+    } else {
+      return null;
+    }
+  }
+
+  function renderGenericPage() {
     return (
       <>
         <PageHead />
@@ -181,6 +196,12 @@ function MyApp({ Component, pageProps }) {
         <Component {...pageProps} />
       </>
     );
+  }
+
+  if (isAppPage(url)) {
+    return renderAppPage();
+  } else {
+    return renderGenericPage();
   }
 }
 

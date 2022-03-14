@@ -48,13 +48,7 @@ function TimeInput({ paddingStyle, disableFocus }) {
       dispatch({ type: actionTypes.SET_END_HOUR, value: startHour })
     }
     
-    // prevent the user from generating a timeline that has already ended
-    if (Date.now() <= endDate) {
-      blueprintDispatch({ type: blueprintActions.SET_DURATION, value: duration });
-    } else {
-      // clear the current selection if timeline has already ended
-      blueprintDispatch({ type: blueprintActions.SET_DURATION, value: 0 });
-    }
+    blueprintDispatch({ type: blueprintActions.SET_DURATION, value: duration });
   }, [startHour, startMin, endHour, endMin])
 
   useEffect(() => {
@@ -75,7 +69,6 @@ function TimeInput({ paddingStyle, disableFocus }) {
         <Label size={labelTypes.big} as={labelTypes.h3} center>From</Label>
         <div className="flex items-center gap-8">
           <SelectInput
-            smallLabel="Hour"
             name="hour"
             options={hours}
             widthStyle={widthStyle}
@@ -83,9 +76,8 @@ function TimeInput({ paddingStyle, disableFocus }) {
             selected={startHour}
             handleSelect={value => dispatch({ type: actionTypes.SET_START_HOUR, value })}
           />
-          <span className="pt-16">:</span>
+          <span>:</span>
           <SelectInput
-            smallLabel="Min"
             name="minute"
             options={minutes}
             widthStyle={widthStyle}
@@ -101,7 +93,6 @@ function TimeInput({ paddingStyle, disableFocus }) {
         <Label size={labelTypes.big} as={labelTypes.h3} center>To</Label>
         <div className="flex items-center gap-8">
           <SelectInput
-            smallLabel="Hour"
             name="hour"
             options={hours}
             widthStyle={widthStyle}
@@ -109,9 +100,8 @@ function TimeInput({ paddingStyle, disableFocus }) {
             selected={endHour}
             handleSelect={value => dispatch({ type: actionTypes.SET_END_HOUR, value })}
           />
-          <span className="pt-16">:</span>
+          <span>:</span>
           <SelectInput
-            smallLabel="Min"
             name="minute"
             options={minutes}
             widthStyle={widthStyle}

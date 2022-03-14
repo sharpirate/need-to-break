@@ -26,7 +26,6 @@ function Preset({ preset }) {
   }, []);
 
   function handleStart() {
-    console.log(preset);
     if (preset && user) {
       const startTime = parseStartTime(preset.startTime);
       const endTime = startTime + (preset.duration * 1000);

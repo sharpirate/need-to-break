@@ -48,7 +48,13 @@ function TimeInput({ paddingStyle, disableFocus }) {
       dispatch({ type: actionTypes.SET_END_HOUR, value: startHour })
     }
     
-    blueprintDispatch({ type: blueprintActions.SET_DURATION, value: duration });
+    // prevent the user from generating a timeline that has already ended
+    if (Date.now() <= endDate) {
+      blueprintDispatch({ type: blueprintActions.SET_DURATION, value: duration });
+    } else {
+      // clear the current selection if timeline has already ended
+      blueprintDispatch({ type: blueprintActions.SET_DURATION, value: 0 });
+    }
   }, [startHour, startMin, endHour, endMin])
 
   useEffect(() => {
@@ -69,6 +75,7 @@ function TimeInput({ paddingStyle, disableFocus }) {
         <Label size={labelTypes.big} as={labelTypes.h3} center>From</Label>
         <div className="flex items-center gap-8">
           <SelectInput
+            smallLabel="Hour"
             name="hour"
             options={hours}
             widthStyle={widthStyle}
@@ -78,6 +85,7 @@ function TimeInput({ paddingStyle, disableFocus }) {
           />
           <span>:</span>
           <SelectInput
+            smallLabel="Min"
             name="minute"
             options={minutes}
             widthStyle={widthStyle}
@@ -93,6 +101,7 @@ function TimeInput({ paddingStyle, disableFocus }) {
         <Label size={labelTypes.big} as={labelTypes.h3} center>To</Label>
         <div className="flex items-center gap-8">
           <SelectInput
+            smallLabel="Hour"
             name="hour"
             options={hours}
             widthStyle={widthStyle}
@@ -102,6 +111,7 @@ function TimeInput({ paddingStyle, disableFocus }) {
           />
           <span>:</span>
           <SelectInput
+            smallLabel="Min"
             name="minute"
             options={minutes}
             widthStyle={widthStyle}

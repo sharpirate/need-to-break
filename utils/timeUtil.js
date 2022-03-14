@@ -16,7 +16,8 @@ export function timestampToString(timestamp) {
 }
 
 export function parseStartTime(startTime) {
-  const [hours, minutes] = parseTime(startTime);
+  // if it's flexible (timestamp) parse it to string first
+  const [hours, minutes] = typeof startTime === "number" ? parseTime(timestampToString(startTime)) : parseTime(startTime);
   return new Date().setHours(hours, minutes, 0);
 }
 

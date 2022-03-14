@@ -76,9 +76,6 @@ function MainTimeline() {
         // timeline hasn't started yet
         setActiveInterval(createStartingTimer(timeline.startTime, uid));
 
-      } else if (Date.now() > (timeline.startTime + (timeline.duration * 1000))) {
-        // timeline has ended
-        
       } else {
         const nextIntervalIndex = timeline.intervals.findIndex(interval => interval.timestamp > Date.now());
         setActiveInterval(timeline.intervals[nextIntervalIndex - 1]);

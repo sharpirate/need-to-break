@@ -6,14 +6,16 @@ import Label, { labelTypes } from "../atoms/Label";
 import Button, { buttonTypes } from "../atoms/Button";
 import Icon, { iconTypes } from "../atoms/Icon";
 import SavePresetModal from "../molecules/cards/SavePresetModal";
+import TimelineHasEndedModal from "./cards/TimelineHasEndedModal";
 import { useBlueprint } from "../../context/Blueprint";
-import { blueprintToTimeline } from "../../utils/timelineUtil";
-import { startTimeline } from "../../utils/timelineUtil";
+import { blueprintToTimeline, startTimeline } from "../../utils/timelineUtil";
+import { parseStartTime } from "../../utils/timeUtil";
 import { useRouter } from "next/router";
 import useIsomorphicLayoutEffect from "../../utils/useIsomorphicLayoutEffect";
 import { useAuth } from "../../firebase/Firebase";
 function TimelinePreview({ hasFloating }) {
-  const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [saveModalIsOpen, setSaveModalIsOpen] = useState(false);
+  const [endedModalIsOpen, setEndedModalIsOpen] = useState(false);
   const blueprint = useBlueprint();
   const [timeline, setTimeline] = useState();
   const [viewMore, setViewMore] = useState(false);
@@ -31,8 +33,15 @@ function TimelinePreview({ hasFloating }) {
 
   function handleStart() {
     if (blueprint && user) {
-      startTimeline(blueprint, user.uid);
-      router.push('/active');
+      const startTime = parseStartTime(blueprint.startTime);
+      const endTime = startTime + (blueprint.duration * 1000);
+
+      if (Date.now() <= endTime) {
+        startTimeline(blueprint, user.uid);
+        router.push('/active');
+      } else {
+        setEndedModalIsOpen(true);
+      }
     }
   }
 
@@ -76,7 +85,7 @@ function TimelinePreview({ hasFloating }) {
       <div className="w-full flex flex-col 932:flex-col-reverse justify-center items-center">
         <div className="grid gap-24 420:gap-32 540:grid-cols-2 540:gap-24 mb-32 420:mb-48 932:mb-0 932:mt-48">
           <Button handleClick={handleStart} type={buttonTypes.primary}>Start</Button>
-          <Button handleClick={() => setModalIsOpen(true)} type={buttonTypes.outline}>Save</Button>
+          <Button handleClick={() => setSaveModalIsOpen(true)} type={buttonTypes.outline}>Save</Button>
         </div>
 
         {/* Timeline Block */}
@@ -95,9 +104,15 @@ function TimelinePreview({ hasFloating }) {
 
       {/* Save Preset Modal */}
       <SavePresetModal
-        isOpen={modalIsOpen}
-        setIsOpen={setModalIsOpen}
+        isOpen={saveModalIsOpen}
+        setIsOpen={setSaveModalIsOpen}
         blueprint={blueprint}
+      />
+
+      {/* Timeline Has Ended */}
+      <TimelineHasEndedModal
+        isOpen={endedModalIsOpen}
+        setIsOpen={setEndedModalIsOpen}
       />
     </section>
   ) : null;

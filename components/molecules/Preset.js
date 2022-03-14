@@ -6,14 +6,16 @@ import Label, { labelTypes } from "../atoms/Label";
 import Button, { buttonTypes } from "../atoms/Button";
 import Icon, { iconTypes } from "../atoms/Icon";
 import DeletePresetModal from "./cards/DeletePresetModal";
-import { blueprintToTimeline } from "../../utils/timelineUtil";
-import { startTimeline } from "../../utils/timelineUtil";
+import { blueprintToTimeline, startTimeline } from "../../utils/timelineUtil";
+import { parseStartTime } from "../../utils/timeUtil";
 import { useRouter } from "next/router";
 import { getDetails } from "../../utils/timelineUtil";
 import { useAuth } from "../../firebase/Firebase";
+import TimelineHasEndedModal from "./cards/TimelineHasEndedModal";
 
 function Preset({ preset }) {
-  const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [deleteModalIsOpen, setDeleteModalIsOpen] = useState(false);
+  const [endedModalIsOpen, setEndedModalIsOpen] = useState(false);
   const [viewMore, setViewMore] = useState(false);
   const [timeline, setTimeline] = useState();
   const router = useRouter();
@@ -25,8 +27,15 @@ function Preset({ preset }) {
 
   function handleStart() {
     if (preset && user) {
-      startTimeline(preset, user.uid);
-      router.push('/active');
+      const startTime = parseStartTime(preset.startTime);
+      const endTime = startTime + (preset.duration * 1000);
+
+      if (Date.now() <= endTime) {
+        startTimeline(preset, user.uid);
+        router.push('/active');
+      } else {
+        setEndedModalIsOpen(true);
+      }
     }
   }
 
@@ -80,7 +89,7 @@ function Preset({ preset }) {
       <div className="w-full flex flex-col 932:flex-col-reverse justify-center items-center">
         <div className="grid gap-24 420:gap-32 540:grid-cols-2 540:gap-24 mb-32 420:mb-48 932:mb-0 932:mt-48">
           <Button handleClick={handleStart} type={buttonTypes.primary}>Start</Button>
-          <Button handleClick={() => setModalIsOpen(true)} type={buttonTypes.outline}>Delete</Button>
+          <Button handleClick={() => setDeleteModalIsOpen(true)} type={buttonTypes.outline}>Delete</Button>
         </div>
 
         {/* Timeline Block */}
@@ -99,10 +108,16 @@ function Preset({ preset }) {
 
       {/* Delete Preset Modal */}
       <DeletePresetModal
-        isOpen={modalIsOpen}
-        setIsOpen={setModalIsOpen}
+        isOpen={deleteModalIsOpen}
+        setIsOpen={setDeleteModalIsOpen}
         name={preset.name}
         id={preset.id}
+      />
+
+      {/* Timeline Has Ended */}
+      <TimelineHasEndedModal
+        isOpen={endedModalIsOpen}
+        setIsOpen={setEndedModalIsOpen}
       />
     </section>
   ) : null;

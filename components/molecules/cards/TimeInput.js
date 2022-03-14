@@ -83,7 +83,7 @@ function TimeInput({ paddingStyle, disableFocus }) {
             selected={startHour}
             handleSelect={value => dispatch({ type: actionTypes.SET_START_HOUR, value })}
           />
-          <span>:</span>
+          <span className="pt-16">:</span>
           <SelectInput
             smallLabel="Min"
             name="minute"
@@ -109,7 +109,7 @@ function TimeInput({ paddingStyle, disableFocus }) {
             selected={endHour}
             handleSelect={value => dispatch({ type: actionTypes.SET_END_HOUR, value })}
           />
-          <span>:</span>
+          <span className="pt-16">:</span>
           <SelectInput
             smallLabel="Min"
             name="minute"

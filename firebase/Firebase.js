@@ -128,11 +128,7 @@ export function useAuth() {
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(getAuthInstance(), user => {
-      if (user) {
-        setUser(user);
-      } else {
-        setUser(null);
-      }
+      setUser(user || null);
 
       setUserLoading(false);
     });
@@ -146,13 +142,12 @@ export function useAuth() {
     try {
       const result = await createUserWithEmailAndPassword(getAuthInstance(), email, password);
 
-      setUserLoading(false);
       return {
         user: result.user
       };
     } catch (error) {
       console.error(error)
-      setUserLoading(false);
+
       return {
         error: getErrorMessage(error.code)
       }
@@ -165,13 +160,12 @@ export function useAuth() {
     try {
       const result = await signInWithEmailAndPassword(getAuthInstance(), email, password);
 
-      setUserLoading(false);
       return {
         user: result.user
       };
     } catch (error) {
       console.error(error)
-      setUserLoading(false);
+      
       return {
         error: getErrorMessage(error.code)
       }

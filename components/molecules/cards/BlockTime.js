@@ -10,26 +10,19 @@ function BlockTime() {
   const [checked, setChecked] = useState(false);
 
   return (
-    <InputCard>
+    <InputCard useExtraPadding>
       <Header
         icon={iconTypes.blocked}
         heading="Block Time"
-        description="Add custom blocked time for meetings or breaks (Optional)"
+        description="Add custom blocked time (Coming Soon)"
       />
 
       <div className="flex flex-col justify-start items-center gap-16 420:gap-24">
         <Toggle
+          disabled
           checked={checked}
           handleChange={() => setChecked(!checked)}
         />
-        <div className={"flex flex-col justify-start items-center gap-16 420:gap-24" + (!checked ? " invisible" : "")}>
-          <Carousel
-            initialPages={1}
-            pageLimit={15}
-            // infinite
-            renderItem={(disableFocus) => <TimeInput disableFocus={disableFocus} paddingStyle="px-32 420:px-48" />}
-          />
-        </div>
       </div>
     </InputCard>
   );

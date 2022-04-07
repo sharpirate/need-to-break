@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-function Toggle({ handleChange, checked }) {
+function Toggle({ handleChange, checked, disabled }) {
 
   function handleEnterKey(e) {
     if (e.key === 'Enter') {
@@ -7,10 +7,13 @@ function Toggle({ handleChange, checked }) {
     }
   }
 
+  const disabledStyle = disabled ? "bg-gray-300" : "bg-gray-400";
+
   return (
     <div className="relative">
       <input
-        className="cursor-pointer appearance-none block w-40 h-20 420:w-48 420:h-24 rounded-20 bg-gray-400 checked:bg-primary-500 peer outline-none focus-visible:bg-primary-600"
+        disabled={disabled}
+        className={`cursor-pointer appearance-none block w-40 h-20 420:w-48 420:h-24 rounded-20  checked:bg-primary-500 peer outline-none focus-visible:bg-primary-600 ${disabledStyle}`}
         type="checkbox"
         name=""
         checked={checked}

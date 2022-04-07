@@ -18,7 +18,7 @@ function TimelineDuration() {
   }, [hours, minutes]);
 
   return (
-    <InputCard>
+    <InputCard useExtraPadding>
       <Header
         icon={iconTypes.timer}
         heading="Timeline Duration"

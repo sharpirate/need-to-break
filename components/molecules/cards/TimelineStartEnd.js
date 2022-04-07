@@ -5,7 +5,7 @@ import TimeInput from "./TimeInput";
 
 function TimelineStartEnd() {
   return (
-    <InputCard>
+    <InputCard useExtraPadding>
       <Header
         icon={iconTypes.timer}
         heading="Timeline Start / End"

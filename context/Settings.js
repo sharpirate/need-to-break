@@ -9,7 +9,7 @@ const SaveSettingsContext = createContext()
 
 function getInitialState(user) {
   const initialState = {
-    use12Hour: false,
+    use12Hour: true,
     useSmartRestart: false
   };
 

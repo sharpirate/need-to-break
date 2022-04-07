@@ -9,42 +9,19 @@ function LongBreaks() {
   const [checked, setChecked] = useState(false);
 
   return (
-    <InputCard>
+    <InputCard useExtraPadding>
       <Header
         icon={iconTypes.coffee}
         heading="Long Breaks"
-        description="Add custom long breaks inbetween certain number of sprints (Optional)"
+        description="Add custom longer breaks (Coming Soon)"
       />
 
       <div className="flex flex-col justify-start items-center gap-16 420:gap-24">
         <Toggle
+          disabled
           checked={checked}
           handleChange={() => setChecked(!checked)}
         />
-        <div className={"flex flex-col justify-start items-center gap-16 420:gap-24" + (!checked ? " invisible" : "")}>
-          <NumberInput
-            name="duration"
-            initial={30}
-            step={5}
-            min={5}
-            max={90}
-            unit="min"
-            widthStyle="w-64 420:w-78"
-            bigLabel="Duration"
-            centerBig
-          />
-
-          <NumberInput
-            name="frequency"
-            initial={3}
-            step={1}
-            min={1}
-            max={20}
-            widthStyle="w-[37px] 420:w-[45px]"
-            bigLabel="Frequency"
-            centerBig
-          />
-        </div>
       </div>
     </InputCard>
   );

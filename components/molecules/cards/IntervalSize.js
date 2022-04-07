@@ -19,7 +19,7 @@ function IntervalSize() {
   }, [b]);
 
   return (
-    <InputCard>
+    <InputCard useExtraPadding>
       <Header
         icon={iconTypes.sandclock}
         heading="Interval Size"

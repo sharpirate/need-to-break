@@ -22,12 +22,33 @@ export default function Home() {
           </h2>
         </div>
 
-        <div className="py-48">
+        <div className="pt-48">
           <Button
             type={buttonTypes.callToAction}
             handleClick={() => router.push("/timeline")}
           >
             Try It Now
+          </Button>
+        </div>
+
+        <div className="flex flex-col 480:grid 420:grid-cols-2 gap-32 pt-32 pb-48">
+          <Button
+            type={buttonTypes.primary}
+            handleClick={() =>
+              (window.location.href =
+                "https://github.com/Sharpirate/need-to-break")
+            }
+          >
+            Open in Github
+          </Button>
+          <Button
+            type={buttonTypes.secondary}
+            handleClick={() =>
+              (window.location.href =
+                "https://github.com/Sharpirate/need-to-break")
+            }
+          >
+            Open in Figma
           </Button>
         </div>
       </div>

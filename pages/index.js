@@ -41,7 +41,7 @@ export default function Home() {
           </Button>
           <Button
             type={buttonTypes.primary}
-            href="https://github.com/Sharpirate/need-to-break"
+            href="https://www.figma.com/file/KhWh1YsTvHu6gZdhRe87FK/NeedToBreak?type=design&node-id=3%3A204&mode=design&t=9jR5f71d6J1COe6B-1"
           >
             Open in Figma
           </Button>

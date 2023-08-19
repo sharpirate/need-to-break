@@ -8,8 +8,12 @@ import Modal from "../Modal";
 import { requestPermission } from "../../../utils/notificationUtil";
 
 function EnableNotificationsModal({ isOpen, setIsOpen }) {
-  function handleClick() {
+  function handleEnable() {
     requestPermission();
+    setIsOpen(false);
+  }
+
+  function handleClose() {
     setIsOpen(false);
   }
 
@@ -22,9 +26,12 @@ function EnableNotificationsModal({ isOpen, setIsOpen }) {
           description="Would you like to get notified when an interval ends?"
         />
 
-        <div className="mt-16 420:mt-24">
-          <Button handleClick={handleClick} type={buttonTypes.primary}>
+        <div className="grid grid-cols-2 gap-24 mt-16 420:mt-24">
+          <Button handleClick={handleEnable} type={buttonTypes.primary}>
             Enable
+          </Button>
+          <Button handleClick={handleClose} type={buttonTypes.outline}>
+            Cancel
           </Button>
         </div>
       </InputCard>

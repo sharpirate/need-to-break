@@ -22,16 +22,17 @@ export default function Home() {
           </h2>
         </div>
 
-        <div className="pt-48">
-          <Button
-            type={buttonTypes.callToAction}
-            handleClick={() => router.push("/timeline")}
-          >
-            Try It Now
-          </Button>
-        </div>
+        <div className="grid grid-cols-1 480:grid-cols-2 gap-32 py-48">
+          <div className="480:col-span-2 480:flex justify-center">
+            <Button
+              styleOverride="w-full 480:w-auto"
+              type={buttonTypes.callToAction}
+              handleClick={() => router.push("/timeline")}
+            >
+              Try It Now
+            </Button>
+          </div>
 
-        <div className="flex flex-col 480:grid 420:grid-cols-2 gap-32 pt-32 pb-48">
           <Button
             type={buttonTypes.primary}
             handleClick={() =>

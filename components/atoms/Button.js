@@ -16,7 +16,14 @@ const types = {
 
 export { types as buttonTypes };
 
-function Button({ type, children, disabled, handleClick, isSubmit }) {
+function Button({
+  type,
+  children,
+  disabled,
+  handleClick,
+  isSubmit,
+  styleOverride,
+}) {
   let style;
 
   switch (type) {
@@ -53,9 +60,11 @@ function Button({ type, children, disabled, handleClick, isSubmit }) {
       onClick={() => setTimeout(handleClick, delay)}
       disabled={disabled}
       className={
-        "select-none px-24 420:px-32 py-8 body-med rounded-6 outline-none active:scale-90" +
+        "select-none px-24 420:px-32 py-8 body-med body-small rounded-6 outline-none active:scale-90" +
         " " +
-        style
+        style +
+        " " +
+        styleOverride
       }
       whileTap={{ scale: 0.85 }}
     >

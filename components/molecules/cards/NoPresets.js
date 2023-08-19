@@ -7,11 +7,11 @@ function NoPresets() {
     <InputCard>
       <Header
         icon={iconTypes.save}
-        heading="No Presets Found"
-        description="Use the navigation to help you create and save timelines"
+        heading="No Saved Presets"
+        description="Once you save a preset, it will appear here"
       />
     </InputCard>
-  )
+  );
 }
 
 export default NoPresets;

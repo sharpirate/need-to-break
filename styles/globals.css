@@ -83,7 +83,7 @@
   }
 
   .subheading-landing {
-    @apply font-base font-sbold text-16 420:text-20 tracking-2;
+    @apply font-base font-med text-16 420:text-20 tracking-2;
   }
 
   .devices-landing {

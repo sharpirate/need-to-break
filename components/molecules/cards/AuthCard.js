@@ -9,13 +9,13 @@ import { useRouter } from "next/router";
 import { ACTION_DELAYS } from "../../../utils/constants";
 
 export const authTypes = {
-  signUp: 'signUp',
-  login: 'login'
+  signUp: "signUp",
+  login: "login",
 };
 
 function AuthCard({ type }) {
-  const [email, setEmail] = useState("");
-  const [emailError, setEmailError] = useState(null);
+  const [username, setUsername] = useState("");
+  const [usernameError, setUsernameError] = useState(null);
   const [password, setPassword] = useState("");
   const [passwordError, setPasswordError] = useState(null);
   const [success, setSuccess] = useState(false);
@@ -26,33 +26,33 @@ function AuthCard({ type }) {
     e.preventDefault();
     const action = type === authTypes.signUp ? signUp : signIn;
 
-    const { user, error } = await action(email, password);
-    
+    const { user, error } = await action(username, password);
+
     if (user) {
       setSuccess(true);
 
       setTimeout(() => {
-        router.push('/active');
-      }, ACTION_DELAYS.long)
+        router.push("/active");
+      }, ACTION_DELAYS.long);
     } else {
       const { msg, type } = error;
 
-      switch(type) {
-        case errorTypes.email:
-          setEmailError(msg);
+      switch (type) {
+        case errorTypes.username:
+          setUsernameError(msg);
           break;
         case errorTypes.password:
           setPasswordError(msg);
           break;
         case errorTypes.unknown:
         default:
-          setEmailError(msg);
+          setUsernameError(msg);
           setPasswordError(msg);
           break;
       }
     }
   }
-  
+
   return (
     <InputCard>
       <Header
@@ -60,21 +60,25 @@ function AuthCard({ type }) {
         heading={type === authTypes.signUp ? "Create Your Account" : "Login"}
       />
 
-      <form autoComplete="off" className="w-full flex flex-col justify-start items-center gap-24 420:gap-32" onSubmit={handleSubmit}>
+      <form
+        autoComplete="off"
+        className="w-full flex flex-col justify-start items-center gap-24 420:gap-32"
+        onSubmit={handleSubmit}
+      >
         <TextInput
-          name="emai"
-          type={textInputTypes.email}
-          bigLabel="Email"
+          name="text"
+          type={textInputTypes.text}
+          bigLabel="Text"
           widthStyle="w-full"
-          value={email}
-          handleChange={value => {
-            setEmail(value);
-            setEmailError(null);
+          value={username}
+          handleChange={(value) => {
+            setUsername(value);
+            setUsernameError(null);
           }}
-          errorLabel={emailError}
+          errorLabel={usernameError}
           hasSuccess={success}
         >
-          Your Email
+          Your Username
         </TextInput>
 
         <TextInput
@@ -83,7 +87,7 @@ function AuthCard({ type }) {
           bigLabel="Password"
           widthStyle="w-full"
           value={password}
-          handleChange={value => {
+          handleChange={(value) => {
             setPassword(value);
             setPasswordError(null);
           }}
@@ -94,9 +98,13 @@ function AuthCard({ type }) {
         </TextInput>
 
         <div className="mt-16">
-          <Button isSubmit type={success ? buttonTypes.success : buttonTypes.primary}>{type === authTypes.signUp ? "Sign Up" : "Login"}</Button>
+          <Button
+            isSubmit
+            type={success ? buttonTypes.success : buttonTypes.primary}
+          >
+            {type === authTypes.signUp ? "Sign Up" : "Login"}
+          </Button>
         </div>
-
       </form>
     </InputCard>
   );

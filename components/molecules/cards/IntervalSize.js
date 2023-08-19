@@ -3,11 +3,14 @@ import Header from "./Header";
 import NumberInput from "../../atoms/NumberInput";
 import { iconTypes } from "../../atoms/Icon";
 import { useState, useEffect } from "react";
-import { useDispatchBlueprint, blueprintActions } from "../../../context/Blueprint";
+import {
+  useDispatchBlueprint,
+  blueprintActions,
+} from "../../../context/Blueprint";
 
 function IntervalSize() {
-  const [w, setW] = useState(5);
-  const [b, setB] = useState(5);
+  const [w, setW] = useState(30);
+  const [b, setB] = useState(10);
   const dispatch = useDispatchBlueprint();
 
   useEffect(() => {
@@ -30,7 +33,7 @@ function IntervalSize() {
         <NumberInput
           name="work"
           value={w}
-          handleChange={value => setW(value)}
+          handleChange={(value) => setW(value)}
           step={5}
           min={5}
           max={90}
@@ -43,7 +46,7 @@ function IntervalSize() {
         <NumberInput
           name="break"
           value={b}
-          handleChange={value => setB(value)}
+          handleChange={(value) => setB(value)}
           step={5}
           min={5}
           max={90}
@@ -52,7 +55,7 @@ function IntervalSize() {
           bigLabel="Break"
           centerBig
         />
-      </div>    
+      </div>
     </InputCard>
   );
 }

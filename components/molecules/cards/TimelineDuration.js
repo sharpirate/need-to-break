@@ -3,7 +3,10 @@ import Header from "./Header";
 import { iconTypes } from "../../atoms/Icon";
 import InputCard from "./InputCard";
 import NumberInput from "../../atoms/NumberInput";
-import { useDispatchBlueprint, blueprintActions } from "../../../context/Blueprint";
+import {
+  useDispatchBlueprint,
+  blueprintActions,
+} from "../../../context/Blueprint";
 
 function TimelineDuration() {
   const [hours, setHours] = useState(0);
@@ -11,7 +14,7 @@ function TimelineDuration() {
   const blueprintDispatch = useDispatchBlueprint();
 
   useEffect(() => {
-    const duration = (hours * 3600) + (minutes * 60);
+    const duration = hours * 3600 + minutes * 60;
 
     blueprintDispatch({ type: blueprintActions.SET_START, value: Date.now() });
     blueprintDispatch({ type: blueprintActions.SET_DURATION, value: duration });
@@ -29,7 +32,7 @@ function TimelineDuration() {
         <NumberInput
           name="hours"
           value={hours}
-          handleChange={value => setHours(value)}
+          handleChange={(value) => setHours(value)}
           step={1}
           min={0}
           max={12}
@@ -42,7 +45,7 @@ function TimelineDuration() {
         <NumberInput
           name="minutes"
           value={minutes}
-          handleChange={value => setMinutes(value)}
+          handleChange={(value) => setMinutes(value)}
           step={15}
           min={0}
           max={45}
@@ -51,7 +54,7 @@ function TimelineDuration() {
           bigLabel="Minutes"
           centerBig
         />
-      </div>    
+      </div>
     </InputCard>
   );
 }

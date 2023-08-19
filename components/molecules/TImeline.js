@@ -1,22 +1,22 @@
-import React, { useState, useRef } from 'react';
-import useIsomorphicLayoutEffect from '../../utils/useIsomorphicLayoutEffect';
-import PropTypes from 'prop-types';
-import Interval, { intervalTypes } from '../atoms/Interval';
-import Tab, { tabTypes } from '../atoms/Tab';
-import { isBelowBreakpoint } from '../../utils/tailwindUtil';
-import useClientWidth from '../../utils/useClientWidth';
-import { useSettings } from '../../context/Settings';
-import { get12HourTime } from '../../utils/timeUtil';
+import React, { useState, useRef } from "react";
+import useIsomorphicLayoutEffect from "../../utils/useIsomorphicLayoutEffect";
+import PropTypes from "prop-types";
+import Interval, { intervalTypes } from "../atoms/Interval";
+import Tab, { tabTypes } from "../atoms/Tab";
+import { isBelowBreakpoint } from "../../utils/tailwindUtil";
+import useClientWidth from "../../utils/useClientWidth";
+import { useSettings } from "../../context/Settings";
+import { get12HourTime } from "../../utils/timeUtil";
 
 function Timeline({ timeline, progress }) {
   const { scaleMap, scales, intervals } = timeline;
 
   const [scale, setScale] = useState(scales[scales.length - 1].value);
   const [hours, setHours] = useState(scaleMap[scale]);
-  
+
   const clientWidth = useClientWidth();
-  const isMobile = isBelowBreakpoint(clientWidth, '932');
-  
+  const isMobile = isBelowBreakpoint(clientWidth, "932");
+
   const timelineProps = {
     scaleMap,
     scales,
@@ -31,8 +31,8 @@ function Timeline({ timeline, progress }) {
   useIsomorphicLayoutEffect(() => {
     // fix stale state in TimelinePreview
     setHours(scaleMap[scale]);
-  }, [timeline])
-  
+  }, [timeline]);
+
   const regularTimeline = (
     <div className="hidden 932:block">
       <RegularTimeline {...timelineProps} />
@@ -51,23 +51,41 @@ function Timeline({ timeline, progress }) {
       {regularTimeline}
       {mobileTimeline}
     </>
-  ) : isMobile === false ? regularTimeline : mobileTimeline;
+  ) : isMobile === false ? (
+    regularTimeline
+  ) : (
+    mobileTimeline
+  );
 }
 
-const RegularTimeline = ({ scaleMap, scales, intervals, scale, setScale, hours, setHours, progress }) => {
+const RegularTimeline = ({
+  scaleMap,
+  scales,
+  intervals,
+  scale,
+  setScale,
+  hours,
+  setHours,
+  progress,
+}) => {
   const timelineRef = useRef();
   const [scroll, setScroll] = useState(0);
-  const [scrollTarget, setScrollTarget] = useState({ value: null, smooth: null });
+  const [scrollTarget, setScrollTarget] = useState({
+    value: null,
+    smooth: null,
+  });
 
   // Listen for scroll event
   useIsomorphicLayoutEffect(() => {
     const timeline = timelineRef.current;
 
+    console.log(timeline);
+
     if (timeline) {
       const { clientWidth, scrollWidth } = timeline;
       const scrollableWidth = scrollWidth - clientWidth;
 
-      const handleScroll = e => {
+      const handleScroll = (e) => {
         const currentScroll = e.target.scrollLeft / scrollableWidth;
 
         if (scrollTarget.value === currentScroll) {
@@ -77,10 +95,10 @@ const RegularTimeline = ({ scaleMap, scales, intervals, scale, setScale, hours, 
         setScroll(currentScroll);
       };
 
-      timeline.addEventListener('scroll', handleScroll);
-    }
+      timeline.addEventListener("scroll", handleScroll);
 
-    return () => timeline.removeEventListener('scroll', handleScroll);
+      return () => timeline.removeEventListener("scroll", handleScroll);
+    }
   }, [timelineRef, scrollTarget.value]);
 
   // Programatically scroll to a certain scroll target
@@ -98,25 +116,25 @@ const RegularTimeline = ({ scaleMap, scales, intervals, scale, setScale, hours, 
       const scrollableWidth = scrollWidth - clientWidth;
 
       timeline.scrollTo({
-        left: value  * scrollableWidth,
-        behavior: smooth ? 'smooth' : 'auto'
+        left: value * scrollableWidth,
+        behavior: smooth ? "smooth" : "auto",
       });
     }
-  }
+  };
 
-  const handleScaleChange = newScale => {
+  const handleScaleChange = (newScale) => {
     if (newScale !== scale) {
       setScrollTarget({
         value: scroll,
-        smooth: false
+        smooth: false,
       });
       setScale(newScale);
       setHours(scaleMap[newScale]);
     }
-  }
+  };
 
   return (
-    <div> 
+    <div>
       <div
         tabIndex={0}
         ref={timelineRef}
@@ -124,9 +142,9 @@ const RegularTimeline = ({ scaleMap, scales, intervals, scale, setScale, hours, 
         onMouseEnter={() => timelineRef.current.focus()}
       >
         <div
-          className='px-[50%]'
+          className="px-[50%]"
           style={{
-            width: `calc(100% + ${(156 * (hours.length - 1))}px)`,
+            width: `calc(100% + ${156 * (hours.length - 1)}px)`,
             // (label width in px * 3) * (number of labels - 1)
           }}
         >
@@ -137,14 +155,20 @@ const RegularTimeline = ({ scaleMap, scales, intervals, scale, setScale, hours, 
             progress={progress}
           />
 
-          <ul className='flex flex-row'>
+          <ul className="flex flex-row">
             {intervals.map((interval, index) => (
-              <Interval key={interval.timestamp} type={interval.type} first={index === 0} last={index === intervals.length - 1} duration={interval.duration} />
-              ))}
+              <Interval
+                key={interval.timestamp}
+                type={interval.type}
+                first={index === 0}
+                last={index === intervals.length - 1}
+                duration={interval.duration}
+              />
+            ))}
           </ul>
 
-          <ul className='flex flex-row justify-between mt-24 -mx-monopad'>
-            {hours.map(hour => (
+          <ul className="flex flex-row justify-between mt-24 -mx-monopad">
+            {hours.map((hour) => (
               <Hour key={hour}>{hour}</Hour>
             ))}
           </ul>
@@ -156,18 +180,26 @@ const RegularTimeline = ({ scaleMap, scales, intervals, scale, setScale, hours, 
         currentScale={scale}
         handleScaleChange={handleScaleChange}
       />
-
     </div>
   );
 };
 
-function MobileTimeline({ scaleMap, scales, intervals, scale, setScale, hours, setHours, progress }) {
-  const handleScaleChange = newScale => {
+function MobileTimeline({
+  scaleMap,
+  scales,
+  intervals,
+  scale,
+  setScale,
+  hours,
+  setHours,
+  progress,
+}) {
+  const handleScaleChange = (newScale) => {
     if (newScale !== scale) {
       setScale(newScale);
       setHours(scaleMap[newScale]);
     }
-  }
+  };
 
   return (
     <div>
@@ -175,38 +207,44 @@ function MobileTimeline({ scaleMap, scales, intervals, scale, setScale, hours, s
         scales={scales}
         currentScale={scale}
         handleScaleChange={handleScaleChange}
-      />      
-        <div
-          className="relative inline-flex flex-row-reverse justify-center mb-32 420:mb-48"
-          style={{
-            height: `${(156 * (hours.length - 1))}px`,
-          }}
-        >
-          <Arrow
-            isMobile={true}
-            visible={true}
-            type={intervalTypes.work}
-            progress={progress}
-          />
+      />
+      <div
+        className="relative inline-flex flex-row-reverse justify-center mb-32 420:mb-48"
+        style={{
+          height: `${156 * (hours.length - 1)}px`,
+        }}
+      >
+        <Arrow
+          isMobile={true}
+          visible={true}
+          type={intervalTypes.work}
+          progress={progress}
+        />
 
-          <ul className="inline-flex flex-col h-full py-8 420:py-12">
-            {intervals.map((interval, index) => (
-              <Interval key={interval.timestamp} type={interval.type} first={index === 0} last={index === intervals.length - 1} duration={interval.duration} />
-              ))}
-          </ul>
+        <ul className="inline-flex flex-col h-full py-8 420:py-12">
+          {intervals.map((interval, index) => (
+            <Interval
+              key={interval.timestamp}
+              type={interval.type}
+              first={index === 0}
+              last={index === intervals.length - 1}
+              duration={interval.duration}
+            />
+          ))}
+        </ul>
 
-          <ul className="absolute top-0 h-full -left-16 420:-left-24 -translate-x-full flex flex-col justify-between">
-            {hours.map(hour => (
-              <Hour key={hour}>{hour}</Hour>
-            ))}
-          </ul>
-        </div>
+        <ul className="absolute top-0 h-full -left-16 420:-left-24 -translate-x-full flex flex-col justify-between">
+          {hours.map((hour) => (
+            <Hour key={hour}>{hour}</Hour>
+          ))}
+        </ul>
+      </div>
     </div>
   );
 }
 Timeline.propTypes = {
   timeline: PropTypes.object,
-  progress: PropTypes.number
+  progress: PropTypes.number,
 };
 
 function Hour({ children }) {
@@ -219,31 +257,31 @@ function Hour({ children }) {
 
     item = (
       <div className="relative flex flex-col">
-        <span className="text-16">{hour}:{min}</span>
-        <span className="absolute -bottom-full -translate-y-1/2 left-1/2 -translate-x-1/2 text-13">{suffix}</span>
+        <span className="text-16">
+          {hour}:{min}
+        </span>
+        <span className="absolute -bottom-full -translate-y-1/2 left-1/2 -translate-x-1/2 text-13">
+          {suffix}
+        </span>
       </div>
     );
   } else {
     item = children;
   }
 
-  return (
-    <li className="mono-med text-gray-500 select-none">
-      {item}
-    </li>
-  );
+  return <li className="mono-med text-gray-500 select-none">{item}</li>;
 }
 function Arrow({ type, progress, isMobile }) {
-  let colorStyle = '';
+  let colorStyle = "";
 
   switch (type) {
     case intervalTypes.work:
     case intervalTypes.break:
-      colorStyle = 'fill-primary-500';
+      colorStyle = "fill-primary-500";
       break;
     case intervalTypes.blocked:
     case intervalTypes.floating:
-    colorStyle = 'fill-blocked-500';
+      colorStyle = "fill-blocked-500";
       break;
     default:
       break;
@@ -251,15 +289,21 @@ function Arrow({ type, progress, isMobile }) {
 
   const visibleStyle = progress >= 0 ? "visible" : "invisible";
 
-  return (isMobile ? (
-    <div className={`${visibleStyle} absolute left-full top-8 420:top-12 bottom-8 420:bottom-12`}>
+  return isMobile ? (
+    <div
+      className={`${visibleStyle} absolute left-full top-8 420:top-12 bottom-8 420:bottom-12`}
+    >
       <svg
         className="relative w-16 h-16 420:w-20 420:h-20 ml-8 -translate-y-1/2"
         style={{ top: `${progress}%` }}
         viewBox="0 0 20 20"
         fill="none"
-        xmlns="http://www.w3.org/2000/svg">
-      <path className={colorStyle} d="M17.5 1.66666L2.5 9.99999L17.5 18.3333L17.5 1.66666Z"/>
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          className={colorStyle}
+          d="M17.5 1.66666L2.5 9.99999L17.5 18.3333L17.5 1.66666Z"
+        />
       </svg>
     </div>
   ) : (
@@ -271,15 +315,18 @@ function Arrow({ type, progress, isMobile }) {
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
       >
-      <path className={colorStyle} d="M17.5 1.66666L2.5 9.99999L17.5 18.3333L17.5 1.66666Z"/>
+        <path
+          className={colorStyle}
+          d="M17.5 1.66666L2.5 9.99999L17.5 18.3333L17.5 1.66666Z"
+        />
       </svg>
     </div>
-  ));
+  );
 }
 
 Arrow.propTypes = {
   type: PropTypes.string,
-  progress: PropTypes.number
+  progress: PropTypes.number,
 };
 
 function Pages({ pages, currentPage, handlePageChange }) {
@@ -308,7 +355,7 @@ function Pagination({ scales, currentScale, handleScaleChange }) {
       <Pages
         pages={scales}
         currentPage={currentScale}
-        handlePageChange={handleScaleChange}  
+        handlePageChange={handleScaleChange}
       />
     </div>
   );

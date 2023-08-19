@@ -73,7 +73,7 @@ function TextInput({
       {renderBigLabel}
       {renderSmallLabel}
       <input
-        automcomplete="off"
+        autoComplete="off"
         disabled={disabled}
         onChange={(e) => handleChange(e.target.value)}
         className={getStyle(Boolean(errorLabel), hasSuccess)}

@@ -1,6 +1,19 @@
 import { initializeApp, getApps, getApp } from "firebase/app";
-import { getAuth, onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut as signOutFirebase } from "firebase/auth";
-import { addDoc, collection, getDocs, deleteDoc, doc, getFirestore  } from "firebase/firestore"
+import {
+  getAuth,
+  onAuthStateChanged,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  signOut as signOutFirebase,
+} from "firebase/auth";
+import {
+  addDoc,
+  collection,
+  getDocs,
+  deleteDoc,
+  doc,
+  getFirestore,
+} from "firebase/firestore";
 import { useEffect, useState } from "react";
 
 const firebaseConfig = {
@@ -9,51 +22,53 @@ const firebaseConfig = {
   projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
   storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
   messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
-  appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID
+  appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
 };
 
 export const errorTypes = {
-  password: 'password',
-  email: 'email',
-  unknown: 'unknown'
+  password: "password",
+  username: "username",
+  unknown: "unknown",
 };
 
 const errorMap = {
   "auth/user-not-found": {
     msg: "User not found",
-    type: errorTypes.email
+    type: errorTypes.username,
   },
   "auth/email-already-in-use": {
-    msg: "Email has already been used",
-    type: errorTypes.email
+    msg: "Username has already been used",
+    type: errorTypes.username,
   },
   "auth/invalid-email": {
-    msg: "Invalid email",
-    type: errorTypes.email
+    msg: "Invalid username",
+    type: errorTypes.username,
   },
   "auth/missing-email": {
-    msg: "Missing email",
-    type: errorTypes.email
+    msg: "Missing username",
+    type: errorTypes.username,
   },
   "auth/too-many-requests": {
     msg: "Account locked: too many login attempts",
-    type: errorTypes.email
+    type: errorTypes.username,
   },
   "auth/wrong-password": {
     msg: "Incorrect password",
-    type: errorTypes.password
+    type: errorTypes.password,
   },
   "auth/weak-password": {
     msg: "Should be at least 6 characters",
-    type: errorTypes.password
+    type: errorTypes.password,
   },
-}
+};
 
 function getErrorMessage(code) {
-  return errorMap[code] || {
-    msg: "There was an error",
-    type: errorTypes.unknown
-  };
+  return (
+    errorMap[code] || {
+      msg: "There was an error",
+      type: errorTypes.unknown,
+    }
+  );
 }
 
 function getAppInstance() {
@@ -71,12 +86,14 @@ function getDBInstance() {
   return getFirestore(app);
 }
 
-
 export function useDB() {
   async function savePreset(preset) {
     try {
       const userId = getAuth().currentUser.uid;
-      await addDoc(collection(getDBInstance(), `users/${userId}/presets`), preset);
+      await addDoc(
+        collection(getDBInstance(), `users/${userId}/presets`),
+        preset
+      );
     } catch (error) {
       console.error(error);
       return error;
@@ -86,21 +103,23 @@ export function useDB() {
   async function getPresets() {
     try {
       const userId = getAuth().currentUser.uid;
-      const querySnapshot = await getDocs(collection(getDBInstance(), `users/${userId}/presets`));
-      const presets = querySnapshot.docs.map(doc => {
+      const querySnapshot = await getDocs(
+        collection(getDBInstance(), `users/${userId}/presets`)
+      );
+      const presets = querySnapshot.docs.map((doc) => {
         return {
           id: doc.id,
-          ...doc.data()
+          ...doc.data(),
         };
       });
 
       return {
-        presets
+        presets,
       };
     } catch (error) {
       console.error(error);
       return {
-        error
+        error,
       };
     }
   }
@@ -118,7 +137,7 @@ export function useDB() {
   return {
     savePreset,
     deletePreset,
-    getPresets
+    getPresets,
   };
 }
 
@@ -127,7 +146,7 @@ export function useAuth() {
   const [userLoading, setUserLoading] = useState(true);
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(getAuthInstance(), user => {
+    const unsubscribe = onAuthStateChanged(getAuthInstance(), (user) => {
       setUser(user || null);
 
       setUserLoading(false);
@@ -136,39 +155,47 @@ export function useAuth() {
     return unsubscribe;
   }, []);
 
-  async function signUp(email, password) {
+  async function signUp(username, password) {
     setUserLoading(true);
 
     try {
-      const result = await createUserWithEmailAndPassword(getAuthInstance(), email, password);
+      const result = await createUserWithEmailAndPassword(
+        getAuthInstance(),
+        `${username}@needtobreak.com`,
+        password
+      );
 
       return {
-        user: result.user
+        user: result.user,
       };
     } catch (error) {
-      console.error(error)
+      console.error(error);
 
       return {
-        error: getErrorMessage(error.code)
-      }
+        error: getErrorMessage(error.code),
+      };
     }
   }
 
-  async function signIn(email, password) {
+  async function signIn(username, password) {
     setUserLoading(true);
 
     try {
-      const result = await signInWithEmailAndPassword(getAuthInstance(), email, password);
+      const result = await signInWithEmailAndPassword(
+        getAuthInstance(),
+        `${username}@needtobreak.com`,
+        password
+      );
 
       return {
-        user: result.user
+        user: result.user,
       };
     } catch (error) {
-      console.error(error)
-      
+      console.error(error);
+
       return {
-        error: getErrorMessage(error.code)
-      }
+        error: getErrorMessage(error.code),
+      };
     }
   }
 
@@ -176,7 +203,7 @@ export function useAuth() {
     try {
       await signOutFirebase(getAuthInstance());
     } catch (error) {
-      console.error(error)
+      console.error(error);
       return error;
     }
   }
@@ -186,6 +213,6 @@ export function useAuth() {
     userLoading,
     signUp,
     signIn,
-    signOut
+    signOut,
   };
 }

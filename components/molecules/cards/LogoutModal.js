@@ -6,14 +6,17 @@ import { iconTypes } from "../../atoms/Icon";
 import Button, { buttonTypes } from "../../atoms/Button";
 import Modal from "../Modal";
 import { useAuth } from "../../../firebase/Firebase";
-import { removeStartingLocalStorage, removeStoredLocalStorage } from "../../../utils/localStorageUtil";
-function LogoutModal({ isOpen, setIsOpen}) {
+import {
+  removeStartingLocalStorage,
+  removeStoredLocalStorage,
+} from "../../../utils/localStorageUtil";
+function LogoutModal({ isOpen, setIsOpen }) {
   const { signOut, user } = useAuth();
 
   async function handleLogout() {
     await signOut();
-    removeStoredLocalStorage(user.uid);
-    removeStartingLocalStorage(user.uid);
+    removeStoredLocalStorage();
+    removeStartingLocalStorage();
     handleClose(true);
   }
 
@@ -22,10 +25,7 @@ function LogoutModal({ isOpen, setIsOpen}) {
   }
 
   return (
-    <Modal
-      isOpen={isOpen}
-      handleClose={handleClose}
-    >
+    <Modal isOpen={isOpen} handleClose={handleClose}>
       <InputCard>
         <Header
           icon={iconTypes.logout}
@@ -34,8 +34,12 @@ function LogoutModal({ isOpen, setIsOpen}) {
         />
 
         <div className="grid grid-cols-2 gap-24 mt-16 420:mt-24">
-          <Button handleClick={handleClose} type={buttonTypes.outline}>Cancel</Button>
-          <Button handleClick={handleLogout} type={buttonTypes.delete}>Logout</Button>
+          <Button handleClick={handleClose} type={buttonTypes.outline}>
+            Cancel
+          </Button>
+          <Button handleClick={handleLogout} type={buttonTypes.delete}>
+            Logout
+          </Button>
         </div>
       </InputCard>
     </Modal>
@@ -45,7 +49,7 @@ function LogoutModal({ isOpen, setIsOpen}) {
 LogoutModal.propTypes = {
   isOpen: PropTypes.bool,
   setIsOpen: PropTypes.func,
-  presetName: PropTypes.string
+  presetName: PropTypes.string,
 };
 
 export default LogoutModal;

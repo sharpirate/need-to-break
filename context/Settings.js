@@ -1,21 +1,24 @@
-import { useState, useEffect } from 'react'
-import { useContext, createContext } from 'react'
-import { getSettingsLocalStorage, setSettingsLocalStorage } from '../utils/localStorageUtil'
-import isBrowser from '../utils/isBrowser'
-import { useAuth } from '../firebase/Firebase'
+import { useState, useEffect } from "react";
+import { useContext, createContext } from "react";
+import {
+  getSettingsLocalStorage,
+  setSettingsLocalStorage,
+} from "../utils/localStorageUtil";
+import isBrowser from "../utils/isBrowser";
+import { useAuth } from "../firebase/Firebase";
 
-const SettingsContext = createContext()
-const SaveSettingsContext = createContext()
+const SettingsContext = createContext();
+const SaveSettingsContext = createContext();
 
 function getInitialState(user) {
   const initialState = {
     use12Hour: true,
-    useSmartRestart: false
+    useSmartRestart: false,
   };
 
   // prioritize settings from localStorage
   if (isBrowser && user) {
-    const localStorageSettings = getSettingsLocalStorage(user.uid);
+    const localStorageSettings = getSettingsLocalStorage();
 
     if (localStorageSettings) {
       return localStorageSettings;
@@ -40,7 +43,7 @@ export const SettingsProvider = ({ children }) => {
     setSettings(settings);
 
     if (user) {
-      setSettingsLocalStorage(settings, user.uid);
+      setSettingsLocalStorage(settings);
     }
   }
 
@@ -50,18 +53,18 @@ export const SettingsProvider = ({ children }) => {
         {children}
       </SettingsContext.Provider>
     </SaveSettingsContext.Provider>
-  )
-}
+  );
+};
 
-export const useSettings = () => useContext(SettingsContext)
-export const useSaveSettings = () => useContext(SaveSettingsContext)
+export const useSettings = () => useContext(SettingsContext);
+export const useSaveSettings = () => useContext(SaveSettingsContext);
 
 export const timeFormats = [
   { name: "AM / PM", value: true },
-  { name: "24 hour", value: false }
+  { name: "24 hour", value: false },
 ];
 
 export const restartTypes = [
   { name: "Instant", value: false },
-  { name: "Smart", value: true }
+  { name: "Smart", value: true },
 ];

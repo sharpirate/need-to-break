@@ -6,11 +6,12 @@ import TextInput, { textInputTypes } from "../../atoms/TextInput";
 import Button, { buttonTypes } from "../../atoms/Button";
 import Label, { labelTypes } from "../../atoms/Label";
 import Modal from "../Modal";
-import {  useDB } from "../../../firebase/Firebase";
+import { useDB } from "../../../firebase/Firebase";
 import { useState } from "react";
 import { getDetails } from "../../../utils/timelineUtil";
 import { ACTION_DELAYS } from "../../../utils/constants";
 import { useFetchPresets } from "../../../context/Presets";
+import { useRouter } from "next/router";
 
 function SavePresetModal({ isOpen, setIsOpen, blueprint }) {
   const { savePreset } = useDB();
@@ -18,6 +19,7 @@ function SavePresetModal({ isOpen, setIsOpen, blueprint }) {
   const [name, setName] = useState("");
   const [nameError, setNameError] = useState("");
   const [success, setSuccess] = useState(false);
+  const router = useRouter();
 
   function handleClose(refetch) {
     setName("");
@@ -28,6 +30,8 @@ function SavePresetModal({ isOpen, setIsOpen, blueprint }) {
     if (refetch) {
       fetchPresets();
     }
+
+    router.push("/presets");
   }
 
   async function handleSave(e) {
@@ -36,11 +40,11 @@ function SavePresetModal({ isOpen, setIsOpen, blueprint }) {
     if (!name) {
       return setNameError("Name is required");
     }
-    
+
     if (blueprint) {
       const preset = {
         ...blueprint,
-        name
+        name,
       };
 
       if (typeof preset.startTime === "number") {
@@ -49,7 +53,7 @@ function SavePresetModal({ isOpen, setIsOpen, blueprint }) {
       }
 
       const error = await savePreset(preset);
-  
+
       if (!error) {
         // success
         setSuccess(true);
@@ -64,10 +68,7 @@ function SavePresetModal({ isOpen, setIsOpen, blueprint }) {
   const details = getDetails(blueprint);
 
   return (
-    <Modal
-      isOpen={isOpen}
-      handleClose={handleClose}
-    >
+    <Modal isOpen={isOpen} handleClose={handleClose}>
       <InputCard>
         <Header
           icon={iconTypes.save}
@@ -75,8 +76,11 @@ function SavePresetModal({ isOpen, setIsOpen, blueprint }) {
           description="Save the current timeline so that you can reuse it later"
         />
 
-        <form className="w-full flex flex-col justify-start items-center gap-16 420:gap-24" onSubmit={handleSave} autoComplete="off">
-          
+        <form
+          className="w-full flex flex-col justify-start items-center gap-16 420:gap-24"
+          onSubmit={handleSave}
+          autoComplete="off"
+        >
           {/* Preset Name */}
           <TextInput
             name="preset"
@@ -85,9 +89,9 @@ function SavePresetModal({ isOpen, setIsOpen, blueprint }) {
             centerBig
             widthStyle="w-full"
             value={name}
-            handleChange={value => {
+            handleChange={(value) => {
               setNameError("");
-              setName(value)
+              setName(value);
             }}
             errorLabel={nameError}
             hasSuccess={success}
@@ -97,23 +101,27 @@ function SavePresetModal({ isOpen, setIsOpen, blueprint }) {
 
           {/* Details */}
           <div>
-            <Label size={labelTypes.big} as={labelTypes.h3} center>Details</Label>
+            <Label size={labelTypes.big} as={labelTypes.h3} center>
+              Details
+            </Label>
             <dl className="body-med flex flex-col gap-16 420:gap-24 text-gray-500">
               <div className="flex">
                 <dt className="term">Type</dt>
                 <dd>{details.type}</dd>
               </div>
-              
+
               <div className="flex">
                 <dt className="term">Timeline</dt>
                 <dd>{details.duration}</dd>
               </div>
-              
+
               <div className="flex">
                 <dt className="term">Intervals</dt>
-                <dd>W: {details.workDuration} min, B: {details.breakDuration} min</dd>
+                <dd>
+                  W: {details.workDuration} min, B: {details.breakDuration} min
+                </dd>
               </div>
-              
+
               {/* <div className="flex">
                 <dt className="term">Blocked</dt>
                 <div>
@@ -126,8 +134,15 @@ function SavePresetModal({ isOpen, setIsOpen, blueprint }) {
 
           {/* Buttons */}
           <div className="grid grid-cols-2 gap-24 mt-16 420:mt-24">
-            <Button isSubmit type={success ? buttonTypes.success : buttonTypes.primary}>Save</Button>
-            <Button handleClick={handleClose} type={buttonTypes.outline}>Cancel</Button>
+            <Button
+              isSubmit
+              type={success ? buttonTypes.success : buttonTypes.primary}
+            >
+              Save
+            </Button>
+            <Button handleClick={handleClose} type={buttonTypes.outline}>
+              Cancel
+            </Button>
           </div>
         </form>
       </InputCard>
@@ -137,7 +152,7 @@ function SavePresetModal({ isOpen, setIsOpen, blueprint }) {
 
 SavePresetModal.propTypes = {
   isOpen: PropTypes.bool,
-  setIsOpen: PropTypes.func
+  setIsOpen: PropTypes.func,
 };
 
 export default SavePresetModal;

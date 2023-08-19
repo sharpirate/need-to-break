@@ -6,7 +6,12 @@ import { iconTypes } from "../../atoms/Icon";
 import Button, { buttonTypes } from "../../atoms/Button";
 import SelectInput from "../../atoms/SelectInput";
 import Modal from "../Modal";
-import { useSettings, useSaveSettings, timeFormats, restartTypes } from "../../../context/Settings";
+import {
+  useSettings,
+  useSaveSettings,
+  timeFormats,
+  restartTypes,
+} from "../../../context/Settings";
 import { ACTION_DELAYS } from "../../../utils/constants";
 
 function SettingsModal({ isOpen, setIsOpen }) {
@@ -23,7 +28,7 @@ function SettingsModal({ isOpen, setIsOpen }) {
 
     setTimeout(() => {
       closeModal();
-    }, ACTION_DELAYS.short)
+    }, ACTION_DELAYS.short);
   }
 
   function handleCancel() {
@@ -38,18 +43,14 @@ function SettingsModal({ isOpen, setIsOpen }) {
   }
 
   return (
-    <Modal
-      isOpen={isOpen}
-      handleClose={handleCancel}
-    >
+    <Modal isOpen={isOpen} handleClose={handleCancel}>
       <InputCard>
-        <Header
-          icon={iconTypes.settings}
-          heading="Settings"
-        />
+        <Header icon={iconTypes.settings} heading="Settings" />
 
-        <form className="w-full flex flex-col justify-start items-center gap-16 420:gap-24" onSubmit={e => e.preventDefault()}>
-
+        <form
+          className="w-full flex flex-col justify-start items-center gap-16 420:gap-24"
+          onSubmit={(e) => e.preventDefault()}
+        >
           {/* Settings */}
           <SelectInput
             name="format"
@@ -58,11 +59,13 @@ function SettingsModal({ isOpen, setIsOpen }) {
             centerBig
             widthStyle="w-96 420:w-[112px]"
             selected={localSettings.use12Hour}
-            handleSelect={value => setLocalSettings({ ...localSettings, use12Hour: value })}
+            handleSelect={(value) =>
+              setLocalSettings({ ...localSettings, use12Hour: value })
+            }
             hasSuccess={success}
           />
 
-          <SelectInput
+          {/* <SelectInput
             name="restart"
             options={restartTypes}
             bigLabel="Restart Type"
@@ -71,14 +74,20 @@ function SettingsModal({ isOpen, setIsOpen }) {
             selected={localSettings.useSmartRestart}
             handleSelect={value => setLocalSettings({ ...localSettings,  useSmartRestart: value })}
             hasSuccess={success}
-          />
-          
+          /> */}
+
           {/* Buttons */}
           <div className="grid grid-cols-2 gap-24 mt-16 420:mt-24">
-            <Button handleClick={handleApply} type={success ? buttonTypes.success : buttonTypes.primary}>Apply</Button>
-            <Button handleClick={handleCancel} type={buttonTypes.outline}>Cancel</Button>
+            <Button
+              handleClick={handleApply}
+              type={success ? buttonTypes.success : buttonTypes.primary}
+            >
+              Apply
+            </Button>
+            <Button handleClick={handleCancel} type={buttonTypes.outline}>
+              Cancel
+            </Button>
           </div>
-
         </form>
       </InputCard>
     </Modal>
@@ -87,7 +96,7 @@ function SettingsModal({ isOpen, setIsOpen }) {
 
 SettingsModal.propTypes = {
   isOpen: PropTypes.bool,
-  setIsOpen: PropTypes.func
+  setIsOpen: PropTypes.func,
 };
 
 export default SettingsModal;

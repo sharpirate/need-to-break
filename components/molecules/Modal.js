@@ -16,7 +16,7 @@ function Modal({ isOpen, handleClose, children }) {
         initial={{ scale: 0 }}
         animate={{
           scale: 1,
-          transition: TRANSITIONS.springBounce500
+          transition: TRANSITIONS.springBounce500,
         }}
       >
         {children}

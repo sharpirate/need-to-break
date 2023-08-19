@@ -1,10 +1,10 @@
-import { useEffect, useState } from 'react'
-import { useContext, createContext } from 'react'
-import { useDB } from '../firebase/Firebase'
-import { useAuth } from '../firebase/Firebase'
+import { useEffect, useState } from "react";
+import { useContext, createContext } from "react";
+import { useDB } from "../firebase/Firebase";
+import { useAuth } from "../firebase/Firebase";
 
-const PresetsContext = createContext()
-const FetchPresetsContext = createContext()
+const PresetsContext = createContext();
+const FetchPresetsContext = createContext();
 
 export const PresetsProvider = ({ children }) => {
   const { getPresets } = useDB();
@@ -15,15 +15,14 @@ export const PresetsProvider = ({ children }) => {
     const { presets: results } = await getPresets();
 
     if (results) {
-      const processedPresets = results.map(preset => {
-  
+      const processedPresets = results.map((preset) => {
         if (!preset.startTime) {
           preset.startTime = Date.now();
         }
-        
+
         return preset;
       });
-  
+
       setPresets(processedPresets);
     }
   }
@@ -40,8 +39,8 @@ export const PresetsProvider = ({ children }) => {
         {children}
       </PresetsContext.Provider>
     </FetchPresetsContext.Provider>
-  )
-}
+  );
+};
 
-export const usePresets = () => useContext(PresetsContext)
-export const useFetchPresets = () => useContext(FetchPresetsContext)
+export const usePresets = () => useContext(PresetsContext);
+export const useFetchPresets = () => useContext(FetchPresetsContext);

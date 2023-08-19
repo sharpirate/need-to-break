@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import ViewMoreLess from "../atoms/ViewMoreLess";
-import Timeline from "./TImeline";
+import Timeline from "./Timeline";
 import Label, { labelTypes } from "../atoms/Label";
 import Button, { buttonTypes } from "../atoms/Button";
 import Icon, { iconTypes } from "../atoms/Icon";
@@ -28,11 +28,11 @@ function Preset({ preset }) {
   function handleStart() {
     if (preset && user) {
       const startTime = parseStartTime(preset.startTime);
-      const endTime = startTime + (preset.duration * 1000);
+      const endTime = startTime + preset.duration * 1000;
 
       if (Date.now() <= endTime) {
-        startTimeline(preset, user.uid);
-        router.push('/active');
+        startTimeline(preset);
+        router.push("/timeline");
       } else {
         setEndedModalIsOpen(true);
       }
@@ -43,38 +43,41 @@ function Preset({ preset }) {
 
   return timeline ? (
     <section className="w-full flex flex-col justify-center items-center text-center bg-white rounded-8 py-16 px-32 420:py-24 420:px-48 932:py-32">
-
       {/* Icon & Name */}
       <div className="flex flex-col justify-center items-center gap-16 420:gap-24 mb-16 420:mb-24">
-        <Icon type={iconTypes.save}/>
-        <Label size={labelTypes.large} as={labelTypes.h2}>{preset.name}</Label>
+        <Icon type={iconTypes.save} />
+        <Label size={labelTypes.large} as={labelTypes.h2}>
+          {preset.name}
+        </Label>
       </div>
 
       {/* Info List */}
       <ul className="w-full flex flex-col 932:flex-row justify-center items-center 932:justify-evenly 932:items-start gap-24 420:gap-32 932:gap-0 mb-32 420:mb-48">
         <li>
-          <Label size={labelTypes.big} as={labelTypes.h3}>Type</Label>
-          <p className="body-sbold text-gray-500">
-            {details.type}
-          </p>
+          <Label size={labelTypes.big} as={labelTypes.h3}>
+            Type
+          </Label>
+          <p className="body-sbold text-gray-500">{details.type}</p>
         </li>
-        
+
         <li>
-          <Label size={labelTypes.big} as={labelTypes.h3}>Timeline</Label>
-          <p className="body-sbold text-gray-500">
-            {details.duration}
-          </p>
+          <Label size={labelTypes.big} as={labelTypes.h3}>
+            Timeline
+          </Label>
+          <p className="body-sbold text-gray-500">{details.duration}</p>
         </li>
-        
+
         <li>
-          <Label size={labelTypes.big} as={labelTypes.h3}>Intervals</Label>
+          <Label size={labelTypes.big} as={labelTypes.h3}>
+            Intervals
+          </Label>
           <p className="body-sbold text-gray-500">
             Work: {details.workDuration} min
             <br />
             Break: {details.breakDuration} min
           </p>
         </li>
-        
+
         {/* <li>
           <Label size={labelTypes.big} as={labelTypes.h3}>Blocked</Label>
           <p className="body-sbold text-gray-500">
@@ -88,8 +91,15 @@ function Preset({ preset }) {
       {/* Timeline & Buttons (Able To Reverse Flex Order) */}
       <div className="w-full flex flex-col 932:flex-col-reverse justify-center items-center">
         <div className="grid gap-24 420:gap-32 540:grid-cols-2 540:gap-24 mb-32 420:mb-48 932:mb-0 932:mt-48">
-          <Button handleClick={handleStart} type={buttonTypes.primary}>Start</Button>
-          <Button handleClick={() => setDeleteModalIsOpen(true)} type={buttonTypes.outline}>Delete</Button>
+          <Button handleClick={handleStart} type={buttonTypes.primary}>
+            Start
+          </Button>
+          <Button
+            handleClick={() => setDeleteModalIsOpen(true)}
+            type={buttonTypes.outline}
+          >
+            Delete
+          </Button>
         </div>
 
         {/* Timeline Block */}
@@ -124,7 +134,7 @@ function Preset({ preset }) {
 }
 
 Preset.propTypes = {
-  name: PropTypes.string
+  name: PropTypes.string,
 };
 
 export default Preset;

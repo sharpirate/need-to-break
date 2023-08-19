@@ -1,5 +1,6 @@
 import PropTypes from "prop-types";
 import { motion } from "framer-motion";
+import Link from "next/link";
 
 const delay = 150;
 
@@ -7,7 +8,6 @@ export { delay as buttonDelay };
 
 const types = {
   primary: "primary",
-  secondary: "secondary",
   outline: "outline",
   delete: "delete",
   success: "success",
@@ -23,6 +23,7 @@ function Button({
   handleClick,
   isSubmit,
   styleOverride,
+  href,
 }) {
   let style;
 
@@ -30,10 +31,6 @@ function Button({
     case types.primary:
       style =
         "text-white bg-primary-500 disabled:bg-gray-300 focus-visible:bg-primary-600";
-      break;
-    case types.secondary:
-      style =
-        "text-white bg-primary-500 disabled:bg-gray-300 focus-visible:bg-primary-500";
       break;
     case types.callToAction:
       style = "text-primary-600 bg-support-attention focus-visible:bg-white";
@@ -51,6 +48,24 @@ function Button({
       break;
     default:
       return null;
+  }
+
+  if (href) {
+    return (
+      <motion.a
+        className={
+          "select-none px-24 420:px-32 py-8 body-med body-small rounded-6 outline-none active:scale-90" +
+          " " +
+          style +
+          " " +
+          styleOverride
+        }
+        whileTap={{ scale: 0.85 }}
+        href={href}
+      >
+        {children}
+      </motion.a>
+    );
   }
 
   return (

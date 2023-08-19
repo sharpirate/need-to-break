@@ -35,19 +35,13 @@ export default function Home() {
 
           <Button
             type={buttonTypes.primary}
-            handleClick={() =>
-              (window.location.href =
-                "https://github.com/Sharpirate/need-to-break")
-            }
+            href="https://github.com/Sharpirate/need-to-break"
           >
             Open in Github
           </Button>
           <Button
-            type={buttonTypes.secondary}
-            handleClick={() =>
-              (window.location.href =
-                "https://github.com/Sharpirate/need-to-break")
-            }
+            type={buttonTypes.primary}
+            href="https://github.com/Sharpirate/need-to-break"
           >
             Open in Figma
           </Button>

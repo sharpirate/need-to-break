@@ -4,17 +4,19 @@
 
 @layer base {
   @font-face {
-    font-family: 'IntroDemo';
-    src: 
-      url('/fonts/Intro/IntroDemo-BlackCAPS.eot'), /* IE9 Compat Modes */
-      url('/fonts/Intro/IntroDemo-BlackCAPS.woff2') format('woff2'), /* Super Modern Browsers */
-      url('/fonts/Intro/IntroDemo-BlackCAPS.woff') format('woff'), /* Pretty Modern Browsers */
-      url('/fonts/Intro/IntroDemo-BlackCAPS.ttf')  format('truetype'); /* Safari, Android, iOS */
+    font-family: "IntroDemo";
+    src:
+      url("/fonts/Intro/IntroDemo-BlackCAPS.eot"),
+      /* IE9 Compat Modes */ url("/fonts/Intro/IntroDemo-BlackCAPS.woff2")
+        format("woff2"),
+      /* Super Modern Browsers */ url("/fonts/Intro/IntroDemo-BlackCAPS.woff")
+        format("woff"),
+      /* Pretty Modern Browsers */ url("/fonts/Intro/IntroDemo-BlackCAPS.ttf")
+        format("truetype"); /* Safari, Android, iOS */
   }
 }
 
 @layer utilities {
-
   .carousel {
     overflow-y: visible;
     overflow-x: clip;
@@ -27,8 +29,8 @@
 
   /* Hide scrollbar for IE, Edge and Firefox */
   .hide-scrollbar {
-    -ms-overflow-style: none;  /* IE and Edge */
-    scrollbar-width: none;  /* Firefox */
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
   }
 
   .term {
@@ -40,24 +42,24 @@
   }
 
   .custom-scrollbar {
-    scrollbar-color: #39A2DB #E8F0F2;
+    scrollbar-color: #39a2db #e8f0f2;
     scrollbar-width: thin;
   }
 
   .custom-scrollbar::-webkit-scrollbar {
-    height: 8px;               /* width of the entire scrollbar */
+    height: 8px; /* width of the entire scrollbar */
   }
 
   .custom-scrollbar::-webkit-scrollbar-track {
-    background: #E8F0F2;        /* color of the tracking area */
+    background: #e8f0f2; /* color of the tracking area */
     border-radius: 8px;
   }
 
   .custom-scrollbar::-webkit-scrollbar-thumb {
-    background-color: #39A2DB;    /* color of the scroll thumb */
+    background-color: #39a2db; /* color of the scroll thumb */
     border-radius: 8px;
   }
-  
+
   .body-reg {
     @apply font-base font-reg text-13 420:text-16 tracking-2;
   }
@@ -87,10 +89,10 @@
   }
 
   .devices-landing {
-    background: url('/images/devices.svg') top center/contain no-repeat;
+    background: url("/images/devices.svg") top center/contain no-repeat;
   }
 
   .bg-landing {
-    background: url('/images/bg-landing.svg') top left/cover no-repeat;
+    background: url("/images/bg-landing.svg") top left/cover no-repeat;
   }
 }

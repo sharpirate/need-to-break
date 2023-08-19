@@ -87,7 +87,7 @@ function MainTimeline() {
         setActiveInterval(createStartingTimer(timeline.startTime));
       } else {
         const nextIntervalIndex = timeline.intervals.findIndex(
-          (interval) => interval.timestamp > Date.now()
+          (interval) => interval.timestamp > Date.now(),
         );
         setActiveInterval(timeline.intervals[nextIntervalIndex - 1]);
       }
@@ -101,7 +101,7 @@ function MainTimeline() {
   useEffect(() => {
     if (activeInterval && timeline) {
       const worker = new Worker(
-        new URL("../../utils/workerInterval.js", import.meta.url)
+        new URL("../../utils/workerInterval.js", import.meta.url),
       );
 
       // start the interval
@@ -238,12 +238,12 @@ function MainTimeline() {
     // copy the current intervals so they can be mutated without affecting the timeline
     const intervalsCopy = cloneDeep(timeline.intervals);
     const activeIntervalIndex = intervalsCopy.findIndex(
-      (interval) => interval.timestamp === activeInterval.timestamp
+      (interval) => interval.timestamp === activeInterval.timestamp,
     );
 
     // end the current interval now for instant restart or end it at the closest block
     intervalsCopy[activeIntervalIndex].duration = Math.round(
-      (intervalEnd - activeInterval.timestamp) / 1000
+      (intervalEnd - activeInterval.timestamp) / 1000,
     );
 
     // remove all elements after the current interval and remove startLabel, endLabel and timestamp
@@ -288,10 +288,10 @@ function MainTimeline() {
 
     if (use12Hour) {
       const [startHour, startMin, startSuffix] = get12HourTime(
-        activeInterval.startLabel
+        activeInterval.startLabel,
       );
       const [endHour, endMin, endSuffix] = get12HourTime(
-        activeInterval.endLabel
+        activeInterval.endLabel,
       );
 
       startTime = `${startHour}:${startMin} ${startSuffix}`;

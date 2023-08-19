@@ -1,5 +1,5 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React from "react";
+import PropTypes from "prop-types";
 
 function RadioButton({ name, id, label, value, handleChange, isChecked }) {
   return (
@@ -14,9 +14,11 @@ function RadioButton({ name, id, label, value, handleChange, isChecked }) {
           onChange={handleChange}
           checked={isChecked}
         />
-        <span className="pointer-events-none peer-checked:block hidden absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[7.5px] h-[7.5px] 420:w-[9px] 420:h-[9px] rounded-20 bg-primary-500 peer-focus-visible:bg-primary-600"/>
+        <span className="pointer-events-none peer-checked:block hidden absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[7.5px] h-[7.5px] 420:w-[9px] 420:h-[9px] rounded-20 bg-primary-500 peer-focus-visible:bg-primary-600" />
       </div>
-      <label className="body-med text-gray-500" htmlFor={id}>{label}</label>
+      <label className="body-med text-gray-500" htmlFor={id}>
+        {label}
+      </label>
     </div>
   );
 }

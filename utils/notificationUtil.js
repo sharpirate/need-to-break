@@ -3,10 +3,10 @@ import isBrowser from "./isBrowser";
 const permissions = {
   default: "default",
   granted: "granted",
-  denied: "denied"
-}
+  denied: "denied",
+};
 
-const hasNotificationSupport = isBrowser && 'Notification' in window;
+const hasNotificationSupport = isBrowser && "Notification" in window;
 
 export function requestPermission() {
   if (hasNotificationSupport) {

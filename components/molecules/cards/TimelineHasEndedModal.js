@@ -7,12 +7,8 @@ import Button, { buttonTypes } from "../../atoms/Button";
 import Modal from "../Modal";
 
 function TimelineHasEndedModal({ isOpen, setIsOpen }) {
-
   return (
-    <Modal
-      isOpen={isOpen}
-      handleClose={() => setIsOpen(false)}
-    >
+    <Modal isOpen={isOpen} handleClose={() => setIsOpen(false)}>
       <InputCard>
         <Header
           icon={iconTypes.warning}
@@ -21,7 +17,12 @@ function TimelineHasEndedModal({ isOpen, setIsOpen }) {
         />
 
         <div className="mt-16 420:mt-24">
-          <Button handleClick={() => setIsOpen(false)} type={buttonTypes.primary}>Ok</Button>
+          <Button
+            handleClick={() => setIsOpen(false)}
+            type={buttonTypes.primary}
+          >
+            Ok
+          </Button>
         </div>
       </InputCard>
     </Modal>

@@ -1,30 +1,41 @@
-import React, { useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
-import Label, { labelTypes } from './Label';
-
+import React, { useState, useEffect } from "react";
+import PropTypes from "prop-types";
+import Label, { labelTypes } from "./Label";
 
 const types = {
-  minus: 'minus',
-  plus: 'plus'
+  minus: "minus",
+  plus: "plus",
 };
 
 export { types as numberInputTypes };
 
-
 const valueToString = (value, unit) => {
   return unit ? `${value} ${unit}` : `${value}`;
-}
-function NumberInput({ name, value, handleChange, step, min, max, unit: unitText, widthStyle, bigLabel, smallLabel, centerBig, centerSmall }) {
+};
+function NumberInput({
+  name,
+  value,
+  handleChange,
+  step,
+  min,
+  max,
+  unit: unitText,
+  widthStyle,
+  bigLabel,
+  smallLabel,
+  centerBig,
+  centerSmall,
+}) {
   const [unit, setUnit] = useState(unitText);
   const [stringValue, setStringValue] = useState(valueToString(value));
 
   useEffect(() => {
     setStringValue(valueToString(value, unit));
-  }, [value, unit])
+  }, [value, unit]);
 
   const handleClick = (type, step, min, max) => {
     if (type === types.plus) {
-      if ((value + step) <= max) {
+      if (value + step <= max) {
         handleChange(value + step);
       }
     } else {
@@ -32,16 +43,16 @@ function NumberInput({ name, value, handleChange, step, min, max, unit: unitText
         handleChange(value - step);
       }
     }
-  }
+  };
 
-  const handleInput = e => {
+  const handleInput = (e) => {
     const newValue = Number(e.target.value);
 
     if (!isNaN(newValue)) {
       setUnit(null);
       handleChange(Number(newValue));
     }
-  }
+  };
 
   const handleBlur = (min, max) => {
     let normalizedValue = value;
@@ -54,28 +65,52 @@ function NumberInput({ name, value, handleChange, step, min, max, unit: unitText
 
     setUnit(unitText);
     handleChange(normalizedValue);
-  }
+  };
 
-  const renderBigLabel = bigLabel ? <Label center={centerBig} as={labelTypes.label} size={labelTypes.big} fieldId={name}>{bigLabel}</Label> : null;
+  const renderBigLabel = bigLabel ? (
+    <Label
+      center={centerBig}
+      as={labelTypes.label}
+      size={labelTypes.big}
+      fieldId={name}
+    >
+      {bigLabel}
+    </Label>
+  ) : null;
 
-  const renderSmallLabel = smallLabel ? <Label center={centerSmall} as={labelTypes.label} size={labelTypes.small} fieldId={name}>{smallLabel}</Label> : null;
+  const renderSmallLabel = smallLabel ? (
+    <Label
+      center={centerSmall}
+      as={labelTypes.label}
+      size={labelTypes.small}
+      fieldId={name}
+    >
+      {smallLabel}
+    </Label>
+  ) : null;
 
   return (
     <div className="inline-flex flex-col">
       {renderBigLabel}
       {renderSmallLabel}
       <div className="flex">
-        <Button handleClick={() => handleClick(types.minus, step, min, max)} type={types.minus} />
+        <Button
+          handleClick={() => handleClick(types.minus, step, min, max)}
+          type={types.minus}
+        />
         <input
           className={`font-base font-reg text-13 420:text-16 text-gray-600 text-center ${widthStyle} h-32 420:h-40 border-t-3 border-b-3 border-primary-500 outline-none`}
           type="text"
           name={name}
           id={name}
           value={stringValue}
-          onChange={e => handleInput(e)}
+          onChange={(e) => handleInput(e)}
           onBlur={() => handleBlur(min, max)}
         />
-        <Button handleClick={() => handleClick(types.plus, step, min, max)} type={types.plus} />
+        <Button
+          handleClick={() => handleClick(types.plus, step, min, max)}
+          type={types.plus}
+        />
       </div>
     </div>
   );
@@ -96,15 +131,16 @@ NumberInput.propTypes = {
 };
 
 function Button({ type, handleClick }) {
-  const baseStyle = 'flex justify-center items-center align-center w-32 h-32 420:w-40 420:h-40 bg-primary-500 outline-none focus-visible:bg-primary-600';
+  const baseStyle =
+    "flex justify-center items-center align-center w-32 h-32 420:w-40 420:h-40 bg-primary-500 outline-none focus-visible:bg-primary-600";
 
-  let typeStyle = '';
+  let typeStyle = "";
   switch (type) {
     case types.minus:
-      typeStyle = 'rounded-l-4';
+      typeStyle = "rounded-l-6";
       break;
     case types.plus:
-      typeStyle = 'rounded-r-4';
+      typeStyle = "rounded-r-6";
       break;
     default:
       break;
@@ -119,23 +155,44 @@ function Button({ type, handleClick }) {
 
 Button.propTypes = {
   type: PropTypes.string,
-  handleClick: PropTypes.func
+  handleClick: PropTypes.func,
 };
 
 function Icon({ type }) {
   switch (type) {
     case types.plus:
       return (
-        <svg className="w-13 h-13" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <rect className="fill-white" y="5.25" width="14" height="3.5"/>
-          <rect className="fill-white" x="8.75" width="14" height="3.5" transform="rotate(90 8.75 0)"/>
+        <svg
+          className="w-13 h-13"
+          viewBox="0 0 14 14"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <rect className="fill-white" y="5.25" width="14" height="3.5" />
+          <rect
+            className="fill-white"
+            x="8.75"
+            width="14"
+            height="3.5"
+            transform="rotate(90 8.75 0)"
+          />
         </svg>
       );
     case types.minus:
       return (
-        <svg className="w-13 h-13" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <rect className="fill-white" width="14" height="3.5" transform="matrix(-1 0 0 1 14 5.25)"/>
-        </svg> 
+        <svg
+          className="w-13 h-13"
+          viewBox="0 0 14 14"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <rect
+            className="fill-white"
+            width="14"
+            height="3.5"
+            transform="matrix(-1 0 0 1 14 5.25)"
+          />
+        </svg>
       );
     default:
       return null;
@@ -143,7 +200,7 @@ function Icon({ type }) {
 }
 
 Icon.propTypes = {
-  type: PropTypes.string
+  type: PropTypes.string,
 };
 
 export default NumberInput;

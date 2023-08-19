@@ -1,9 +1,8 @@
 import PropTypes from "prop-types";
 function Toggle({ handleChange, checked, disabled }) {
-
   function handleEnterKey(e) {
-    if (e.key === 'Enter') {
-      handleChange()
+    if (e.key === "Enter") {
+      handleChange();
     }
   }
 
@@ -19,7 +18,7 @@ function Toggle({ handleChange, checked, disabled }) {
         checked={checked}
         id=""
         onChange={handleChange}
-        onKeyDown={e => handleEnterKey(e)}
+        onKeyDown={(e) => handleEnterKey(e)}
       />
       <span className="pointer-events-none absolute top-4 left-4 block w-12 h-12 420:w-16 420:h-16 rounded-20 bg-white peer-checked:left-[24px] 420:peer-checked:left-[28px] transition-all" />
     </div>
@@ -28,7 +27,7 @@ function Toggle({ handleChange, checked, disabled }) {
 
 Toggle.propTypes = {
   handleChange: PropTypes.func,
-  checked: PropTypes.bool
-};;
+  checked: PropTypes.bool,
+};
 
 export default Toggle;

@@ -8,19 +8,22 @@ import TimelinePreview from "../TimelinePreview";
 import { BlueprintProvider } from "../../../context/Blueprint";
 
 const types = {
-  fullTime: 'fullTime',
-  flexible: 'flexible'
+  fullTime: "fullTime",
+  flexible: "flexible",
 };
 
 export { types as cardsLayoutTypes };
 
 function CardsLayout({ type }) {
-
   return (
     <BlueprintProvider>
       <ul className="grid grid-cols-1 auto-rows-fr gap-24 420:gap-32 808:grid-cols-2 932:gap-48 1260:w-screen 1260:max-w-1600 1260:flex 1260:justify-evenly 1260:gap-0">
         <li>
-          {type === types.fullTime ? <TimelineStartEnd /> : <TimelineDuration /> }
+          {type === types.fullTime ? (
+            <TimelineStartEnd />
+          ) : (
+            <TimelineDuration />
+          )}
         </li>
 
         <li>
@@ -28,7 +31,7 @@ function CardsLayout({ type }) {
         </li>
 
         <li className="flex justify-center items-center col-span-1 808:col-span-2 1260:col-span-1">
-          {type === types.fullTime ? <BlockTime /> : <LongBreaks /> }
+          {type === types.fullTime ? <BlockTime /> : <LongBreaks />}
         </li>
       </ul>
 
@@ -40,7 +43,7 @@ function CardsLayout({ type }) {
 }
 
 CardsLayout.propTypes = {
-  type: PropTypes.string
+  type: PropTypes.string,
 };
 
 export default CardsLayout;

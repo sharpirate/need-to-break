@@ -8,17 +8,13 @@ import Modal from "../Modal";
 import { requestPermission } from "../../../utils/notificationUtil";
 
 function EnableNotificationsModal({ isOpen, setIsOpen }) {
-
   function handleClick() {
     requestPermission();
     setIsOpen(false);
   }
 
   return (
-    <Modal
-      isOpen={isOpen}
-      handleClose={() => setIsOpen(false)}
-    >
+    <Modal isOpen={isOpen} handleClose={() => setIsOpen(false)}>
       <InputCard>
         <Header
           icon={iconTypes.warning}
@@ -27,7 +23,9 @@ function EnableNotificationsModal({ isOpen, setIsOpen }) {
         />
 
         <div className="mt-16 420:mt-24">
-          <Button handleClick={handleClick} type={buttonTypes.primary}>Enable</Button>
+          <Button handleClick={handleClick} type={buttonTypes.primary}>
+            Enable
+          </Button>
         </div>
       </InputCard>
     </Modal>
@@ -37,7 +35,7 @@ function EnableNotificationsModal({ isOpen, setIsOpen }) {
 EnableNotificationsModal.propTypes = {
   isOpen: PropTypes.bool,
   setIsOpen: PropTypes.func,
-  presetName: PropTypes.string
+  presetName: PropTypes.string,
 };
 
 export default EnableNotificationsModal;

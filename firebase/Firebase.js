@@ -92,7 +92,7 @@ export function useDB() {
       const userId = getAuth().currentUser.uid;
       await addDoc(
         collection(getDBInstance(), `users/${userId}/presets`),
-        preset
+        preset,
       );
     } catch (error) {
       console.error(error);
@@ -104,7 +104,7 @@ export function useDB() {
     try {
       const userId = getAuth().currentUser.uid;
       const querySnapshot = await getDocs(
-        collection(getDBInstance(), `users/${userId}/presets`)
+        collection(getDBInstance(), `users/${userId}/presets`),
       );
       const presets = querySnapshot.docs.map((doc) => {
         return {
@@ -162,7 +162,7 @@ export function useAuth() {
       const result = await createUserWithEmailAndPassword(
         getAuthInstance(),
         `${username}@needtobreak.com`,
-        password
+        password,
       );
 
       return {
@@ -184,7 +184,7 @@ export function useAuth() {
       const result = await signInWithEmailAndPassword(
         getAuthInstance(),
         `${username}@needtobreak.com`,
-        password
+        password,
       );
 
       return {

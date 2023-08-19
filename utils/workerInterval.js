@@ -6,9 +6,9 @@ onmessage = ({ data }) => {
 
     intervalId = setInterval(() => {
       postMessage(Date.now());
-    }, data.delay)
+    }, data.delay);
   } else if (data.clear) {
     clearInterval(intervalId);
     close();
   }
-}
+};

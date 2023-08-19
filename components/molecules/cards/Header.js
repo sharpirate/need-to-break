@@ -7,7 +7,9 @@ function Header({ icon, heading, description }) {
     <div className="flex flex-col justify-center items-center text-center mb-16 420:mb-24 gap-16 420:gap-24">
       <Icon type={icon} />
       <div>
-        <Label size={labelTypes.large} as={labelTypes.h2}>{heading}</Label>
+        <Label size={labelTypes.large} as={labelTypes.h2}>
+          {heading}
+        </Label>
         {description ? (
           <p className="body-med text-gray-500">{description}</p>
         ) : null}

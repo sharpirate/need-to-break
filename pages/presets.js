@@ -1,9 +1,7 @@
 import PresetList from "../components/molecules/PresetList";
 
 function PresetsPage() {
-  return (
-    <PresetList />
-  );
+  return <PresetList />;
 }
 
 export default PresetsPage;

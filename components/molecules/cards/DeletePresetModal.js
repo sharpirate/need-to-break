@@ -37,10 +37,7 @@ function DeletePresetModal({ isOpen, setIsOpen, name, id }) {
   }
 
   return (
-    <Modal
-      isOpen={isOpen}
-      handleClose={handleClose}
-    >
+    <Modal isOpen={isOpen} handleClose={handleClose}>
       <InputCard>
         <Header
           icon={iconTypes.delete}
@@ -49,8 +46,15 @@ function DeletePresetModal({ isOpen, setIsOpen, name, id }) {
         />
 
         <div className="grid grid-cols-2 gap-24 mt-16 420:mt-24">
-          <Button handleClick={handleClose} type={buttonTypes.outline}>Cancel</Button>
-          <Button handleClick={handleDelete} type={success ? buttonTypes.success : buttonTypes.delete}>Delete</Button>
+          <Button handleClick={handleClose} type={buttonTypes.outline}>
+            Cancel
+          </Button>
+          <Button
+            handleClick={handleDelete}
+            type={success ? buttonTypes.success : buttonTypes.delete}
+          >
+            Delete
+          </Button>
         </div>
       </InputCard>
     </Modal>
@@ -60,7 +64,7 @@ function DeletePresetModal({ isOpen, setIsOpen, name, id }) {
 DeletePresetModal.propTypes = {
   isOpen: PropTypes.bool,
   setIsOpen: PropTypes.func,
-  presetName: PropTypes.string
+  presetName: PropTypes.string,
 };
 
 export default DeletePresetModal;

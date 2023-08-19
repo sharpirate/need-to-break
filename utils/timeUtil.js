@@ -1,7 +1,9 @@
 export function parseTime(time) {
   // convert "12:30" to [12, 30]
   // convert [12, 30] to "12:30"
-  return typeof time === 'string' ? time.split(':').map(item => Number(item)) : time.map(item => getTwoDigitTime(item)).join(':');
+  return typeof time === "string"
+    ? time.split(":").map((item) => Number(item))
+    : time.map((item) => getTwoDigitTime(item)).join(":");
 }
 
 export function getTwoDigitTime(time) {
@@ -17,12 +19,15 @@ export function timestampToString(timestamp) {
 
 export function parseStartTime(startTime) {
   // if it's flexible (timestamp) parse it to string first
-  const [hours, minutes] = typeof startTime === "number" ? parseTime(timestampToString(startTime)) : parseTime(startTime);
+  const [hours, minutes] =
+    typeof startTime === "number"
+      ? parseTime(timestampToString(startTime))
+      : parseTime(startTime);
   return new Date().setHours(hours, minutes, 0);
 }
 
 export function get12HourTime(time) {
-  const [hour, min] = typeof time === 'string' ? parseTime(time) : time;
+  const [hour, min] = typeof time === "string" ? parseTime(time) : time;
 
   let resultHour;
   let suffix;
@@ -33,14 +38,14 @@ export function get12HourTime(time) {
     } else {
       resultHour = hour;
     }
-    suffix = 'AM';
+    suffix = "AM";
   } else {
     if (hour === 12) {
       resultHour = hour;
     } else {
       resultHour = hour - 12;
     }
-    suffix = 'PM';
+    suffix = "PM";
   }
 
   return [getTwoDigitTime(resultHour), getTwoDigitTime(min), suffix];

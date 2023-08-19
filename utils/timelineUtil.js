@@ -23,7 +23,7 @@ function generateScales(intervals, totalDuration) {
 
   for (const scale of scales) {
     scaleMap[scale.value] = timeLabels.filter(
-      (timeLabel, i) => i % (scale.value / smallestScale) === 0
+      (timeLabel, i) => i % (scale.value / smallestScale) === 0,
     );
   }
 
@@ -97,7 +97,7 @@ export function storedToTimeline(stored) {
 
     const startLabel = timestampToString(timestamp);
     const endLabel = timestampToString(
-      timestamp + intervals[i].duration * 1000
+      timestamp + intervals[i].duration * 1000,
     );
 
     intervals[i].timestamp = timestamp;
@@ -147,15 +147,15 @@ export function getDetails(blueprint) {
   let duration;
   if (use12Hour) {
     const [startHour, startMin, startSuffix] = get12HourTime(
-      timestampToString(startTime)
+      timestampToString(startTime),
     );
     const [endHour, endMin, endSuffix] = get12HourTime(
-      timestampToString(endTime)
+      timestampToString(endTime),
     );
     duration = `${startHour}:${startMin} ${startSuffix} to ${endHour}:${endMin} ${endSuffix}`;
   } else {
     duration = `${timestampToString(startTime)} to ${timestampToString(
-      endTime
+      endTime,
     )}`;
   }
 

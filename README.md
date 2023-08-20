@@ -18,7 +18,7 @@ Go to https://console.firebase.google.com/ and find your app's `firebaseConfig`.
 Create a file called `.env.development.local` in the project's root and set your environment variables to match the `firebaseConfig`\
 (You can reference the provided example `.env.development` file):
 
-![env](https://github.com/Sharpirate/need-to-break/assets/20927667/87cd4607-ec66-41b7-a48f-2113c06650dd)
+![envlocal](https://github.com/Sharpirate/need-to-break/assets/20927667/4e12dae0-cb5e-4baf-9996-f17da9266ab5)
 
 Restart the dev server by running `npm run dev` again.
 

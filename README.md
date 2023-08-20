@@ -61,18 +61,17 @@ Click on the **Delete** button:
 
 ![delmodal](https://github.com/Sharpirate/need-to-break/assets/20927667/dbf7777a-6e84-4bf0-8b1f-0b97b96ec31b)
 
-
-
 ## Local Setup
-### Install Packages
+### 1. Install Packages
 Clone the repo and run `npm install` from the repository's root to install the required package dependencies
 
-### Running Locally
+### 2. Running Locally
 Run `npm run dev` from the repository's root to start the local dev build.
 
 Go to `localhost:3000` to access the app:
 
-![homepage](https://github.com/Sharpirate/need-to-break/assets/20927667/f452acb9-d812-4ba6-a55a-2ee56176f402)
+![local](https://github.com/Sharpirate/need-to-break/assets/20927667/701b9c84-3aa7-436d-bf97-8a7fa712b303)
+<br/><br/>
 
 ### (Optional) Configure Firebase
 If you want to be able to save presets you need to connect the app to Firebase.
@@ -85,6 +84,7 @@ Create a file called `.env.development.local` in the project's root and set your
 (You can reference the provided example `.env.development` file):
 
 ![envlocal](https://github.com/Sharpirate/need-to-break/assets/20927667/4e12dae0-cb5e-4baf-9996-f17da9266ab5)
+<br/><br/>
 
 Restart the dev server by running `npm run dev` again.
 

@@ -1,3 +1,6 @@
+
+
+## Local Setup
 ### 1. Install Packages
 Clone the repo and run `npm install` from the repository's root to install the required package dependencies
 

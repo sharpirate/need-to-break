@@ -9,7 +9,7 @@ import { useEffect, useState } from "react";
 import { APP_PAGES, TRANSITIONS } from "../utils/constants";
 import { DIRECTIONS } from "../utils/constants";
 import { PresetsProvider } from "../context/Presets";
-
+import { Analytics } from "@vercel/analytics/react";
 Modal.setAppElement("#__next");
 
 const pageVariants = {
@@ -123,6 +123,7 @@ function MyApp({ Component, pageProps }) {
                   className="absolute top-0 left-0 w-full flex flex-col justify-start items-center p-24 420:p-32 932:p-48"
                 >
                   <Component {...pageProps} />
+                  <Analytics />
                 </motion.div>
               </AnimatePresence>
             </div>

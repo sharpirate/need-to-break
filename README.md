@@ -1,3 +1,6 @@
+
+![home](https://github.com/Sharpirate/need-to-break/assets/20927667/6e25a559-cf37-4daf-b0c3-adcd8cb5b3e0)
+
 ## Using The App
 ### Working With Timelines
 A Timeline is a sequence of work and break intervals that can help you track your screen time with the help of timers.

@@ -24,10 +24,7 @@ function TimelinePreview({ hasFloating }) {
   const router = useRouter();
   const { user } = useAuth();
 
-  console.log(user);
-
   useIsomorphicLayoutEffect(() => {
-    console.log({ blueprint });
     if (blueprint.duration) {
       const timeline = blueprintToTimeline(blueprint);
       setTimeline(timeline);

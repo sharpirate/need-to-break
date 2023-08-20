@@ -79,8 +79,6 @@ const RegularTimeline = ({
   useIsomorphicLayoutEffect(() => {
     const timeline = timelineRef.current;
 
-    console.log(timeline);
-
     if (timeline) {
       const { clientWidth, scrollWidth } = timeline;
       const scrollableWidth = scrollWidth - clientWidth;

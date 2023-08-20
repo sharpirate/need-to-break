@@ -41,7 +41,7 @@ Enter your username and password and click the **Sign Up** button:
 ![signupclick](https://github.com/Sharpirate/need-to-break/assets/20927667/bbc1b5cf-b594-459a-8ba3-4e10c8deed62)
 <br/><br/>
 
-Once you create your account you, click on the **Save** button once again. You should see a new modal appear prompting you to save your timeline.
+Once you create your account, click on the **Save** button once again. You should see a new modal appear prompting you to save your timeline.
 <br/><br/>
 Enter the name of your Preset and click the **Save** button:
 

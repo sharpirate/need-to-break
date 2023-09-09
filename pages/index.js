@@ -29,7 +29,7 @@ export default function Home() {
               type={buttonTypes.callToAction}
               handleClick={() => router.push("/timeline")}
             >
-              Try It Now
+              Get Started
             </Button>
           </div>
 

@@ -54,7 +54,7 @@ function Button({
     return (
       <motion.a
         className={
-          "select-none px-24 420:px-32 py-8 body-med body-small rounded-6 outline-none active:scale-90" +
+          "text-center select-none px-24 420:px-32 py-8 body-med body-small rounded-6 outline-none active:scale-90" +
           " " +
           style +
           " " +
@@ -75,7 +75,7 @@ function Button({
       onClick={() => setTimeout(handleClick, delay)}
       disabled={disabled}
       className={
-        "select-none px-24 420:px-32 py-8 body-med body-small rounded-6 outline-none active:scale-90" +
+        "text-center select-none px-24 420:px-32 py-8 body-med body-small rounded-6 outline-none active:scale-90" +
         " " +
         style +
         " " +

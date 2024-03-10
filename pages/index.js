@@ -33,7 +33,7 @@ export default function Home() {
             </Button>
           </div>
 
-          {/* <Button
+          <Button
             type={buttonTypes.primary}
             href="https://github.com/Sharpirate/need-to-break"
           >
@@ -44,7 +44,7 @@ export default function Home() {
             href="https://www.figma.com/file/KhWh1YsTvHu6gZdhRe87FK/NeedToBreak?type=design&node-id=3%3A204&mode=design&t=9jR5f71d6J1COe6B-1"
           >
             View Design
-          </Button> */}
+          </Button>
         </div>
       </div>
 

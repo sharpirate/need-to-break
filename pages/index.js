@@ -35,7 +35,7 @@ export default function Home() {
 
           <Button
             type={buttonTypes.primary}
-            href="https://github.com/Sharpirate/need-to-break"
+            href="https://github.com/bstoynov/need-to-break"
           >
             View Code
           </Button>
